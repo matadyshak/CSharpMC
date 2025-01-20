@@ -1,0 +1,1 @@
+In this next application, we will welcome the user to our application and then we will ask them for their first name. Finally, we will greet them by name.
