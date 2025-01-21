@@ -41,14 +41,14 @@ while (!validCell)
     Console.Write("What is your cell number? ");
     string cell = Console.ReadLine();
     // Check if valid using regular expression:
-    if (System.Text.RegularExpressions.Regex.IsMatch(cell, @"^(\+\d{1,2}\s?)?(\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}$"))
+    if (System.Text.RegularExpressions.Regex.IsMatch(cell, @"^(\+?\d{1,2}\s?)?(\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}$"))
     {
         // If valid say I will send you text message and set validCell flag to true
         Console.WriteLine("I will send you a text message at {0}.", cell);
         validCell = true;
         //
         // Cell number inputs ending with a '+' matched the regex
-        // Cell niumber inputs ending with an 'x' did NOT match the regex (Initial '+' required)
+        // Cell number inputs ending with an 'x' did NOT match the regex
         //
 
         // 469-555-1234 +
@@ -70,11 +70,13 @@ while (!validCell)
         // +1469 555.1234 +
         // +1469 5551234 +
 
-        // 1469-555-1234 x
-        // 1469.555.1234 x
-        // 1469 555 1234  x
-        // 1(469) 555-1234 x
-        // 1(469)555-1234 x
+        // 1469-555-1234 +
+        // 1469.555.1234 +
+        // 1469 555 1234  +
+        // 1(469) 555-1234 +
+        // 1(469)555-1234 +
+
+        // +24 469-555-1234 +
     }
     else
     {
@@ -82,7 +84,6 @@ while (!validCell)
         Console.WriteLine("Invalid cell number. Please try again.");
     }
 }
-
 
 Console.WriteLine("Thank you for using my application.");
 Console.ReadLine();
