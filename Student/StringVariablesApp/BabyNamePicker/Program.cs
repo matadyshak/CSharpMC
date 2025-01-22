@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Net;
 
 namespace BabyNamePicker
 {
-
     internal class Program
     {
         static void Main(string[] args)
@@ -22,6 +21,7 @@ namespace BabyNamePicker
                     break;
                 }
             }
+            return;
         }
 
         static void BabyNamePicker()
@@ -72,7 +72,7 @@ namespace BabyNamePicker
     
             while (!genderValid)
             {
-                Console.Write("Pick girl or boy names? ");
+                Console.Write("Pick boy or girl names (boy/girl)? ");
                 response = Console.ReadLine().ToLower();
                 if (response == "girl" || response == "boy")
                 {
@@ -84,77 +84,15 @@ namespace BabyNamePicker
                 }
             }
 
-            Random random = new Random();
-
             if (response=="boy")
             {
-                ResetTallies(boyTallies);
-                for (int i = 0; i < 1000; i++)
-                {
-                    int index = random.Next(0, boyNames.Length);
-                    boyTallies[index]++;
-                }
-                
-                // Display the results
-                // Find the index of the highest value in the boyTallies array
-                // Set that tally to -1
-                int highestValue = 0;
-                int highestIndex = -1;
-                
-                for (int k = 0; k<boyNames.Length; k++)
-                {
-                    // Run the inner loop 10 times
-                    highestValue = 0;
-                    highestIndex = -1;
-
-                    for (int j = 0; j<boyTallies.Length; j++)
-                    {
-                        if (boyTallies[j] > highestValue)
-                        {
-                            highestValue = boyTallies[j];
-                            highestIndex = j;
-                        }
-                    }
-
-                    names = boyNames[highestIndex];
-                    Console.WriteLine($"Popularity: {highestValue}% Name: {names}");
-                    boyTallies[highestIndex] = -1;
-                }
+		VoteForNames(boyNames, boyTallies);
+                CalculateResults(boyNames, boyTallies);                
             }
             else
             {
-                ResetTallies(girlTallies);
-                for (int i = 0; i < 100; i++)
-                {
-                    int index = random.Next(0, girlNames.Length);
-                    girlTallies[index]++;
-                }
-
-                // Display the results
-                // Find the index of the highest value in the boyTallies array
-                // Set that tally to -1
-                int highestValue = 0;
-                int highestIndex = -1;
-
-                for (int k = 0; k<girlNames.Length; k++)
-                {
-                    // Run the inner loop 10 times
-                    highestValue = 0;
-                    highestIndex = -1;
-
-                    for (int j = 0; j<girlTallies.Length; j++)
-                    {
-                        if (girlTallies[j] > highestValue)
-                        {
-                            highestValue = girlTallies[j];
-                            highestIndex = j;
-                        }
-                    }
-
-                    names = girlNames[highestIndex];
-                    Console.WriteLine($"Popularity: {highestValue}% Name: {names}");
-                    girlTallies[highestIndex] = -1;
-                }
+		VoteForNames(girlNames, girlTallies);
+                CalculateResults(girlNames, girlTallies);                
             }
             return;
         }
@@ -165,6 +103,58 @@ namespace BabyNamePicker
             {
                 tallies[i] = 0;
             }
+        }
+
+        static void VoteForNames(int[] tallies, string[] names)
+        {
+            Random random = new Random();
+
+            ResetTallies(tallies);
+
+            for (int i = 0; i < 100; i++)
+            {
+		// Generate pseudo randum numbers from 0..9
+                int index = random.Next(0, names.Length);
+                tallies[index]++;
+            }
+
+            return;
+         }
+
+        static void CalculateResults(int[] tallies, string[] names)
+        {
+            // Find the index of the highest value in the tallies array
+            // Set that tally to -
+           
+            int highestValue = 0;
+            int highestIndex = -1;
+            string theName = string.Empty;
+                
+	    // Find the highest tally remaining in the tallies array
+            for (int i = 0; i<names.Length; i++)
+            {
+                // Run the inner loop 10 times to check each tally
+                highestValue = 0;
+                highestIndex = -1;
+
+                for (int j = 0; j<tallies.Length; j++)
+                {
+                    if (tallies[j] > highestValue)
+                    {
+                        // Save the value and index
+                        highestValue = tallies[j];
+                        highestIndex = j;
+                    }
+                }
+
+                // Display the results
+                theName = names[highestIndex];
+                Console.WriteLine($"Popularity: {highestValue}% Name: {theName}");
+                // Change this tally value to -1 so it will be skipped over
+                tallies[highestIndex] = -1;
+            }
+
+             return;
         }
     }
 }
