@@ -25,16 +25,9 @@ namespace BabyNamePicker
         }
 
         static void BabyNamePicker()
-        { 
-            int[] boyTallies = new int[]
-            {
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-            };
-
-            int[] girlTallies = new int[]
-            {
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-            };
+        {
+            int[] boyTallies = new int[10];
+            int[] girlTallies = new int[10];
 
             string[] girlNames =
             {  
@@ -86,12 +79,12 @@ namespace BabyNamePicker
 
             if (response=="boy")
             {
-		VoteForNames(boyNames, boyTallies);
+		        VoteForNames(boyNames, boyTallies);
                 CalculateResults(boyNames, boyTallies);                
             }
             else
             {
-		VoteForNames(girlNames, girlTallies);
+		        VoteForNames(girlNames, girlTallies);
                 CalculateResults(girlNames, girlTallies);                
             }
             return;
@@ -105,7 +98,7 @@ namespace BabyNamePicker
             }
         }
 
-        static void VoteForNames(int[] tallies, string[] names)
+        static void VoteForNames(string[] names, int[] tallies )
         {
             Random random = new Random();
 
@@ -113,7 +106,7 @@ namespace BabyNamePicker
 
             for (int i = 0; i < 100; i++)
             {
-		// Generate pseudo randum numbers from 0..9
+	        	// Generate pseudo randum numbers from 0..9
                 int index = random.Next(0, names.Length);
                 tallies[index]++;
             }
@@ -121,7 +114,7 @@ namespace BabyNamePicker
             return;
          }
 
-        static void CalculateResults(int[] tallies, string[] names)
+        static void CalculateResults(string[] names, int[] tallies)
         {
             // Find the index of the highest value in the tallies array
             // Set that tally to -
@@ -130,7 +123,7 @@ namespace BabyNamePicker
             int highestIndex = -1;
             string theName = string.Empty;
                 
-	    // Find the highest tally remaining in the tallies array
+    	    // Find the highest tally remaining in the tallies array
             for (int i = 0; i<names.Length; i++)
             {
                 // Run the inner loop 10 times to check each tally
