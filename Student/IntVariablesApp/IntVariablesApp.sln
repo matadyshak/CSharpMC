@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElementaryTypes", "IntVariables\ElementaryTypes.csproj", "{71567EFA-2619-4B3F-A1FA-13B76113EAE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonacciSequence", "FibonacciSequence\FibonacciSequence.csproj", "{416DEBDF-13AC-465A-916D-E1A45FA92941}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeNumbers", "PrimeNumbers\PrimeNumbers.csproj", "{EAC485C8-4B56-4CDD-9274-E30A9472C333}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factorial", "Factorial\Factorial.csproj", "{1CF3C383-1F39-46D5-8AAC-0DF944D5339C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71567EFA-2619-4B3F-A1FA-13B76113EAE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71567EFA-2619-4B3F-A1FA-13B76113EAE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71567EFA-2619-4B3F-A1FA-13B76113EAE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71567EFA-2619-4B3F-A1FA-13B76113EAE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{416DEBDF-13AC-465A-916D-E1A45FA92941}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{416DEBDF-13AC-465A-916D-E1A45FA92941}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{416DEBDF-13AC-465A-916D-E1A45FA92941}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{416DEBDF-13AC-465A-916D-E1A45FA92941}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAC485C8-4B56-4CDD-9274-E30A9472C333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAC485C8-4B56-4CDD-9274-E30A9472C333}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAC485C8-4B56-4CDD-9274-E30A9472C333}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAC485C8-4B56-4CDD-9274-E30A9472C333}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CF3C383-1F39-46D5-8AAC-0DF944D5339C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CF3C383-1F39-46D5-8AAC-0DF944D5339C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CF3C383-1F39-46D5-8AAC-0DF944D5339C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CF3C383-1F39-46D5-8AAC-0DF944D5339C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
