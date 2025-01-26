@@ -12,7 +12,7 @@
             int maxBetweenPrimes = 1;
             int primeCount = 0;
 
-            Console.WriteLine("This will display all prime numbers from 2 to N.");
+            Console.WriteLine("This will find long stretches of consecutive numbers that are not prime numbers.");
             Console.Write("Enter a positive integer for N: ");
             int maxNumerator = int.Parse(Console.ReadLine());
             //Console.WriteLine("2");
