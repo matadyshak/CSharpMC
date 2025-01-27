@@ -1,4 +1,6 @@
-﻿namespace PrimeFactors
+﻿using System.Numerics;
+
+namespace PrimeFactors
 {
     internal class Program
     {
@@ -52,15 +54,10 @@
                     {
                         primeFactors.Add(prime);
                         number /= prime;
+                        Console.Write($"{prime} ");
                         break;
                     }
                 }
-            }
-            
-            
-            foreach (int factor in primeFactors)
-            {
-                Console.Write($"{factor} ");
             }
         }
     }
