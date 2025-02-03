@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BasicIf
+namespace AdvancedIf
 {
     internal class Program
     {
@@ -49,14 +49,14 @@ namespace BasicIf
         static void PlayBowlingGame()
         {
             //int ball = 1;
-            int index = 0; 
+            int index = 0;
             int frame = 1;
             int pins = 0;
             int pinsLeft = 0;
             string tally = "";
-            int [] Roll1 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            int [] Roll2 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            int [] Roll3 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            int[] Roll1 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            int[] Roll2 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            int[] Roll3 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             int[] scores = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
             Random random = new Random();
@@ -189,7 +189,7 @@ namespace BasicIf
             Console.WriteLine($"\n{tally}");
             foreach (int score in scores)
             {
-                Console.Write($"{score, 3} ");
+                Console.Write($"{score,3} ");
             }
             return;
         }
