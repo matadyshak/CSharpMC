@@ -12,14 +12,14 @@ namespace AdvancedIf
         static void Main()
         {
             int[] Game = new int[3];
-            int series = 0;
+            int series;
             int highestGame = 0;
             int highestSeries = 0;
             int totalPins = 0;
             int gameCount = 0; 
-            int average = 0;
+            int average;
             bool gameOver = false;
-            string playAgain = "y";
+            string playAgain;
 
             while (!gameOver)
             {
@@ -35,8 +35,10 @@ namespace AdvancedIf
                 average = totalPins / gameCount;
                 highestSeries = Math.Max(highestSeries, series);
                 highestGame = Math.Max(Math.Max(highestGame, Game[0]), Math.Max(Game[1], Game[2]));
-                Console.WriteLine($"\n\nSeries: {series} Total Pins: {totalPins} Games: {gameCount} Average: {average} High Series: {highestSeries} High Game: {highestGame}");
+                
+                Console.WriteLine($"\n\nSeries: {series}  Total Pins: {totalPins}  Games: {gameCount}  Average: {average}  High Series: {highestSeries}  High Game: {highestGame}");
                 Console.Write("\n\nPlay Another Game? (Y/N): ");
+                
                 playAgain = Console.ReadLine().ToLower();
                 if (playAgain != "y")
                 {
@@ -46,7 +48,7 @@ namespace AdvancedIf
             return;
         }
 
-        static int Roll(Random random, int pinsStanding)
+        static int Roll(Random random, int pinsStanding, out int pins)
         {
             int index = random.Next(0, pinsStanding+1);  //0..pinsStanding
 
@@ -65,21 +67,37 @@ namespace AdvancedIf
                 pinsStanding
             };
 
-            return  Math.Max(pinsDown[index], 0);
+            // In some cases the number of pins down goes negative
+            // In that case we set the additional pins knocked down to zero
+            pins = Math.Max(pinsDown[index], 0);
+            return pins;
         }
 
         static int PlayBowlingGame()
         {
-            //int ball = 1;
-            int index = 0;
+            int index;
             int frame = 1;
-            int pins = 0;
-            int pinsLeft = 0;
+            int pins;
             string tally = "";
             int[] Roll1 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             int[] Roll2 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             int[] Roll3 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             int[] scores = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+            // The tally is 4 chars per frame
+            // The last char is always a space to divide the columns (Spaces shown as "_" below)
+
+            // For frames 1-9
+                //The first and last chars are always a space
+                    // Strike = __X_
+                    // Spare  = _9/_
+                    // Open   = _63_
+
+            // For frame 10
+                // 3 Strikes = XXX_
+                // 2 Strikes = XX9_
+                // Spare     = 9/8_
+                // Open      = 81__
 
             Random random = new Random();
 
@@ -88,8 +106,8 @@ namespace AdvancedIf
                 index = frame - 1;
                 if (frame >= 1 && frame <= 9)
                 {
-                    pins = Roll(random, 10);
-                    Roll1[index] = pins;
+                    // Frames 1-9
+                    Roll1[index] = Roll(random, 10, out pins);
                     if (pins == 10)
                     {
                         //Strike
@@ -99,10 +117,8 @@ namespace AdvancedIf
                     {
                         //Not a strike
                         tally += " " + pins;
-                        pinsLeft = 10 - pins;
-                        pins = Roll(random, pinsLeft);
-                        Roll2[index] = pins;
-                        if (pins == pinsLeft)
+                        Roll2[index] = Roll(random, 10 - pins, out pins);
+                        if (Roll1[index] + Roll2[index] == 10)
                         {
                             //Spare
                             tally += "/ ";
@@ -117,25 +133,19 @@ namespace AdvancedIf
                 } //Frames 1-9
                 else if (frame == 10)
                 {
-                    pinsLeft = 10;
-                    pins = Roll(random, pinsLeft);
-                    Roll1[index] = pins;
+                    Roll1[index] = Roll(random, 10, out pins);
                     if (pins == 10)
                     {
                         //First ball in 10th frame a strike
                         tally += "X";
-                        pinsLeft = 10;
-                        pins = Roll(random, pinsLeft);
-                        Roll2[index] = pins;
-                        if ((pins == 10))
+                        Roll2[index] = Roll(random, 10, out pins);
+                        if (pins == 10)
                         {
                             // Two strikes in 10th frame
                             tally += "X";
-                            pinsLeft = 10;
-                            pins = Roll(random, pinsLeft);
-                            Roll3[index] = pins;
+                            Roll3[index] = Roll(random, 10, out pins);
                             //Third roll in the 10th frame
-                            if ((pins == 10))
+                            if (pins == 10)
                             {
                                 tally += "X";
                             }
@@ -148,10 +158,8 @@ namespace AdvancedIf
                         {
                             //Strike followed by a non-strike
                             tally += pins;
-                            pinsLeft = 10 - pins;
-                            pins = Roll(random, pinsLeft);
-                            Roll3[index] = pins;
-                            if (pins == pinsLeft)
+                            Roll3[index] = Roll(random, 10 - pins, out pins);
+                            if (Roll2[index] + Roll3[index] == 10)
                             {
                                 //Spare after a strike
                                 tally += "/";
@@ -166,17 +174,13 @@ namespace AdvancedIf
                     {
                         //First ball in 10th frame not a strike
                         tally += pins;
-                        pinsLeft = 10 - pins;
-                        pins = Roll(random, pinsLeft);
-                        Roll2[index] = pins;
-                        if (pins == pinsLeft)
+                        Roll2[index] = Roll(random, 10 - pins, out pins);
+                        if (Roll1[index] + Roll2[index] == 10)
                         {
                             //Spare in 10th frame
                             tally += "/";
                             //Roll 3rd ball in 10th frame
-                            pinsLeft = 10;
-                            pins = Roll(random, pinsLeft);
-                            Roll3[index] = pins;
+                            Roll3[index] = Roll(random, 10, out pins);
                             if (pins == 10)
                             {
                                 // Spare in 10th + a strike
@@ -200,6 +204,7 @@ namespace AdvancedIf
 
             // Roll3 just used for the 10th frame
             scores = ComputeScore(Roll1, Roll2, Roll3);
+            // Zeroes in tally should show as a dash
             tally = tally.Replace("0", "-");
             Console.WriteLine($"\n{tally}");
             
@@ -217,8 +222,8 @@ namespace AdvancedIf
         {
             int[] frameScore = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             int[] cumulativeScore = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            int frame = 1;
-            int index = 0;
+            int frame;
+            int index;
 
             // Loop on frames 1-8
             for (frame = 1; frame <= 8; frame++)
@@ -230,6 +235,7 @@ namespace AdvancedIf
                     frameScore[index] = 10 + Roll1[index+1] + Roll2[index+1];
                     if (Roll1[index+1] == 10)
                     {
+                        // Two strikes so get 1st roll from 3rd frame from here
                         frameScore[index] += Roll1[index+2];
                     }
                 }
@@ -240,6 +246,7 @@ namespace AdvancedIf
                 }
                 else
                 {
+                    // Open
                     frameScore[index] = Roll1[index] + Roll2[index];
                 }
             }
@@ -285,7 +292,7 @@ namespace AdvancedIf
             //Frame 1 (index 0)
             cumulativeScore[0] = frameScore[0];
 
-            for (int i = 1; i<=9; i++)
+            for (int i=1; i<=9; i++)
             {
                 // Frames 2-10 (index 1-9)
                 cumulativeScore[i] = cumulativeScore[i-1] + frameScore[i];
