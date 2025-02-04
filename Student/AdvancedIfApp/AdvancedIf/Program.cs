@@ -38,7 +38,7 @@ namespace AdvancedIf
                 
                 Console.WriteLine($"\n\nSeries: {series}  Total Pins: {totalPins}  Games: {gameCount}  Average: {average}  High Series: {highestSeries}  High Game: {highestGame}");
                 Console.Write("\n\nPlay Another Game? (Y/N): ");
-                
+
                 playAgain = Console.ReadLine().ToLower();
                 if (playAgain != "y")
                 {
