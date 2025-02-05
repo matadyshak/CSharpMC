@@ -1,0 +1,14 @@
+Plan and build a console application that asks a user for their name and their age.  If their name is Bob or Sue, address them as Professor, otherwise address them by name.  If the person is under 21, recommend they wait X years to start this class.
+
+ask for name: {firstName}
+ask for age: {age}
+
+if {firstName} = Bob or Sue
+	{formattedName} = "Professor" {firstName}
+else
+	{formattedName} = {firstName}
+
+if age < 21
+	I recommend you wait {21 - age} years, {formattedName}
+else
+	Welcome to class {formattedName}
