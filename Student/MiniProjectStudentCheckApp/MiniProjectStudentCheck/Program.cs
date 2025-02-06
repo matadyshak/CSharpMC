@@ -11,7 +11,7 @@ namespace MiniProjectStudentCheckApp
 			string ageText;
 			int age;
 
-			ConsoleWrite("What is your first name? ");
+			Console.Write("What is your first name? ");
 			firstName = Console.ReadLine();
 
 //			bool isValid = false;
@@ -28,16 +28,15 @@ namespace MiniProjectStudentCheckApp
 
 			Console.Write("What is your age in years? ");
 			ageText = Console.ReadLine();
-			if (int.tryParse(ageText, out age) == false)
+			if (int.TryParse(ageText, out age) == false)
 			{
 				Console.WriteLine($"Age entered: \'{ageText}\' is not valid. Program aborted.");
-				Console.ReadLine();
 				return;
 			}
 
-			if (firstName.ToLower() == "bob") || (firstName.ToLower() == "sue")
+			if ((firstName.ToLower() == "bob") || (firstName.ToLower() == "sue"))
 			{
-				formattedName = $"Professor {firstName}" 
+				formattedName = $"Professor {firstName}";
 			}
 			else
 			{
@@ -52,7 +51,6 @@ namespace MiniProjectStudentCheckApp
 			{
 				Console.WriteLine($"Welcome to the class, {formattedName}");
 			}
-
 		}
 	}
 }
