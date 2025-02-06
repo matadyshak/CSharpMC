@@ -12,3 +12,17 @@ if age < 21
 	I recommend you wait {21 - age} years, {formattedName}
 else
 	Welcome to class {formattedName}
+
+TEST DATA
+Bob 43
+Sue 25
+Bob 18
+Sue 17
+Tim 39
+Tim 13
+
+Bob 18
+Sue 22
+
+18 Tim
+Greg -45
