@@ -30,6 +30,8 @@ namespace MiniProjectStudentCheckApp
 			ageText = Console.ReadLine();
 			if (int.tryParse(ageText, out age) == false)
 			{
+				Console.WriteLine($"Age entered: \'{ageText}\' is not valid. Program aborted.");
+				Console.ReadLine();
 				return;
 			}
 
