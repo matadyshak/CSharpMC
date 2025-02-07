@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31825.309
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoLoop", "DoLoop\DoLoop.csproj", "{418FB3B2-76D7-43B4-A51E-96811DD31C1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{418FB3B2-76D7-43B4-A51E-96811DD31C1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{418FB3B2-76D7-43B4-A51E-96811DD31C1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{418FB3B2-76D7-43B4-A51E-96811DD31C1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{418FB3B2-76D7-43B4-A51E-96811DD31C1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67F65524-6D79-4D66-AD21-B316E991BC9B}
+	EndGlobalSection
+EndGlobal
