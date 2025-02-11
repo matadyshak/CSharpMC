@@ -4,7 +4,8 @@ using System.Globalization;
 
 bool isValid = false;
 string? input = null;
-string[] names;
+List<string> firstNames = new List<string>();
+
 //REGEX
 // * = 0 or more
 // ? = 0 or 1
@@ -32,10 +33,10 @@ while (!isValid)
         // Program will allow user to enter names with mixed case of any kind but then converts the entries to title case (first letter capitalized)
         isValid = true;
         input = ConvertToTitleCase(input);
-        names = input.Split(',');
-        for (int i = 0; i < names.Length; i++)
+        firstNames = input.Split(',').ToList();
+        for (int i = 0; i < firstNames.Count; i++)
         {
-            Console.WriteLine($"Hello, {names[i]}!");
+            Console.WriteLine($"Hello, {firstNames[i]}!");
         }
     }
 }
