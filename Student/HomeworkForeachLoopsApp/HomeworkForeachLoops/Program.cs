@@ -1,7 +1,11 @@
-﻿List<string> firstNames = new List<string>();
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+
+List<string> firstNames = new List<string>();
 bool isValid = false;
 bool isDone = false;
 string? input = null;
+Regex regexFirstName = new Regex(@"^[A-Za-z-' ]+$");
 
 while (!isDone)
 {
@@ -9,8 +13,8 @@ while (!isDone)
     while (!isValid)
     {
         Console.Write("Enter a first name: ");
-        input = Console.ReadLine();
-        if (string.IsNullOrEmpty(input))
+        input = Console.ReadLine().Trim();
+        if (string.IsNullOrEmpty(input) || (regexFirstName.IsMatch(input) == false))
         {
             isValid = false;
             Console.WriteLine($"Name entered: \'{input}\' is invalid.");
@@ -23,6 +27,7 @@ while (!isDone)
         else
         {
             isValid = true;
+            input = ConvertToTitleCase(input);
             try
             {
                 firstNames.Add(input);
@@ -38,5 +43,13 @@ while (!isDone)
 Console.WriteLine("\nThe names entered are: ");
 foreach (string firstName in firstNames)
 {
-    Console.WriteLine(firstName);
+    Console.WriteLine($"Hello, {firstName}!");
+}
+static string ConvertToTitleCase(string mixedCase)
+{
+    mixedCase = mixedCase.Trim();
+    TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+    string titleCase = textInfo.ToTitleCase(mixedCase.ToLower());
+
+    return titleCase;
 }
