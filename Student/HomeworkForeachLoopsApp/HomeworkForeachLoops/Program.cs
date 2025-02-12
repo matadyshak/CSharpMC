@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
-
-List<string> firstNames = new List<string>();
+﻿List<string> firstNames = new List<string>();
 bool isValid = false;
 bool isDone = false;
 string? input = null;
@@ -45,6 +42,7 @@ foreach (string firstName in firstNames)
 {
     Console.WriteLine($"Hello, {firstName}!");
 }
+
 static string ConvertToTitleCase(string mixedCase)
 {
     mixedCase = mixedCase.Trim();
