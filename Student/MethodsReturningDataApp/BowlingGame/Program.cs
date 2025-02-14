@@ -1,0 +1,3 @@
+﻿using BowlingGame;
+
+BowlingSimulator.RunBowlingGame();
