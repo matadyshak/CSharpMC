@@ -18,7 +18,7 @@
             HighestGame = 0;
             HighestSeries = 0;
         }
-        public static void UpdatePlayerStats(int series, int[] games, int gamesPlayed, )
+        public static void UpdatePlayerStats(int series, int[] games, int gamesPlayed)
         {
             TotalPins += series;
             TotalGames += gamesPlayed;
@@ -30,29 +30,6 @@
         public static void PrintPlayerStats(int series, int[] games)
         {
             Console.WriteLine($"\n\n{games[0]}+{games[1]}+{games[2]}={series}  Total Pins: {TotalPins}  Games: {TotalGames}  Average: {Average}  High Series: {HighestSeries}  High Game: {HighestGame}");
-        }
-
-
-
-
-
-
-
-
-
-        bool gameOver = false;
-        string playAgain;
-            while (!gameOver)
-            {
-                // Update statistics
-                Console.Write("\n\nPlay Another Game? (Y/N): ");
-                playAgain = Console.ReadLine().ToLower();
-                if (playAgain != "y")
-                {
-                    gameOver = true;
-                }
-}
-return;
         }
     }
 }

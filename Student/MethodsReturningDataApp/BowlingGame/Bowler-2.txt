@@ -1,0 +1,149 @@
+﻿/*
+
+Bowler Class
+
+	int NumberOfGames
+        int totalPins
+        int average
+	int highGame
+	int HighSeries
+
+BowlingSimulator Class
+        int frame
+        int index = frame -1
+        string tally
+        int scoreThroughFrameN
+        int[,] Roll = new int[3,10]
+
+	NextTally()
+        NextScore()
+        Console.Clear();
+        Console.SetCursorPosition(int col, int row);
+           COL = 20 .. 20 + 10 * 4 == 20..60   HOFFSET = 20 CHARS
+           ROW =          
+               VOFFSET=1 = BLANK LINE
+               VOFFSET+1 = FRAME#
+               VOFFSET+2 = TALLY
+               VOFFSET+3 = SCORE
+               VOFFSET+4 = BLANK LINE
+               VOFFSET+5 = STATS
+               VOFFSET+6 = 7 BLANK LINE STARTING PLAYER 2
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.ResetColor();
+
+Rolling the ball is like clocking a state machine
+After each roll the tally can always be appended to and the HCOUNT incremented appropriately
+The score cannot be filled in in case of a spare or a strike
+In case of open frame the score is up to date with the tally
+Identify the inputs and outputs
+Frames 1-8 are identical
+Frame 9 can effect Frame 10 but not Frame 11
+Frame 10 can have 2 or 3 rolls
+Could print all the frame numbers first
+Keep changing between the tally row and the score row
+Need TallyHCount and ScoreHCount
+Want a method that outputs the incremental tally
+Want a method that outputs the incremental score
+Want a method that is called by main which performs the 3-game series and has option to run again
+All variables will be static
+All methods will be static
+
+
+        
+*/
+
+using System;
+
+namespace AdvancedIf
+{
+    internal class Program
+    {
+        enum Enum_Pins
+        {
+            TEN = 10
+        };
+
+        static void Main()
+        {
+            int[] Game = new int[3];
+            int series;
+            int highestGame = 0;
+            int highestSeries = 0;
+            int totalPins = 0;
+            int gameCount = 0; 
+            int average;
+            bool gameOver = false;
+            string playAgain;
+
+            while (!gameOver)
+            {
+                // Bowl a 3-game series
+                Game[0] = PlayBowlingGame();
+                Game[1] = PlayBowlingGame();
+                Game[2] = PlayBowlingGame();
+
+                // Update statistics
+                gameCount += 3;
+                series = Game[0] + Game[1] + Game[2];
+                totalPins += series;
+                average = totalPins / gameCount;
+                highestSeries = Math.Max(highestSeries, series);
+                highestGame = Math.Max(Math.Max(highestGame, Game[0]), Math.Max(Game[1], Game[2]));
+                
+                Console.WriteLine($"\n\nSeries: {series}  Total Pins: {totalPins}  Games: {gameCount}  Average: {average}  High Series: {highestSeries}  High Game: {highestGame}");
+                Console.Write("\n\nPlay Another Game? (Y/N): ");
+
+                playAgain = Console.ReadLine().ToLower();
+                if (playAgain != "y")
+                {
+                    gameOver = true;
+                }
+            }
+            return;
+        }
+
+        static int Roll(Random random, int pinsStanding, out int pins)
+        {
+            int index = random.Next(0, pinsStanding+1);  //0..pinsStanding
+
+            int[] pinsDown = new int[]
+            {
+                pinsStanding,
+                pinsStanding-1,
+                pinsStanding,
+                pinsStanding-2,
+                pinsStanding,
+                pinsStanding-3,
+                pinsStanding,
+                pinsStanding-4,
+                pinsStanding,
+                pinsStanding-5,
+                pinsStanding
+            };
+
+            // In some cases the number of pins down goes negative
+            // In that case we set the additional pins knocked down to zero
+            pins = Math.Max(pinsDown[index], 0);
+            return pins;
+        }
+
+        Inputs: None
+	Returns: The game score
+        Locals:
+          index loops on 0..9
+          frame loops on 1..10 11 exits loop
+          pins = pins knocked down
+          tally = X's /'s numbers and -'s
+          Roll1 array
+          Roll2 array
+          Roll3 array
+          scores array
+	  random - the random number generator
+
+
+
+
+    }
+}
