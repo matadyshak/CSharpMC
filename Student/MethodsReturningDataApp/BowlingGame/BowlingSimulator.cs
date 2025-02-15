@@ -17,18 +17,26 @@
         // Static constructor to initialize properties
         static BowlingSimulator()
         {
+            Games = new int[3];
             Games[0] = 0;
             Games[1] = 0;
             Games[2] = 0;
             Series = 0;
+            Roll1 = new int[10];
+            Roll2 = new int[10];
+            Roll3 = new int[10];
+            FrameScores = new int[10];
+            CumulativeScores = new int[10];
+            Scores = new int[10];
+
             for (int i = 0; i < 10; i++)
             {
-                Roll1[i] = -1;
-                Roll2[i] = -1;
-                Roll3[i] = -1;
                 FrameScores[i] = -1;
                 CumulativeScores[i] = -1;
                 Scores[i] = -1;
+                Roll1[i] = -1;
+                Roll2[i] = -1;
+                Roll3[i] = -1;
             }
             RandomNumberGen = new Random();
         }
@@ -85,6 +93,8 @@
             int frame = 1;
             string tallyOut = "";
 
+            Tally = "";
+
             // The tally is 4 chars per frame
             // The last char is always a space to divide the columns (Spaces shown as "_" below)
 
@@ -134,7 +144,7 @@
             return Scores[9];
         }
 
-        static int Roll(Random random, int pinsStanding, out int pins)
+        static int Roll(Random random, int pinsStanding)
         {
             int index = random.Next(0, pinsStanding+1);  //0..pinsStanding
 
@@ -155,8 +165,8 @@
 
             // In some cases the number of pins down goes negative
             // In that case we set the additional pins knocked down to zero
-            pins = Math.Max(pinsDown[index], 0);
-            return pins;
+            Pins = Math.Max(pinsDown[index], 0);
+            return Pins;
         }
 
         static void TallyFrames1To9(int frame, string tallyIn, out string tallyOut)
@@ -166,7 +176,7 @@
 
             // Roll 1st ball at 10 pins
             // Return value = Pins = Number of pins knocked down
-            Roll1[index] = Roll(RandomNumberGen, 10, out Pins);
+            Roll1[index] = Pins = Roll(RandomNumberGen, 10);
             if (Pins == 10)
             {
                 //Strike
@@ -176,7 +186,7 @@
             {
                 //Not a strike
                 tallyOut += " " + Pins;
-                Roll2[index] = Roll(RandomNumberGen, 10 - Pins, out Pins);
+                Roll2[index] = Pins = Roll(RandomNumberGen, 10 - Pins);
                 if (Roll1[index] + Roll2[index] == 10)
                 {
                     //Spare
@@ -194,20 +204,20 @@
         static void TallyFrame10(string tallyIn, out string tallyOut)
         {
             int frame = 10;
-            int index = frame -1
+            int index = frame -1;
             tallyOut = tallyIn;
 
-            Roll1[index] = Roll(RandomNumberGen, 10, out Pins);
+            Roll1[index] = Pins = Roll(RandomNumberGen, 10);
             if (Pins == 10)
             {
                 //First ball in 10th frame a strike
                 tallyOut += "X";
-                Roll2[index] = Roll(RandomNumberGen, 10, out Pins);
+                Roll2[index] = Pins = Roll(RandomNumberGen, 10);
                 if (Pins == 10)
                 {
                     // Two strikes in 10th frame
                     tallyOut += "X";
-                    Roll3[index] = Roll(RandomNumberGen, 10, out Pins);
+                    Roll3[index] = Pins = Roll(RandomNumberGen, 10);
                     //Third roll in the 10th frame
                     if (Pins == 10)
                     {
@@ -223,7 +233,7 @@
                 {
                     //Strike followed by a non-strike
                     tallyOut += Pins;
-                    Roll3[index] = Roll(RandomNumberGen, 10 - Pins, out Pins);
+                    Roll3[index] = Pins = Roll(RandomNumberGen, 10 - Pins);
                     if (Roll2[index] + Roll3[index] == 10)
                     {
                         //Spare after a strike
@@ -239,13 +249,13 @@
             {
                 //First ball in 10th frame not a strike
                 tallyOut += Pins;
-                Roll2[index] = Roll(RandomNumberGen, 10 - Pins, out Pins);
+                Roll2[index] = Pins = Roll(RandomNumberGen, 10 - Pins);
                 if (Roll1[index] + Roll2[index] == 10)
                 {
                     //Spare in 10th frame
                     tallyOut += "/";
                     //Roll 3rd ball in 10th frame
-                    Roll3[index] = Roll(RandomNumberGen, 10, out Pins);
+                    Roll3[index] = Pins = Roll(RandomNumberGen, 10);
                     if (Pins == 10)
                     {
                         // Spare in 10th + a strike
@@ -267,15 +277,13 @@
 
         static int[] ComputeScores()
         {
+            int frame;
+
             for (int i = 0; i < 10; i++)
             {
                 FrameScores[i] = 0;
                 CumulativeScores[i] = 0;
             }
-            FrameScores = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            CumulativeScores = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            int frame;
-            int index;
 
             // Loop on frames 1-8
             for (frame = 1; frame <= 8; frame++)
