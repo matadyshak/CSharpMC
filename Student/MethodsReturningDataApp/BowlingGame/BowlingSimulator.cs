@@ -21,6 +21,7 @@
             Games[1] = 0;
             Games[2] = 0;
             Series = 0;
+            Tally = "";
             Roll1 = new int[10];
             Roll2 = new int[10];
             Roll3 = new int[10];
@@ -44,6 +45,7 @@
             Games[1] = 0;
             Games[2] = 0;
             Series = 0;
+            Tally = "";
             for (int i = 0; i < 10; i++)
             {
                 Roll1[i] = -1;
