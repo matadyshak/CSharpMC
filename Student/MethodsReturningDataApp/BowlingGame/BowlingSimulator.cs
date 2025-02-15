@@ -10,7 +10,6 @@
         public static int[] Roll2 { get; private set; }
         public static int[] Roll3 { get; private set; }
         public static int[] FrameScores { get; private set; }
-        public static int[] CumulativeScores { get; private set; }
         public static int[] Scores { get; private set; }
         public static Random RandomNumberGen { get; private set; }
 
@@ -26,13 +25,11 @@
             Roll2 = new int[10];
             Roll3 = new int[10];
             FrameScores = new int[10];
-            CumulativeScores = new int[10];
             Scores = new int[10];
 
             for (int i = 0; i < 10; i++)
             {
                 FrameScores[i] = -1;
-                CumulativeScores[i] = -1;
                 Scores[i] = -1;
                 Roll1[i] = -1;
                 Roll2[i] = -1;
@@ -53,7 +50,6 @@
                 Roll2[i] = -1;
                 Roll3[i] = -1;
                 FrameScores[i] = -1;
-                CumulativeScores[i] = -1;
                 Scores[i] = -1;
             }
             RandomNumberGen = new Random();
@@ -136,7 +132,7 @@
             foreach (int score in Scores)
             {
                 //Scores print with a width of 3 chars right justified then followed by a space
-                Console.Write($"{Scores,3} ");
+                Console.Write($"{score,3} ");
             }
             Console.Write("\n");
 
@@ -282,7 +278,7 @@
             for (int i = 0; i < 10; i++)
             {
                 FrameScores[i] = 0;
-                CumulativeScores[i] = 0;
+                Scores[i] = 0;
             }
 
             // Loop on frames 1-8
@@ -295,15 +291,15 @@
             ComputeScoreFrame10();
 
             //Frame 1 (index 0)
-            CumulativeScores[0] = FrameScores[0];
+            Scores[0] = FrameScores[0];
 
             for (int i = 1; i<=9; i++)
             {
                 // Frames 2-10 (index 1-9)
-                CumulativeScores[i] = CumulativeScores[i-1] + FrameScores[i];
+                Scores[i] = Scores[i-1] + FrameScores[i];
             }
 
-            return CumulativeScores;
+            return Scores;
         }
 
         static void ComputeScoreFrames1To8(int frame)
