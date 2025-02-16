@@ -61,9 +61,9 @@
             while (!gameOver)
             {
                 // Bowl a 3-game series
-                Games[0] = PlayBowlingGame();
-                Games[1] = PlayBowlingGame();
-                Games[2] = PlayBowlingGame();
+                Games[0] = BowlingSimulator.PlayBowlingGame();
+                Games[1] = BowlingSimulator.PlayBowlingGame();
+                Games[2] = BowlingSimulator.PlayBowlingGame();
 
                 Series = Games[0] + Games[1] + Games[2];
 
@@ -107,7 +107,7 @@
 
         public static int PlayBowlingGame()
         {
-            BowlingSimulatorReset();
+            BowlingSimulator.BowlingSimulatorReset();
 
             // The tally is 4 chars per frame
             // The last char is always a space to divide the columns (Spaces shown as "_" below)
@@ -126,11 +126,11 @@
             // Open      = 81__
 
             // For all frames generate the tally string of X's, /'s, -'s and numbers 0-9
-            TallyFrames();
+            BowlingSimulator.TallyFrames();
             Console.WriteLine($"\n{Tally}");
 
             // Compute game score from pins knocked down data
-            Scores = ComputeScores();
+            Scores = BowlingSimulator.ComputeScores();
             foreach (int score in Scores)
             {
                 //Scores print with a width of 3 chars right justified then followed by a space
@@ -151,11 +151,11 @@
             {
                 if (frame < 10)
                 {
-                    TallyFrames1To9(frame, Tally, out tallyOut);
+                    BowlingSimulator.TallyFrames1To9(frame, Tally, out tallyOut);
                 }
                 else
                 {
-                    TallyFrame10(Tally, out tallyOut);
+                    BowlingSimulator.TallyFrame10(Tally, out tallyOut);
                 }
                 Tally = tallyOut;
                 frame++; //changes to 11 to exit loop
@@ -172,7 +172,7 @@
 
             // Roll 1st ball at 10 pins
             // Return value = Pins = Number of pins knocked down
-            Roll1[index] = Pins = Roll(RandomNumberGen, 10);
+            Roll1[index] = Pins = BowlingSimulator.Roll(RandomNumberGen, 10);
             if (Pins == 10)
             {
                 //Strike
@@ -182,7 +182,7 @@
             {
                 //Not a strike
                 tallyOut += " " + Pins;
-                Roll2[index] = Pins = Roll(RandomNumberGen, 10 - Pins);
+                Roll2[index] = Pins = BowlingSimulator.Roll(RandomNumberGen, 10 - Pins);
                 if (Roll1[index] + Roll2[index] == 10)
                 {
                     //Spare
@@ -196,24 +196,23 @@
             } //Not a strike
         }
 
-
         static void TallyFrame10(string tallyIn, out string tallyOut)
         {
             int frame = 10;
             int index = frame -1;
             tallyOut = tallyIn;
 
-            Roll1[index] = Pins = Roll(RandomNumberGen, 10);
+            Roll1[index] = Pins = BowlingSimulator.Roll(RandomNumberGen, 10);
             if (Pins == 10)
             {
                 //First ball in 10th frame a strike
                 tallyOut += "X";
-                Roll2[index] = Pins = Roll(RandomNumberGen, 10);
+                Roll2[index] = Pins = BowlingSimulator.Roll(RandomNumberGen, 10);
                 if (Pins == 10)
                 {
                     // Two strikes in 10th frame
                     tallyOut += "X";
-                    Roll3[index] = Pins = Roll(RandomNumberGen, 10);
+                    Roll3[index] = Pins = BowlingSimulator.Roll(RandomNumberGen, 10);
                     //Third roll in the 10th frame
                     if (Pins == 10)
                     {
@@ -229,7 +228,7 @@
                 {
                     //Strike followed by a non-strike
                     tallyOut += Pins;
-                    Roll3[index] = Pins = Roll(RandomNumberGen, 10 - Pins);
+                    Roll3[index] = Pins = BowlingSimulator.Roll(RandomNumberGen, 10 - Pins);
                     if (Roll2[index] + Roll3[index] == 10)
                     {
                         //Spare after a strike
@@ -245,13 +244,13 @@
             {
                 //First ball in 10th frame not a strike
                 tallyOut += Pins;
-                Roll2[index] = Pins = Roll(RandomNumberGen, 10 - Pins);
+                Roll2[index] = Pins = BowlingSimulator.Roll(RandomNumberGen, 10 - Pins);
                 if (Roll1[index] + Roll2[index] == 10)
                 {
                     //Spare in 10th frame
                     tallyOut += "/";
                     //Roll 3rd ball in 10th frame
-                    Roll3[index] = Pins = Roll(RandomNumberGen, 10);
+                    Roll3[index] = Pins = BowlingSimulator.Roll(RandomNumberGen, 10);
                     if (Pins == 10)
                     {
                         // Spare in 10th + a strike
@@ -278,13 +277,14 @@
             // Loop on frames 1-8
             for (frame = 1; frame <= 8; frame++)
             {
-                ComputeScoreFrames1To8(frame);
+                BowlingSimulator.ComputeScoreFrames1To8(frame);
             }
 
-            ComputeScoreFrame9();
-            ComputeScoreFrame10();
+            BowlingSimulator.ComputeScoreFrame9();
+            BowlingSimulator.ComputeScoreFrame10();
 
             //Frame 1 (index 0)
+            // Scores will be the accumulative score
             Scores[0] = FrameScores[0];
 
             for (int i = 1; i<=9; i++)
