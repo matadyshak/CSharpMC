@@ -30,29 +30,25 @@
 
             for (int i = 0; i < 10; i++)
             {
-                FrameScores[i] = -1;
-                Scores[i] = -1;
-                Roll1[i] = -1;
-                Roll2[i] = -1;
-                Roll3[i] = -1;
+                FrameScores[i] = 0;
+                Scores[i] = 0;
+                Roll1[i] = 0;
+                Roll2[i] = 0;
+                Roll3[i] = 0;
             }
             RandomNumberGen = new Random();
         }
 
         public static void BowlingSimulatorReset()
         {
-            Games[0] = 0;
-            Games[1] = 0;
-            Games[2] = 0;
-            Series = 0;
             Tally = "";
             for (int i = 0; i < 10; i++)
             {
-                Roll1[i] = -1;
-                Roll2[i] = -1;
-                Roll3[i] = -1;
-                FrameScores[i] = -1;
-                Scores[i] = -1;
+                Roll1[i] = 0;
+                Roll2[i] = 0;
+                Roll3[i] = 0;
+                FrameScores[i] = 0;
+                Scores[i] = 0;
             }
             RandomNumberGen = new Random();
         }
@@ -84,64 +80,6 @@
             }
             return;
         }
-
-        public static int PlayBowlingGame()
-        {
-            int index = 0;
-            int frame = 1;
-            string tallyOut = "";
-
-            Tally = "";
-
-            // The tally is 4 chars per frame
-            // The last char is always a space to divide the columns (Spaces shown as "_" below)
-
-            // For frames 1-9
-            //The first and last chars are always a space
-            // Strike = __X_
-            // Spare  = _9/_
-            // Open   = _63_
-
-            // For frame 10
-            // 3 Strikes = XXX_
-            // 2 Strikes = XX9_
-            // 1 Strike  = X9/_
-            // Spare     = 9/8_
-            // Open      = 81__
-
-            while (frame <= 10)
-            {
-                if (frame < 10)
-                {
-                    TallyFrames1To9(frame, Tally, out tallyOut);
-                }
-                else
-                {
-                    TallyFrame10(Tally, out tallyOut);
-                }
-                Tally = tallyOut;
-                frame++; //changes to 11 to exit loop
-            } // End of while loop
-
-            // Compute game score from pins knocked down data
-            Scores = ComputeScores();
-
-            // Zeroes in tally should show as a dash
-            Tally = Tally.Replace("0", "-");
-
-            Console.WriteLine($"\n{Tally}");
-
-            foreach (int score in Scores)
-            {
-                //Scores print with a width of 3 chars right justified then followed by a space
-                Console.Write($"{score,3} ");
-            }
-            Console.Write("\n");
-
-            //Return the game score
-            return Scores[9];
-        }
-
         static int Roll(Random random, int pinsStanding)
         {
             int index = random.Next(0, pinsStanding+1);  //0..pinsStanding
@@ -167,6 +105,67 @@
             return Pins;
         }
 
+        public static int PlayBowlingGame()
+        {
+            BowlingSimulatorReset();
+
+            // The tally is 4 chars per frame
+            // The last char is always a space to divide the columns (Spaces shown as "_" below)
+
+            // For frames 1-9
+            //The first and last chars are always a space
+            // Strike = __X_
+            // Spare  = _9/_
+            // Open   = _63_
+
+            // For frame 10
+            // 3 Strikes = XXX_
+            // 2 Strikes = XX9_
+            // 1 Strike  = X9/_
+            // Spare     = 9/8_
+            // Open      = 81__
+
+            // For all frames generate the tally string of X's, /'s, -'s and numbers 0-9
+            TallyFrames();
+            // Zeroes in tally should show as a dash
+            Tally = Tally.Replace("0", "-");
+
+            // Compute game score from pins knocked down data
+            Scores = ComputeScores();
+
+            Console.WriteLine($"\n{Tally}");
+
+            foreach (int score in Scores)
+            {
+                //Scores print with a width of 3 chars right justified then followed by a space
+                Console.Write($"{score,3} ");
+            }
+            Console.Write("\n");
+
+            //Return the game score
+            return Scores[9];
+        }
+
+        static void TallyFrames()
+        {
+            int index = 0;
+            int frame = 1;
+            string tallyOut = "";
+
+            while (frame <= 10)
+            {
+                if (frame < 10)
+                {
+                    TallyFrames1To9(frame, Tally, out tallyOut);
+                }
+                else
+                {
+                    TallyFrame10(Tally, out tallyOut);
+                }
+                Tally = tallyOut;
+                frame++; //changes to 11 to exit loop
+            } // End of while loop
+        }
         static void TallyFrames1To9(int frame, string tallyIn, out string tallyOut)
         {
             int index = frame - 1;
