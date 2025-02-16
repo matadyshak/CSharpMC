@@ -127,14 +127,10 @@
 
             // For all frames generate the tally string of X's, /'s, -'s and numbers 0-9
             TallyFrames();
-            // Zeroes in tally should show as a dash
-            Tally = Tally.Replace("0", "-");
+            Console.WriteLine($"\n{Tally}");
 
             // Compute game score from pins knocked down data
             Scores = ComputeScores();
-
-            Console.WriteLine($"\n{Tally}");
-
             foreach (int score in Scores)
             {
                 //Scores print with a width of 3 chars right justified then followed by a space
@@ -148,7 +144,6 @@
 
         static void TallyFrames()
         {
-            int index = 0;
             int frame = 1;
             string tallyOut = "";
 
@@ -165,6 +160,10 @@
                 Tally = tallyOut;
                 frame++; //changes to 11 to exit loop
             } // End of while loop
+
+            // Zeroes in tally should show as a dash
+            Tally = Tally.Replace("0", "-");
+            return;
         }
         static void TallyFrames1To9(int frame, string tallyIn, out string tallyOut)
         {
@@ -275,12 +274,6 @@
         static int[] ComputeScores()
         {
             int frame;
-
-            for (int i = 0; i < 10; i++)
-            {
-                FrameScores[i] = 0;
-                Scores[i] = 0;
-            }
 
             // Loop on frames 1-8
             for (frame = 1; frame <= 8; frame++)
