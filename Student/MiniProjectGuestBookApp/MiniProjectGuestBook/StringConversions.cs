@@ -1,0 +1,16 @@
+﻿using System.Globalization;
+
+namespace MiniProjectGuestBook
+{
+    public static class StringConversions
+    {
+        public static string ConvertToTitleCase(string mixedCase)
+        {
+            mixedCase = mixedCase.Trim();
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            string titleCase = textInfo.ToTitleCase(mixedCase.ToLower());
+
+            return titleCase;
+        }
+    }
+}

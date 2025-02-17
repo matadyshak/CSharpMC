@@ -1,0 +1,49 @@
+MiniProjectGuestBook	2/16/25
+
+Build a console guest book
+
+1. Greet the user: 
+
+   Hello!  Welcome to the guest book.
+
+2. Prompt for party name
+
+   "What is the name for your party? 
+
+3. Validate party name
+
+   Letters, -, '
+
+4. Prompt for "How many people are in your party?"
+
+5. Validate number as an integer  0 < Number < RemainingSeats
+
+   RoomCapacity = 100
+
+6. Create a Dictionary with the party name as the key
+   and the party size as the value
+
+7. try/catch to add the party to the Dictionary.
+
+8. If the party cannot be added go back to prompt for a party name
+   Check if the party name already exists.
+   If it does add more persons to the existing party
+
+9. Keep track of the total number of people
+
+10. Upon "exit" print the guest list and the total number of guests
+
+Methods
+
+WelcomeMessage()
+
+string GetPartyName()
+
+int GetPartySize()
+
+CreateGuestList(string partyName, int partySize)
+
+AddToGuestList()
+
+bool SearchForPartyName()
+
