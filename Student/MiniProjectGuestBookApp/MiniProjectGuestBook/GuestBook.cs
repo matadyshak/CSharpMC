@@ -2,6 +2,8 @@
 
 namespace MiniProjectGuestBook
 {
+    // Don't need to preface method names with '' if code is within the GuestBook class
+
     internal static class GuestBook
     {
         private static Dictionary<string, int> Book { get; set; }
@@ -22,15 +24,15 @@ namespace MiniProjectGuestBook
 
         static GuestBook()
         {
-            GuestBook.Book = new Dictionary<string, int>();
-            GuestBook.PartyName = "Party";
-            GuestBook.PartySize = 0;
-            GuestBook.RegexName = @"^[a-zA-Z'-]+$";
-            GuestBook.RegexNameObj = new Regex(RegexName);
-            GuestBook.RegexSize = @"^[0-9]+$";
-            GuestBook.RegexSizeObj = new Regex(RegexSize);
-            GuestBook.RoomCapacity = 100;
-            GuestBook.TotalGuests = 0;
+            Book = new Dictionary<string, int>();
+            PartyName = "Party";
+            PartySize = 0;
+            RegexName = @"^[a-zA-Z'-]+$";
+            RegexNameObj = new Regex(RegexName);
+            RegexSize = @"^[0-9]+$";
+            RegexSizeObj = new Regex(RegexSize);
+            RoomCapacity = 100;
+            TotalGuests = 0;
         }
 
         public static void GreetUser()
@@ -60,8 +62,8 @@ namespace MiniProjectGuestBook
                 }
             } while (!isValid);
 
-            GuestBook.PartyName = StringConversions.ConvertToTitleCase(name);
-            return GuestBook.PartyName;
+            PartyName = StringConversions.ConvertToTitleCase(name);
+            return PartyName;
         }
         public static int GetPartySize()
         {
@@ -91,25 +93,25 @@ namespace MiniProjectGuestBook
                 }
             } while (!isValid) ;
 
-            GuestBook.PartySize = size;
-            return GuestBook.PartySize;
+            PartySize = size;
+            return PartySize;
         }
 
         public static bool AddPartyToBook(string name, int size)
         {
-            if ((GuestBook.TotalGuests + size) <= GuestBook.RoomCapacity)
+            if ((TotalGuests + size) <= RoomCapacity)
             {
                 if (IsPartyInBook(name))
                 {
                     Console.WriteLine("The party is already in the book.");
-                    GuestBook.AddGuestsToParty(name, size);
+                    AddGuestsToParty(name, size);
                     return true;
                 }
 
                 try
                 {
                     Book.Add(name, size);
-                    GuestBook.TotalGuests += size;
+                    TotalGuests += size;
                     Console.WriteLine($"The \'{name}\' party of {size} guests was added to the guest list.");
                     return true;
                 }
@@ -129,7 +131,7 @@ namespace MiniProjectGuestBook
 
         public static bool IsPartyInBook(string name)
         {
-            if (GuestBook.Book.ContainsKey(name))
+            if (Book.ContainsKey(name))
             {
                 return true;
             }
@@ -137,12 +139,12 @@ namespace MiniProjectGuestBook
         }
         public static bool AddGuestsToParty(string name, int guests)
         {
-            if (GuestBook.TotalGuests + guests <= GuestBook.RoomCapacity)
+            if (TotalGuests + guests <= RoomCapacity)
             {
-                if (GuestBook.Book.ContainsKey(name))
+                if (Book.ContainsKey(name))
                 {
-                    GuestBook.Book[name] += guests;
-                    GuestBook.TotalGuests += guests;
+                    Book[name] += guests;
+                    TotalGuests += guests;
                     Console.WriteLine($"{guests} guests were added to the \'{name}\' party.");
                     return true;
                 }
@@ -163,11 +165,11 @@ namespace MiniProjectGuestBook
         public static void PrintGuestBook()
         {
             Console.WriteLine("Guest Book:");
-            foreach (KeyValuePair<string, int> entry in GuestBook.Book)
+            foreach (KeyValuePair<string, int> entry in Book)
             {
                 Console.WriteLine($"Party: {entry.Key} Guests: {entry.Value}");
             }
-            Console.WriteLine($"Total Guests: {GuestBook.TotalGuests}");
+            Console.WriteLine($"Total Guests: {TotalGuests}");
             return;
         }
     }
