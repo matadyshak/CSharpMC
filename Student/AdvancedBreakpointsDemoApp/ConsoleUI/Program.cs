@@ -4,28 +4,34 @@ namespace ConsoleUI
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            RunsALot();
+            try
+            {
+                RunsALot();
+            }
+            catch (ArithmeticException ex)
+            {
+                Console.WriteLine($"ArithmeticException occurred in RunsALot method.");
+                Console.WriteLine(ex.Message);
+            }
             Console.ReadLine();
         }
 
         private static void RunsALot()
         {
             long total = 0;
-            int test = 0;
 
-            for (int i = -1000; i <= 1000; i++)
+            for (int i = 1; i <= 100; i++)
             {
+                if (i == 73)
+                {
+                    Console.WriteLine($"i: {i}, total: {total}");
+                    throw new ArithmeticException();
+                    //Nothing after this point runs
+                    Console.WriteLine($"i: {i}, total: {total}");
+                }
                 total += i;
-                try
-                {
-                    test = 5 / i;
-                }
-                catch
-                {
-                    Console.WriteLine("There was an exception.");
-                }
             }
 
             Console.WriteLine($"The total is {total}");
