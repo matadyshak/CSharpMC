@@ -18,7 +18,10 @@ namespace ConsoleUI
             set
             {
                 value = value.Trim();
-                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[A-Za-z0-9 ]+$"))
+                //              if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[A-Za-z0-9 ]+$"))
+
+                // Match letters, numbers and single spaces
+                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$"))
                 {
                     throw new ArgumentException("Invalid entry.  Only numbers, letters and spaces are allowed.");
                 }
@@ -40,7 +43,8 @@ namespace ConsoleUI
                 }
                 else
                 {
-                    if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[A-Za-z0-9 ]+$"))
+                    //                    if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[A-Za-z0-9 ]+$"))
+                    if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$"))
                     {
                         throw new ArgumentException("Invalid entry.  Only numbers, letters and spaces are allowed.");
                     }
@@ -96,18 +100,15 @@ namespace ConsoleUI
         {
             string address1;
             string entry;
-            // Matches if anything other than letters, numbers or spaces are found
-            Regex regex = new Regex("[^A-Za-z0-9 ]+$");
 
             do
             {
                 Console.Write($"{prompt}");
                 entry = Console.ReadLine();
-                address1 = entry.Trim();
+                address1 = CleanMultiWordNumericString(entry);
 
                 if (!string.IsNullOrWhiteSpace(address1))
                 {
-                    address1 = regex.Replace(address1, "");
                     if (address1.Length > 0)
                     {
                         return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(address1.ToLower());
@@ -120,15 +121,14 @@ namespace ConsoleUI
         public string GetValidAddressLine2(string prompt)
         {
             string address2;
-            // Matches if anything other than letters, numbers or spaces are found
-            Regex regex = new Regex("[^A-Za-z0-9 ]+$");
+            string entry;
 
             Console.Write($"{prompt}");
-            address2 = Console.ReadLine()?.Trim();
+            entry = Console.ReadLine();
+            address2 = CleanMultiWordNumericString(entry);
 
-            if (!string.IsNullOrWhiteSpace(address2) && address2.Length > 0)
+            if (!string.IsNullOrWhiteSpace(address2))
             {
-                address2 = regex.Replace(address2, "");
                 if (address2.Length > 0)
                 {
                     return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(address2.ToLower());
@@ -140,18 +140,15 @@ namespace ConsoleUI
         {
             string city;
             string entry;
-            // Matches if anything other than letters or spaces are found
-            Regex regex = new Regex("[^A-Za-z ]+$");
 
             do
             {
                 Console.Write($"{prompt}");
                 entry = Console.ReadLine();
-                city = entry.Trim();
+                city = CleanMultiWordAlphaString(entry);
 
                 if (!string.IsNullOrWhiteSpace(city))
                 {
-                    city = regex.Replace(city, "");
                     if (city.Length > 0)
                     {
                         return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(city.ToLower());
@@ -186,7 +183,6 @@ namespace ConsoleUI
         {
             string zipCode;
             string entry;
-            // Matches if anything other than letters or spaces are found
             string regexZipCode = @"^\d{5}(-\d{4})?$";
 
             do
@@ -202,6 +198,34 @@ namespace ConsoleUI
 
                 Console.WriteLine($"Entry: \'{entry}\' is invalid.  Entry must be a 5-digit ZIP code or ZIP+4 code."); ;
             } while (true);
+        }
+
+        public string CleanMultiWordNumericString(string input)
+        {
+            // Step 1: Remove all non-alphanumeric characters except spaces
+            string result = Regex.Replace(input, @"[^a-zA-Z0-9\s]", "");
+
+            // Step 2: Replace multiple consecutive spaces with a single space
+            result = Regex.Replace(result, @"\s+", " ");
+
+            // Step 3: Trim leading and trailing spaces
+            string output = result.Trim();
+
+            return output;
+        }
+
+        public string CleanMultiWordAlphaString(string input)
+        {
+            // Step 1: Remove all non-alphanumeric characters except spaces
+            string result = Regex.Replace(input, @"[^a-zA-Z\s]", "");
+
+            // Step 2: Replace multiple consecutive spaces with a single space
+            result = Regex.Replace(result, @"\s+", " ");
+
+            // Step 3: Trim leading and trailing spaces
+            string output = result.Trim();
+
+            return output;
         }
     }
 }
