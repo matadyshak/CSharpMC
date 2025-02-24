@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleUI
 {
@@ -6,24 +7,45 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            PersonModel person = new PersonModel();
+            List<PersonModel> people = new List<PersonModel>();
+            List<AddressModel> addresses = new List<AddressModel>();
+            string entry;
 
-            person.FirstName = person.GetValidName("Enter first name: ");
-            person.LastName = person.GetValidName("Enter last name: ");
-            person.AddressLine1 = person.GetValidAddressLine1("Enter address line 1: "); ;
-            person.AddressLine2 = person.GetValidAddressLine2("Enter address line 2 (or <enter> to skip): ");
-            person.City = person.GetValidCity("Enter city: ");
-            person.State = person.GetValidState("Enter two-letter state abbreviation: ");
-            person.ZipCode = person.GetValidZipCode("Enter 5-digit Zip code or Zip+4 code: ");
+            do
+            {
+                PersonModel person = new PersonModel();
+                person.FirstName = person.GetValidName("Enter first name: ");
+                person.LastName = person.GetValidName("Enter last name: ");
+                people.Add(person);
 
-            Console.WriteLine();
-            Console.WriteLine($"First name: {person.FirstName}");
-            Console.WriteLine($"Last name: {person.LastName}");
-            Console.WriteLine($"Address Line 1: {person.AddressLine1}");
-            Console.WriteLine($"Address Line 2: {person.AddressLine2}");
-            Console.WriteLine($"City: {person.City}");
-            Console.WriteLine($"State: {person.State}");
-            Console.WriteLine($"Zip: {person.ZipCode}");
+                AddressModel address = new AddressModel();
+                address.AddressLine1 = address.GetValidAddressLine1("Enter address line 1: "); ;
+                address.AddressLine2 = address.GetValidAddressLine2("Enter address line 2 (or <enter> to skip): ");
+                address.City = address.GetValidCity("Enter city: ");
+                address.State = address.GetValidState("Enter two-letter state abbreviation: ");
+                address.ZipCode = address.GetValidZipCode("Enter 5-digit Zip code or Zip+4 code: ");
+                addresses.Add(address);
+
+                Console.Write("Continue entering data? (y/n): ");
+                entry = Console.ReadLine();
+                Console.WriteLine();
+            } while (entry.ToLower() == "y");
+
+            int i = 0;
+            foreach (PersonModel p in people)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"First name: {p.FirstName}");
+                Console.WriteLine($"Last name: {p.LastName}");
+                Console.WriteLine($"Address Line 1: {addresses[i].AddressLine1}");
+                Console.WriteLine($"Address Line 2: {addresses[i].AddressLine2}");
+                Console.WriteLine($"City: {addresses[i].City}");
+                Console.WriteLine($"State: {addresses[i].State}");
+                Console.WriteLine($"Zip: {addresses[i].ZipCode}");
+                i++;
+            }
+
+            Console.ReadLine();
         }
     }
 }
