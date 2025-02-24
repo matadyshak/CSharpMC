@@ -16,6 +16,7 @@ namespace ConsoleUI
             person.State = person.GetValidState("Enter two-letter state abbreviation: ");
             person.ZipCode = person.GetValidZipCode("Enter 5-digit Zip code or Zip+4 code: ");
 
+            Console.WriteLine();
             Console.WriteLine($"First name: {person.FirstName}");
             Console.WriteLine($"Last name: {person.LastName}");
             Console.WriteLine($"Address Line 1: {person.AddressLine1}");
