@@ -11,6 +11,7 @@ namespace ConsoleUI
         private string _city;
         private string _state;
         private string _zipCode;
+        private string _fullAddress;
 
         public string AddressLine1
         {
@@ -18,7 +19,6 @@ namespace ConsoleUI
             set
             {
                 value = value.Trim();
-                //              if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[A-Za-z0-9 ]+$"))
 
                 // Match letters, numbers and single spaces
                 if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$"))
@@ -95,6 +95,32 @@ namespace ConsoleUI
 
                 _zipCode = value;
             }
+        }
+        public string FullAddress
+        {
+            get
+            {
+                if (AddressLine2.Length > 0)
+                {
+                    return $"{AddressLine1}\n{AddressLine2}\n{City}, {State} {ZipCode}";
+                }
+                else
+                {
+                    return $"{AddressLine1}\n{City}, {State} {ZipCode}";
+                }
+            }
+        }
+
+        public AddressModel()
+        {
+        }
+        public AddressModel(string addressLine1, string addressLine2, string city, string state, string zipCode)
+        {
+            AddressLine1 = addressLine1;
+            AddressLine2 = addressLine2;
+            City = city;
+            State = state;
+            ZipCode = zipCode;
         }
         public string GetValidAddressLine1(string prompt)
         {

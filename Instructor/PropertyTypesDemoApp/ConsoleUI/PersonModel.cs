@@ -4,6 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+
+Things demonstrated in this code:
+
+X 1. auto property
+  2. Explicit auto property
+  3. private get
+  4. private set
+  5. Constructor call
+  6. Overloaded constructors
+  7. get method FullName which returns two properties
+  8. set only
+X 9. Validation code in set with exception
+  10. Get only displays last 4 of SSN
+
+*/
+
 namespace ConsoleUI
 {
     public class PersonModel

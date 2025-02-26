@@ -12,22 +12,13 @@ namespace ConsoleUI
         public string FirstName
         {
             get { return _firstName; }
-            set
-            {
-                value = value.Trim();
-                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[A-Za-z]+$"))
-                {
-                    throw new ArgumentException("Invalid entry.  Only letters are allowed.");
-                }
-
-                _firstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
-            }
+            private set { _firstName = value; }
         }
 
         public string LastName
         {
             get { return _lastName; }
-            set
+            private set
             {
                 value = value.Trim();
                 if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[A-Za-z]+$"))
@@ -39,7 +30,19 @@ namespace ConsoleUI
             }
         }
 
-        public string GetValidName(string prompt)
+        // Constructors do not specify a return value because they never have one
+        public PersonModel(string firstName, string lastName)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+        }
+
+        public PersonModel()
+        {
+        }
+
+        //validate the FirstName here but not in the setter
+        public void GetValidFirstName(string prompt)
         {
             string entry;
             string name;
@@ -49,8 +52,6 @@ namespace ConsoleUI
             do
             {
                 Console.Write($"{prompt}");
-                // ? prevents a run-time exception if null is read
-                // If ReadLine returns null the whole expression evaluates to null and .Trim is not called
                 entry = Console.ReadLine();
                 name = entry.Trim();
 
@@ -59,12 +60,21 @@ namespace ConsoleUI
                     name = regex.Replace(name, "");
                     if (name.Length > 0)
                     {
-                        return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
+                        FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
+                        return;
                     }
                 }
 
                 Console.WriteLine($"Entry: \'{entry}\' is invalid.  Please try again."); ;
             } while (true);
+        }
+
+        //validate the LastName not here but in the setter
+
+        public void GetValidLastName(string prompt)
+        {
+            Console.Write($"{prompt}");
+            LastName = Console.ReadLine();
         }
     }
 }
