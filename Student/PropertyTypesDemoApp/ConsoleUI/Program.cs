@@ -66,8 +66,8 @@ X 1. auto property
   2. Explicit auto property
   3. private get
 x 4. private set
-  5. Constructor call
-  6. Overloaded constructors
+x 5. Constructor call
+x 6. Overloaded constructors
 x 7. get method FullName which returns two properties
   8. set only
 X 9. Validation code in set with exception
