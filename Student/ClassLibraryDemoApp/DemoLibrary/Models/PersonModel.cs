@@ -8,14 +8,14 @@ namespace DemoLibrary.Models
     {
         private string _firstName;
         private string _lastName;
-        private static readonly Regex nameRegex = new Regex("[^A-Za-z]+");
+        private static readonly Regex singleWordAlphaRegex = new Regex("[^A-Za-z]+");
 
         public string FirstName
         {
             get { return _firstName; }
             set
             {
-                int status = TryValidateName(value, out string validatedName);
+                int status = TryValidateSingleWordAlpha(value, out string validatedName);
                 if (status == 0)
                 {
                     _firstName = validatedName;
@@ -32,7 +32,7 @@ namespace DemoLibrary.Models
             get { return _lastName; }
             set
             {
-                int status = TryValidateName(value, out string validatedName);
+                int status = TryValidateSingleWordAlpha(value, out string validatedName);
                 if (status == 0)
                 {
                     _lastName = validatedName;
@@ -44,14 +44,14 @@ namespace DemoLibrary.Models
             }
         }
 
-        public int TryValidateName(string entry, out string output)
+        public int TryValidateSingleWordAlpha(string entry, out string output)
         {
             string name = entry.Trim();
             output = "";
 
             if (!string.IsNullOrWhiteSpace(name))
             {
-                name = nameRegex.Replace(name, "");
+                name = singleWordAlphaRegex.Replace(name, "");
                 if (name.Length > 0)
                 {
                     name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());

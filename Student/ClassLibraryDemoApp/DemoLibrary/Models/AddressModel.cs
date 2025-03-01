@@ -12,19 +12,128 @@ namespace DemoLibrary.Models
         private string _state;
         private string _zipCode;
 
+        // These are static and readonly and are initialized only once and cannot be changed
+        // They can be used to call methods for instantiated object
+        // All instances share the same static object
+
+        // private static readonly Regex multiWordAlphaNumericMatchRegex = new Regex(@"^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$");
+        private static readonly Regex multiWordAlphaRegex = new Regex(@"[^a-zA-Z\s]");
+        private static readonly Regex multiWordAlphaNumericRegex = new Regex(@"[^a-zA-Z0-9\s]");
+        private static readonly Regex multiSpacesRegex = new Regex(@"\s+");
+        private static readonly Regex zipCodeMatchRegex = new Regex(@"^\d{5}(-\d{4})?$");
+        private static readonly Regex stateCodeReplaceRegex = new Regex(@"[^a-zA-Z]");
+        private static readonly Regex stateCodeMatchRegex =
+          new Regex(@"^(A[LKZR]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[DLN]|K[SY]|LA|M[ADEINOST]|N[CDEJMSTVY]|O[HKR]|P[A]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY])$");
+
+        public int TryValidateMultiWordAlphaNumeric(string entry, out string output)
+        {
+            // Use this for addressLine1, addressLine2
+            string result = entry.Trim();
+
+            if (!string.IsNullOrWhiteSpace(result))
+            {
+                //What about an empty string? Returns true
+                // Step 1: Remove all non-alphanumeric characters except spaces
+                result = multiWordAlphaNumericRegex.Replace(result, "");
+
+                // Step 2: Replace multiple consecutive spaces with a single space
+                result = multiSpacesRegex.Replace(result, " ");
+
+                if (result.Length > 0)
+                {
+                    output = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.ToLower());
+                    // success
+                    return 0;
+                }
+            }
+            //failure 
+            output = "";
+            return 1;
+        }
+
+        public int TryValidateMultiWordAlpha(string entry, out string output)
+        {
+            // Use this for city
+            string result = entry.Trim();
+
+            if (!string.IsNullOrWhiteSpace(result))
+            {
+                // Step 1: Remove all non-alpha characters except spaces
+                result = multiWordAlphaRegex.Replace(result, "");
+
+                // Step 2: Replace multiple consecutive spaces with a single space
+                result = multiSpacesRegex.Replace(result, " ");
+
+                if (result.Length > 0)
+                {
+                    output = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.ToLower());
+                    // success
+                    return 0;
+                }
+            }
+            //failed 
+            output = "";
+            return 1;
+        }
+
+        public int TryValidateStateCode(string entry, out string output)
+        {
+            // Use this for state
+            string result = entry.Trim().ToUpper();
+
+            if (!string.IsNullOrWhiteSpace(result))
+            {
+                // Step 1: Remove all non-alpha characters
+                result = stateCodeReplaceRegex.Replace(result, "");
+
+                if (result.Length > 0)
+                {
+                    if (stateCodeMatchRegex.IsMatch(result))
+                    {
+                        output = result;
+                        // Success
+                        return 0;
+                    }
+                }
+            }
+            //failed 
+            output = "";
+            return 1;
+        }
+
+        public int TryValidateZipCode(string entry, out string output)
+        {
+            // Use this for Zip code
+            string result = entry.Trim();
+
+            if (!string.IsNullOrWhiteSpace(result))
+            {
+                if (zipCodeMatchRegex.IsMatch(result))
+                {
+                    output = result;
+                    // Success
+                    return 0;
+                }
+            }
+            //failed 
+            output = "";
+            return 1;
+        }
+
         public string AddressLine1
         {
             get { return _addressLine1; }
             set
             {
-                value = value.Trim();
-                // Match letters, numbers and single spaces
-                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$"))
+                int status = TryValidateMultiWordAlphaNumeric(value, out string validatedAddressLine1);
+                if (status == 0)
                 {
-                    throw new ArgumentException("Invalid entry.  Only numbers, letters and spaces are allowed.");
+                    _addressLine1 = validatedAddressLine1;
                 }
-
-                _addressLine1 = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                else
+                {
+                    throw new ArgumentException("Invalid entry. Only numbers and letters are allowed.");
+                }
             }
         }
 
@@ -33,197 +142,57 @@ namespace DemoLibrary.Models
             get { return _addressLine2; }
             set
             {
-                value = value.Trim();
-                // For this property allow empty string
-                if (string.IsNullOrEmpty(value))
-                {
-                    _addressLine2 = "";
-                }
-                else
-                {
-                    //                    if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[A-Za-z0-9 ]+$"))
-                    if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$"))
-                    {
-                        throw new ArgumentException("Invalid entry.  Only numbers, letters and spaces are allowed.");
-                    }
-                    _addressLine2 = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
-                }
+                TryValidateMultiWordAlphaNumeric(value, out string validatedAddressLine2);
+                //Address Line 2 is optional and may be omitted
+                _addressLine2 = validatedAddressLine2;
             }
         }
+
         public string City
         {
             get { return _city; }
             set
             {
-                value = value.Trim();
-                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[A-Za-z ]+$"))
+                int status = TryValidateMultiWordAlpha(value, out string validatedCity);
+                if (status == 0)
                 {
-                    throw new ArgumentException("Invalid entry.  Only numbers, letters and spaces are allowed.");
+                    _city = validatedCity;
                 }
-
-                _city = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                else
+                {
+                    throw new ArgumentException("Invalid entry. Only letters and can have multiple words.");
+                }
             }
         }
+
         public string State
         {
             get { return _state; }
             set
             {
-                value = value.Trim().ToUpper();
-                // 50 states and Washington, DC
-                string regexState = @"^(A[LKZR]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[DLN]|K[SY]|LA|M[ADEINOST]|N[CDEJMSTVY]|O[HKR]|P[A]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY])$";
-                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, regexState))
+                int status = TryValidateStateCode(value, out string validatedStateCode);
+                if (status != 0)
                 {
-                    throw new ArgumentException("Invalid entry.  Only valid U.S. state abbreviations (or DC) are allowed.");
+                    throw new ArgumentException("Invalid entry. Only valid U.S. state abbreviations (or DC) are allowed.");
                 }
 
-                _state = value;
+                _state = validatedStateCode;
             }
         }
+
         public string ZipCode
         {
             get { return _zipCode; }
             set
             {
-                value = value.Trim();
-                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, @"^\d{5}(-\d{4})?$"))
+                int status = TryValidateZipCode(value, out string validatedZipCode);
+                if (status != 0)
                 {
-                    throw new ArgumentException("Invalid entry.  Only 5-digit ZIP codes or 9-digit ZIP+4 codes are allowed.");
+                    throw new ArgumentException("Invalid entry. Only 5-digit ZIP codes or 9-digit ZIP+4 codes are allowed.");
                 }
 
-                _zipCode = value;
+                _zipCode = validatedZipCode;
             }
-        }
-        public string GetValidAddressLine1(string prompt)
-        {
-            string address1;
-            string entry;
-
-            do
-            {
-                Console.Write($"{prompt}");
-                entry = Console.ReadLine();
-                address1 = CleanMultiWordNumericString(entry);
-
-                if (!string.IsNullOrWhiteSpace(address1))
-                {
-                    if (address1.Length > 0)
-                    {
-                        return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(address1.ToLower());
-                    }
-                }
-
-                Console.WriteLine($"Entry: \'{entry}\' is invalid.  Please try again."); ;
-            } while (true);
-        }
-        public string GetValidAddressLine2(string prompt)
-        {
-            string address2;
-            string entry;
-
-            Console.Write($"{prompt}");
-            entry = Console.ReadLine();
-            address2 = CleanMultiWordNumericString(entry);
-
-            if (!string.IsNullOrWhiteSpace(address2))
-            {
-                if (address2.Length > 0)
-                {
-                    return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(address2.ToLower());
-                }
-            }
-            return "";
-        }
-        public string GetValidCity(string prompt)
-        {
-            string city;
-            string entry;
-
-            do
-            {
-                Console.Write($"{prompt}");
-                entry = Console.ReadLine();
-                city = CleanMultiWordAlphaString(entry);
-
-                if (!string.IsNullOrWhiteSpace(city))
-                {
-                    if (city.Length > 0)
-                    {
-                        return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(city.ToLower());
-                    }
-                }
-
-                Console.WriteLine($"Entry: \'{entry}\' is invalid.  Please try again."); ;
-            } while (true);
-        }
-        public string GetValidState(string prompt)
-        {
-            string state;
-            string entry;
-            string regexState = @"^(A[LKZR]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[DLN]|K[SY]|LA|M[ADEINOST]|N[CDEJMSTVY]|O[HKR]|P[A]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY])$";
-
-            do
-            {
-                Console.Write($"{prompt}");
-                entry = Console.ReadLine();
-                state = entry.Trim().ToUpper();
-
-                if (!string.IsNullOrWhiteSpace(state) && Regex.IsMatch(state, regexState))
-                {
-                    return state;
-                }
-
-                Console.WriteLine($"Entry: \'{entry}\' is invalid.  Entry must be a valid two-letter state abbreviation."); ;
-            } while (true);
-        }
-
-        public string GetValidZipCode(string prompt)
-        {
-            string zipCode;
-            string entry;
-            string regexZipCode = @"^\d{5}(-\d{4})?$";
-
-            do
-            {
-                Console.Write($"{prompt}");
-                entry = Console.ReadLine();
-                zipCode = entry.Trim();
-
-                if (!string.IsNullOrWhiteSpace(zipCode) && Regex.IsMatch(zipCode, regexZipCode))
-                {
-                    return zipCode;
-                }
-
-                Console.WriteLine($"Entry: \'{entry}\' is invalid.  Entry must be a 5-digit ZIP code or ZIP+4 code."); ;
-            } while (true);
-        }
-
-        public string CleanMultiWordNumericString(string input)
-        {
-            // Step 1: Remove all non-alphanumeric characters except spaces
-            string result = Regex.Replace(input, @"[^a-zA-Z0-9\s]", "");
-
-            // Step 2: Replace multiple consecutive spaces with a single space
-            result = Regex.Replace(result, @"\s+", " ");
-
-            // Step 3: Trim leading and trailing spaces
-            string output = result.Trim();
-
-            return output;
-        }
-
-        public string CleanMultiWordAlphaString(string input)
-        {
-            // Step 1: Remove all non-alphanumeric characters except spaces
-            string result = Regex.Replace(input, @"[^a-zA-Z\s]", "");
-
-            // Step 2: Replace multiple consecutive spaces with a single space
-            result = Regex.Replace(result, @"\s+", " ");
-
-            // Step 3: Trim leading and trailing spaces
-            string output = result.Trim();
-
-            return output;
         }
     }
 }
