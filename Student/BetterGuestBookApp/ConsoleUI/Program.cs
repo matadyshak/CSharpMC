@@ -22,7 +22,6 @@ namespace ConsoleUI
         {
             string Continue;
 
-
             do
             {
                 GuestModel guest = new GuestModel();
@@ -31,6 +30,8 @@ namespace ConsoleUI
                 Console.WriteLine();
                 guest.FirstName = GetUserInput("Enter first name: ");
                 guest.LastName = GetUserInput("Enter last name: ");
+                guest.City = GetUserInput("Enter your home city: ");
+                guest.State = GetUserInput("Enter your home state: ");
                 guest.MessageForStaff = GetUserInput("Enter a message for our staff: ");
                 guests.Add(guest);
 
