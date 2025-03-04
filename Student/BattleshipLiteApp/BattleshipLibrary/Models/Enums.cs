@@ -1,4 +1,4 @@
-﻿namespace BattleshipLibrary.Models
+﻿namespace BattleshipLitewLibrary.Models
 {
     public enum GridSpotStatus
     {

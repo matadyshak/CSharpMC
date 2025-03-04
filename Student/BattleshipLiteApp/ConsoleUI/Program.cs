@@ -1,4 +1,6 @@
-﻿namespace ConsoleUI
+﻿using System;
+
+namespace BattleshipLite
 {
     class Program
     {
@@ -7,18 +9,18 @@
             // UI
             WelcomeMessage();
 
-            for (int i = 0; i < 2; i++)
-            {
-                // Lib
-                InitializeGame();
+            PlayerInfoModel activePlayer = CreatePlayer("Player 1");
+            PlayerInfoModel opponent = CreatePlayer("Player 2");
 
-                // UI
-                GetUserName();
+            // Lib
+            InitializeGame();
+
+            // UI
+            GetUserName();
 
 
-                // UI
-                GetShipPlacements();
-            }
+            // UI
+            GetShipPlacements();
 
             do
             {
@@ -33,10 +35,15 @@
             ShowWinnerAndStats();
         }
 
+        private static PlayerInfoModel CreatePlayer(string v)
+        {
+            throw new NotImplementedException();
+        }
+
         //UI
         static void WelcomeMessage()
         {
-            //Print welcome message to user
+            Console.WriteLine("Welcome to the Battleship Lite Game.");
         }
 
         // UI
