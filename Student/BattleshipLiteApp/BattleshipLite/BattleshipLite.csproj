@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5B7A86E1-7097-4C55-A989-823EE0AF8CA1}</ProjectGuid>
+    <ProjectGuid>{EFCD9D4B-0302-4061-8CFA-843730E82D3C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ConsoleUI</RootNamespace>
-    <AssemblyName>ConsoleUI</AssemblyName>
+    <RootNamespace>BattleshipLite</RootNamespace>
+    <AssemblyName>BattleshipLite</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -50,8 +50,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BattleshipLibrary\BattleshipLiteLibrary.csproj">
-      <Project>{b2a9a60c-80a8-4a37-ba8d-f5772273f625}</Project>
+    <ProjectReference Include="..\BattleshipLiteLibrary\BattleshipLiteLibrary.csproj">
+      <Project>{87f6f520-bd8d-48de-8c03-7d8abc6a53b0}</Project>
       <Name>BattleshipLiteLibrary</Name>
     </ProjectReference>
   </ItemGroup>

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B2A9A60C-80A8-4A37-BA8D-F5772273F625}</ProjectGuid>
+    <ProjectGuid>{87F6F520-BD8D-48DE-8C03-7D8ABC6A53B0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BattleshipLibrary</RootNamespace>
-    <AssemblyName>BattleshipLibrary</AssemblyName>
+    <RootNamespace>BattleshipLiteLibrary</RootNamespace>
+    <AssemblyName>BattleshipLiteLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameLogic.cs" />
-    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\enums.cs" />
     <Compile Include="Models\GridSpotModel.cs" />
     <Compile Include="Models\PlayerInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
