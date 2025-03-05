@@ -1,4 +1,5 @@
-﻿using BattleshipLiteLibrary.Models;
+﻿using BattleshipLiteLibrary;
+using BattleshipLiteLibrary.Models;
 using System;
 
 
@@ -78,11 +79,13 @@ namespace BattleshipLite
             return;
         }
 
-        // UI
         static void GetShipPlacements(PlayerInfoModel player)
         {
             bool isValid = false;
+            int returnCode = 0;
             string entry = "";
+            string row = "";
+            int column = 0;
 
             Console.WriteLine("Enter your ship locations using \'Letter\' \'Number\' grid coordinates as A1-A5, B1-B5,..., E1-E5");
             for (int i = 0; i<5; i++)
@@ -91,9 +94,10 @@ namespace BattleshipLite
                 {
                     Console.WriteLine("Enter ship location #{i+1}: ");
                     entry = Console.ReadLine();
-                    (bool valid, string row, int column) = IsValidSpotForShip(player, entry);
+                    (returnCode, row, column) = GameLogic.IsValidSpotForShip(player, entry);
                 }
             }
+
             // Is a valid spot?
             // If not, prompt again
             // If yes, Update ship info list

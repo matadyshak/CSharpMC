@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace BattleshipLiteLibrary
 {
-    class GameLogic
+    public class GameLogic
     {
         private static readonly Regex rowColRegex = new Regex(@"^[A-E][1-5]$");
 
@@ -41,7 +41,6 @@ namespace BattleshipLiteLibrary
                         valid = 2;
                         return (valid, row, column);
                     }
-
                 }
                 else
                 {
@@ -49,7 +48,6 @@ namespace BattleshipLiteLibrary
                     valid = 1;
                     return (valid, row, column);
                 }
-
             }
             valid = 3;  //Received white space or nothing
             return (valid, row, column);
@@ -77,7 +75,7 @@ namespace BattleshipLiteLibrary
             // Check first char is A-E
             // Check 2nd char is 1-5
             // Check that not already ship hit or miss
-
+            return false;
         }
     }
 }
