@@ -1,17 +1,15 @@
-﻿using static BattleshipLiteLibrary.Models.enums;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BattleshipLiteLibrary.Models
 {
-    class PlayerInfoModel
+    public class PlayerInfoModel
     {
-        public string SpotLetter { get; set; }
-        public int SpotNumber { get; set; }
-
-        public GridSpotStatus Status { get; set; } = GridSpotStatus.Empty;
-        public GridSpotModel(string spotLetter, int spotNumber)
-        {
-            SpotLetter=spotLetter;
-            SpotNumber=spotNumber;
-        }
+        public string UsersName { get; set; }
+        public List<GridSpotModel> ShipLocations { get; set; } = new List<GridSpotModel>();
+        public List<GridSpotModel> ShotGrid { get; set; } = new List<GridSpotModel>();
     }
 }

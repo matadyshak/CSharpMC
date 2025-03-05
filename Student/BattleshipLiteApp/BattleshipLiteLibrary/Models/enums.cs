@@ -1,14 +1,11 @@
 ﻿namespace BattleshipLiteLibrary.Models
 {
-    class enums
+    public enum GridSpotStatus
     {
-        public enum GridSpotStatus
-        {
-            Empty,
-            Ship,
-            Miss,
-            Hit,
-            Sunk
-        };
-    }
+        Empty,
+        Ship,
+        Miss,
+        Hit,
+        Sunk
+    };
 }

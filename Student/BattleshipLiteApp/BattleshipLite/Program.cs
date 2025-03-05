@@ -1,4 +1,23 @@
-﻿using System;
+﻿using BattleshipLiteLibrary.Models;
+using System;
+
+
+//Battleship by Mattel
+// Each player has his own grid at bottom showing his ship placements and hits and misses made by opponent
+//    Bottom grid is hidden from opponent so ship placements remain a secret
+// Each player has his opponents grid at top showing his own hits and misses
+//    This is needed to know where empty grid spots are that can be shot at
+//    As hits are made the opponents ships become known
+
+//BattleshipLite
+// Ship placements are entered at keyboard
+//   Opponent needs to leave the room during entry
+// Now ship placements are hidden from both players until hits occur
+// Player 1 just needs to see a grid which records his hits and misses
+// Player 2 needs to store his ship locations in Player 1's grid
+//    These change the status of spots from Empty to Ship
+// Player 1 has no need to see opponent's grid but it will be shown during opponent's turns
+// Could show both grids side-by-side or just one at a time
 
 namespace BattleshipLite
 {
@@ -6,38 +25,43 @@ namespace BattleshipLite
     {
         static void Main(string[] args)
         {
-            // UI
             WelcomeMessage();
 
-            BattleshipLiteLibrary.Models.PlayerInfoModel activePlayer = CreatePlayer("Player 1");
+
+            PlayerInfoModel activePlayer = CreatePlayer("Player 1");
             PlayerInfoModel opponent = CreatePlayer("Player 2");
-
-            // Lib
-            InitializeGame();
-
-            // UI
-            GetUserName();
-
-
-            // UI
-            GetShipPlacements();
+            PlayerInfoModel winner = null;
 
             do
             {
-                // UI
-                DisplayGrids();
+                DisplayShotGrid(activePlayer);
 
-                // UI
-                GameOver = TakeATurn();
-            } while (!GameOver);
+                RecordPlayerShot(activePlayer, opponent);
 
-            //UI
+                bool DoesGameContinue = GameLogic.PlayerStillActive(opponent);
+
+                if (DoesGameContinue == true)
+                {
+                    (activePlayer, opponent) = (opponent, activePlayer);
+                }
+                else
+                {
+                    winner = activePlayer;
+                }
+
+            } while (winner == null);
+
             ShowWinnerAndStats();
         }
 
         private static PlayerInfoModel CreatePlayer(string v)
         {
-            throw new NotImplementedException();
+            PlayerInfoModel player = new PlayerInfoModel();
+            GetUserName(player);
+            GetShipPlacements(player);
+            output = GameLogic.InitializeGame(player);
+            //            GetShipPlacements();
+            return player;
         }
 
         //UI
@@ -47,30 +71,44 @@ namespace BattleshipLite
         }
 
         // UI
-        static void GetUserName()
+        static void GetUserName(PlayerInfoModel player)
         {
-            //Prompt for user name
+            Console.Write("Player 1 please enter your name: ");
+            player.UsersName = Console.ReadLine();
+            return;
         }
 
         // UI
-        static void GetShipPlacements()
+        static void GetShipPlacements(PlayerInfoModel player)
         {
+            bool isValid = false;
+            string entry = "";
+
+            Console.WriteLine("Enter your ship locations using \'Letter\' \'Number\' grid coordinates as A1-A5, B1-B5,..., E1-E5");
+            for (int i = 0; i<5; i++)
+            {
+                while (!isValid)
+                {
+                    Console.WriteLine("Enter ship location #{i+1}: ");
+                    entry = Console.ReadLine();
+                    (bool valid, string row, int column) = IsValidSpotForShip(player, entry);
+                }
+            }
             // Is a valid spot?
-            IsValidSpotForShip();
             // If not, prompt again
             // If yes, Update ship info list
             // Set status of cells with ship placed status
         }
 
         // UI
-        static void DisplayGrids()
+        static void DisplayShotGrid(PlayerInfoModel activePlayer)
         {
             //Go to a specific screen location
             // Print either the <row><col> or X or O
         }
 
         // UI but validity check can be lib
-        static void TakeATurn()
+        static void RecordPlayerShot(PlayerInfoModel activePlayer, PlayerInfoModel opponent)
         {
             // Get grid location to fire at on opponents grid
 
