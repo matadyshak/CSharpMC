@@ -28,10 +28,15 @@ namespace BattleshipLite
         {
             WelcomeMessage();
 
-
-            PlayerInfoModel activePlayer = CreatePlayer("Player 1");
-            PlayerInfoModel opponent = CreatePlayer("Player 2");
+            PlayerInfoModel activePlayer = CreatePlayer(1);
+            PlayerInfoModel opponent = CreatePlayer(2);
             PlayerInfoModel winner = null;
+
+            // activePlayer's ship locations get hidden in opponent's ShotGrid
+            GameLogic.ApplyShipLocations(activePlayer, opponent);
+
+            // opponent's ship locations get hidden in activePlayer's ShotGrid
+            GameLogic.ApplyShipLocations(opponent, activePlayer);
 
             do
             {
@@ -55,27 +60,25 @@ namespace BattleshipLite
             ShowWinnerAndStats();
         }
 
-        private static PlayerInfoModel CreatePlayer(string v)
-        {
-            PlayerInfoModel player = new PlayerInfoModel();
-            GetUserName(player);
-            GetShipPlacements(player);
-            output = GameLogic.InitializeGame(player);
-            //            GetShipPlacements();
-            return player;
-        }
-
-        //UI
         static void WelcomeMessage()
         {
             Console.WriteLine("Welcome to the Battleship Lite Game.");
         }
 
-        // UI
-        static void GetUserName(PlayerInfoModel player)
+        private static PlayerInfoModel CreatePlayer(int playerNumber)
         {
-            Console.Write("Player 1 please enter your name: ");
+            PlayerInfoModel player = new PlayerInfoModel();
+            GetUserName(player, playerNumber);
+            GetShipPlacements(player);
+            GameLogic.InitializeShotGrids(player);
+            return player;
+        }
+
+        static void GetUserName(PlayerInfoModel player, int playerNumber)
+        {
+            Console.Write($"Player {playerNumber} please enter your name: ");
             player.UsersName = Console.ReadLine();
+            //Todo:Add validation
             return;
         }
 
@@ -87,29 +90,69 @@ namespace BattleshipLite
             string row = "";
             int column = 0;
 
-            Console.WriteLine("Enter your ship locations using \'Letter\' \'Number\' grid coordinates as A1-A5, B1-B5,..., E1-E5");
+            Console.WriteLine("Have your opponent turn around or leave the room while you enter your secret ship locations");
+            Console.WriteLine("Enter your secret ship locations using \'Letter\' \'Number\' grid coordinates as A1-A5, B1-B5,..., E1-E5");
+
             for (int i = 0; i<5; i++)
             {
+                isValid = false;
                 while (!isValid)
                 {
                     Console.WriteLine("Enter ship location #{i+1}: ");
                     entry = Console.ReadLine();
-                    (returnCode, row, column) = GameLogic.IsValidSpotForShip(player, entry);
-                }
-            }
 
-            // Is a valid spot?
-            // If not, prompt again
-            // If yes, Update ship info list
-            // Set status of cells with ship placed status
+                    (returnCode, row, column) = GameLogic.IsValidSpotForShip(player, entry);
+
+                    switch (returnCode)
+                    {
+                        case 0: // success
+                            isValid = true;
+                            GridSpotModel spot = new GridSpotModel(row, column, GridSpotStatus.Ship);
+                            player.ShipLocations.Add(spot);
+                            break;
+
+                        case 1: // Nothing or whitespace only
+                            Console.WriteLine($"Invalid entry: \'{entry}\'.  Please try again.");
+                            break;
+
+                        case 2:
+                            // Not A1..E5 format
+                            Console.WriteLine($"Invalid entry: \'{entry}\'.  Enter coordinates as \'A1\' ... \'E5\'");
+                            break;
+
+                        case 3: // Repeated entry
+                            Console.WriteLine($"Invalid entry: \'{entry}\'. Repeated entry not allowed.");
+                            break;
+                    } // switch
+                } // while (!isValid)
+            } // for loop
         }
 
-        // UI
+
+        /*
+
+                A1 A2 A3 A4 A5
+                B1 B2 B3 B4 B5
+                C1 C2 C3 C4 C5
+                D1 D2 D3 D4 D5
+                E1 E2 E3 E4 E5
+
+                 O  O  O  O  O
+                 X  X  X  X  X
+                 O  O  O  O  O
+                D1 D2 D3 D4 D5
+                 O  O  O  O  O
+
+        */
         static void DisplayShotGrid(PlayerInfoModel activePlayer)
         {
+            //Start with a blank line
+
             //Go to a specific screen location
             // Print either the <row><col> or X or O
         }
+
+
 
         // UI but validity check can be lib
         static void RecordPlayerShot(PlayerInfoModel activePlayer, PlayerInfoModel opponent)
