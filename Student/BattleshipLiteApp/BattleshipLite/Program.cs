@@ -24,7 +24,7 @@ namespace BattleshipLite
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             WelcomeMessage();
 
@@ -84,24 +84,34 @@ namespace BattleshipLite
 
         static void GetShipPlacements(PlayerInfoModel player)
         {
-            bool isValid = false;
-            int returnCode = 0;
-            string entry = "";
-            string row = "";
-            int column = 0;
+            bool isValid;
+            int returnCode;
+            int returnCode1;
+            int returnCode2;
+            string entry;
+            string row;
+            int column;
+            string coordinates;
+
+            (row, column, coordinates) = GameLogic.IndexToRowColCoords(GameLogic.GridSize * GameLogic.GridSize - 1);
 
             Console.WriteLine("Have your opponent turn around or leave the room while you enter your secret ship locations");
-            Console.WriteLine("Enter your secret ship locations using \'Letter\' \'Number\' grid coordinates as A1-A5, B1-B5,..., E1-E5");
+            Console.WriteLine($"Enter your secret ship locations using \'Letter\' \'Number\' grid coordinates from A1 to {coordinates}.");
 
-            for (int i = 0; i<5; i++)
+            for (int i = 0; i < GameLogic.GridSize; i++)
             {
                 isValid = false;
                 while (!isValid)
                 {
-                    Console.WriteLine("Enter ship location #{i+1}: ");
+                    Console.Write($"Enter ship location #{i+1}: ");
                     entry = Console.ReadLine();
 
-                    (returnCode, row, column) = GameLogic.IsValidSpotForShip(player, entry);
+                    // ReturnCode1 = 0=success, 1=nothing entered or whitespace, 2=wrong format
+                    (returnCode1, row, column) = GameLogic.IsValidSpotForShip(entry);
+                    // ReturnCode2 = 0=success, 4=repeated entry
+                    returnCode2 = GameLogic.IsRepeatEntry(player, row, column);
+                    // Bitwize OR function
+                    returnCode = returnCode1 | returnCode2;
 
                     switch (returnCode)
                     {
@@ -117,7 +127,7 @@ namespace BattleshipLite
 
                         case 2:
                             // Not A1..E5 format
-                            Console.WriteLine($"Invalid entry: \'{entry}\'.  Enter coordinates as \'A1\' ... \'E5\'");
+                            Console.WriteLine($"Invalid entry: \'{entry}\'.  Enter coordinates as \'A1\' ... \'{coordinates}\'");
                             break;
 
                         case 3: // Repeated entry
@@ -126,8 +136,10 @@ namespace BattleshipLite
                     } // switch
                 } // while (!isValid)
             } // for loop
-        }
 
+            Console.Clear();
+            return;
+        }
 
         /*
 
@@ -144,15 +156,58 @@ namespace BattleshipLite
                  O  O  O  O  O
 
         */
-        static void DisplayShotGrid(PlayerInfoModel activePlayer)
+        static void DisplayShotGrid(PlayerInfoModel player)
         {
-            //Start with a blank line
+            // Start with a blank line
+            // Start each line with 8 space chars
+            // Grid Coords use 2 char + 1 space
+            // X & O take 1 space + 1 char + 1 space
+            // Ship   => A1
+            // Empty  => A1
+            // Miss   =>  O
+            // Hit    =>  X
+            // Sunk   =>  X
 
-            //Go to a specific screen location
-            // Print either the <row><col> or X or O
+            string eightSpaces = "        ";
+            string textRow;
+            string row;
+            int column;
+            string coordinates;
+            int index = 0;
+
+            Console.WriteLine();
+            for (int i = 0; i < GameLogic.GridSize; i++)
+            {
+                textRow = eightSpaces;
+                for (int j = 0; j < GameLogic.GridSize; j++)
+                {
+                    GridSpotStatus status = player.ShotGrid[i*GameLogic.GridSize+j].Status;
+                    (row, column, coordinates) = GameLogic.IndexToRowColCoords(index);
+                    switch (status)
+                    {
+                        case GridSpotStatus.Empty:
+                        case GridSpotStatus.Ship:
+                            textRow += coordinates + " ";
+                            break;
+
+                        case GridSpotStatus.Hit:
+                        case GridSpotStatus.Sunk:
+                            textRow += " X ";
+                            break;
+
+                        case GridSpotStatus.Miss:
+                            textRow += " O ";
+                            break;
+                    }
+
+                    index++;
+                }
+                Console.WriteLine(textRow);
+            }
+
+            Console.WriteLine();
+            return;
         }
-
-
 
         // UI but validity check can be lib
         static void RecordPlayerShot(PlayerInfoModel activePlayer, PlayerInfoModel opponent)
@@ -163,7 +218,7 @@ namespace BattleshipLite
             // Check if valid location
             // A..E, 1..5
             // Not prev missed or hit
-            IsValidSpotForShot();
+            //IsValidSpotForShot();
             // If miss update cell to miss
             // If hit update cell to hit
             //Redraw grids

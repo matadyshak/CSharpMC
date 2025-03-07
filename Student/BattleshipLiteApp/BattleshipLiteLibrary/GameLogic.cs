@@ -6,15 +6,29 @@ namespace BattleshipLiteLibrary
 {
     public class GameLogic
     {
-        private static readonly Regex rowColRegex = new Regex(@"^[A-E][1-5]$");
-        public static readonly int numberOfGridRows = 5;
-        public static readonly int numberOfGridColumns = 5;
+        public static readonly int GridSize = 6;
+        private static readonly Regex rowColRegex = BuildRegexString();
+
+        public static Regex BuildRegexString()
+        {
+            //private static readonly Regex rowColRegex = new Regex(@"^[A-E][1-5]$");
+
+            (string row, int column, string coordinates) = IndexToRowColCoords(GridSize * GridSize - 1);
+            string regexString = $@"^[A-{row}][1-{column}]$";
+            Regex rowColRegex = new Regex(regexString);
+            return rowColRegex;
+        }
 
         public static void InitializeShotGrids(PlayerInfoModel player)
         {
-            // Initialize shot grids to all empty status
-            string[] rows = { "A", "B", "C", "D", "E" };
-            int[] columns = { 1, 2, 3, 4, 5 };
+            string[] rows = new string[GridSize];
+            int[] columns = new int[GridSize];
+
+            for (int i = 0; i < GridSize; i++)
+            {
+                rows[i] = ((char)('A' + i)).ToString();
+                columns[i] = i + 1;
+            }
 
             foreach (string row in rows)
             {
@@ -31,9 +45,9 @@ namespace BattleshipLiteLibrary
             return;
         }
 
-        public static (int valid, string row, int column) IsValidSpotForShip(PlayerInfoModel player, string entry)
+        public static (int valid, string row, int column) IsValidSpotForShip(string entry)
         {
-            int valid = 1; //0=success, 1=failure
+            int valid; //0=success, 1=failure
             string row = "";
             int column = 0;
 
@@ -42,20 +56,10 @@ namespace BattleshipLiteLibrary
             {
                 if (rowColRegex.IsMatch(result))
                 {
+                    valid = 0; // Success
                     row = result[0].ToString();
                     column = int.Parse(result[1].ToString());
-                    if (!IsRepeatEntry(player, row, column))
-                    {
-                        // Success
-                        valid = 0; // success
-                        return (valid, row, column);
-                    }
-                    else
-                    {
-                        // Repeated entry
-                        valid = 3;
-                        return (valid, row, column);
-                    }
+                    return (valid, row, column);
                 }
                 else
                 {
@@ -68,17 +72,17 @@ namespace BattleshipLiteLibrary
             return (valid, row, column);
         }
 
-        private static bool IsRepeatEntry(PlayerInfoModel player, string row, int column)
+        public static int IsRepeatEntry(PlayerInfoModel player, string row, int column)
         {
             foreach (GridSpotModel shipLocation in player.ShipLocations)
             {
                 if ((shipLocation.SpotLetter == row) && (shipLocation.SpotNumber == column))
                 {
-                    return true;  //Error message: duplicate entry
+                    return 4;  //Error message: duplicate entry
                 }
             }
 
-            return false;
+            return 0;
         }
 
         public static int ApplyShipLocations(PlayerInfoModel player1, PlayerInfoModel player2)
@@ -125,6 +129,37 @@ namespace BattleshipLiteLibrary
         public static bool PlayerStillActive(PlayerInfoModel opponent)
         {
             throw new NotImplementedException();
+        }
+
+        public static int RowColumnToIndex(string row, int column)
+        {
+            //Rows are "A", "B", "C",...,"GridSize"
+            //columns are 1, 2, 3,...,"GridSize"
+            // Converting that to a zero-based index
+
+            //In actual Lists the indices are 0, 1, 2,...,GridSize-1
+
+            int rowIndex = (int)((char)(row[0]) - 'A');
+            int columnIndex = column - 1;
+            return rowIndex * GameLogic.GridSize + columnIndex;
+        }
+
+        public static (string row, int column, string coordinates) IndexToRowColCoords(int index)
+        {
+            //Index = 0, 1, 2,...,GridSize * GridSize - 1
+            //Rows are "A", "B", "C",...,"GridSize"
+            //columns are 1, 2, 3,...,"GridSize"
+
+            //In actual Lists the indices are 0, 1, 2,...,GridSize-1
+
+            int rowIndex = index / GameLogic.GridSize;
+            int columnIndex = index % GameLogic.GridSize;
+
+            string row = ((char)('A' + rowIndex)).ToString();
+            int column = columnIndex + 1;
+            string coordinates = ((char)(row[0])).ToString()  + column.ToString();
+
+            return (row, column, coordinates);
         }
     }
 }
