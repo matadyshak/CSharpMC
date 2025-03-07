@@ -68,9 +68,10 @@ namespace BattleshipLite
         private static PlayerInfoModel CreatePlayer(int playerNumber)
         {
             PlayerInfoModel player = new PlayerInfoModel();
-            GetUserName(player, playerNumber);
-            GetShipPlacements(player);
             GameLogic.InitializeShotGrids(player);
+            GetUserName(player, playerNumber);
+            DisplayShotGrid(player);
+            GetShipPlacements(player);
             return player;
         }
 
@@ -95,8 +96,8 @@ namespace BattleshipLite
 
             (row, column, coordinates) = GameLogic.IndexToRowColCoords(GameLogic.GridSize * GameLogic.GridSize - 1);
 
-            Console.WriteLine("Have your opponent turn around or leave the room while you enter your secret ship locations");
-            Console.WriteLine($"Enter your secret ship locations using \'Letter\' \'Number\' grid coordinates from A1 to {coordinates}.");
+            Console.WriteLine("Have your opponent turn around or leave the room while you enter your secret ship locations into your opponent's grid.");
+            Console.WriteLine($"Enter your secret ship locations using grid coordinates from A1 to {coordinates}.");
 
             for (int i = 0; i < GameLogic.GridSize; i++)
             {
@@ -130,7 +131,7 @@ namespace BattleshipLite
                             Console.WriteLine($"Invalid entry: \'{entry}\'.  Enter coordinates as \'A1\' ... \'{coordinates}\'");
                             break;
 
-                        case 3: // Repeated entry
+                        case 4: // Repeated entry
                             Console.WriteLine($"Invalid entry: \'{entry}\'. Repeated entry not allowed.");
                             break;
                     } // switch
