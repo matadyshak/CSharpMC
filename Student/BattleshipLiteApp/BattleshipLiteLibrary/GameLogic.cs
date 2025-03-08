@@ -6,7 +6,7 @@ namespace BattleshipLiteLibrary
     public static class GameLogic
     {
         public static int GridSize { get; private set; } = 5;
-        public static Regex rowColRegex { get; private set; }
+        public static Regex RowColRegex { get; private set; }
 
         public static void SetGridSize(int size)
         {
@@ -17,7 +17,7 @@ namespace BattleshipLiteLibrary
             (string row, int column, string coordinates) = IndexToRowColCoords(GridSize * GridSize - 1);
             string regexString = $@"^[A-{row}][1-{column}]$";
             Regex regex = new Regex(regexString);
-            rowColRegex = regex;
+            RowColRegex = regex;
             return;
         }
 
@@ -56,7 +56,7 @@ namespace BattleshipLiteLibrary
             string result = entry.Trim().ToUpper();
             if (!string.IsNullOrWhiteSpace(result))
             {
-                if (rowColRegex.IsMatch(result))
+                if (RowColRegex.IsMatch(result))
                 {
                     valid = 0; // Success
                     row = result[0].ToString();
