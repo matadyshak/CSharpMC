@@ -27,6 +27,8 @@ namespace BattleshipLite
         static void Main()
         {
             WelcomeMessage();
+            SelectGridSize();
+            GameLogic.SetRowColumnRegex();
 
             PlayerInfoModel activePlayer = CreatePlayer(1);
             PlayerInfoModel opponent = CreatePlayer(2);
@@ -62,12 +64,49 @@ namespace BattleshipLite
             ShowWinnerAndStats(winner);
         }
 
+        private static void SelectGridSize()
+        {
+            bool isValid = false;
+            string entry;
+            int gridSize = 5;
+            int minGridSize = 5;
+            int maxGridSize = 9;
+
+            do
+            {
+                Console.Write($"How many rows and columns in the Battleship Lite grid?  Enter a number from {minGridSize} to {maxGridSize}: ");
+                entry = Console.ReadLine();
+                try
+                {
+                    int.TryParse(entry, out gridSize);
+                    if (gridSize >= minGridSize && gridSize <= maxGridSize)
+                    {
+                        isValid = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The entry: {entry} was invalid.");
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"The entry: {entry} was invalid.");
+                }
+            } while (!isValid);
+
+            GameLogic.SetGridSize(gridSize);
+            return;
+        }
+
         public static void WelcomeMessage()
         {
-            Console.WriteLine("************************************");
-            Console.WriteLine("Welcome to the Battleship Lite Game.");
-            Console.WriteLine("By Michael A Tadyshak");
-            Console.WriteLine("************************************");
+            Console.WriteLine("****************************************");
+            Console.WriteLine("*                                      *");
+            Console.WriteLine("* Welcome to the Battleship Lite Game! *");
+            Console.WriteLine("* By: Michael A Tadyshak               *");
+            Console.WriteLine("*                                      *");
+            Console.WriteLine("****************************************");
+            Console.WriteLine();
         }
 
         private static PlayerInfoModel CreatePlayer(int playerNumber)

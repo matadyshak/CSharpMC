@@ -3,17 +3,22 @@ using System.Text.RegularExpressions;
 
 namespace BattleshipLiteLibrary
 {
-    public class GameLogic
+    public static class GameLogic
     {
-        public static readonly int GridSize = 6;
-        private static readonly Regex rowColRegex = BuildRegexString();
+        public static int GridSize { get; private set; } = 5;
+        public static Regex rowColRegex { get; private set; }
 
-        public static Regex BuildRegexString()
+        public static void SetGridSize(int size)
+        {
+            GridSize = size;
+        }
+        public static void SetRowColumnRegex()
         {
             (string row, int column, string coordinates) = IndexToRowColCoords(GridSize * GridSize - 1);
             string regexString = $@"^[A-{row}][1-{column}]$";
-            Regex rowColRegex = new Regex(regexString);
-            return rowColRegex;
+            Regex regex = new Regex(regexString);
+            rowColRegex = regex;
+            return;
         }
 
         public static void InitializeShotGrid(PlayerInfoModel player)
