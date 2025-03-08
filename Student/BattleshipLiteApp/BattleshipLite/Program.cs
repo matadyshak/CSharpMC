@@ -42,9 +42,11 @@ namespace BattleshipLite
             {
                 DisplayShotGrid(activePlayer);
 
-                RecordPlayerShot(activePlayer, opponent);
+                RecordPlayerShot(activePlayer);
 
-                bool DoesGameContinue = GameLogic.PlayerStillActive(opponent);
+                //DisplayShotGrid(activePlayer);
+
+                bool DoesGameContinue = GameLogic.PlayerStillActive(activePlayer);
 
                 if (DoesGameContinue == true)
                 {
@@ -57,25 +59,28 @@ namespace BattleshipLite
 
             } while (winner == null);
 
-            ShowWinnerAndStats();
+            ShowWinnerAndStats(winner);
         }
 
-        static void WelcomeMessage()
+        public static void WelcomeMessage()
         {
+            Console.WriteLine("************************************");
             Console.WriteLine("Welcome to the Battleship Lite Game.");
+            Console.WriteLine("By Michael A Tadyshak");
+            Console.WriteLine("************************************");
         }
 
         private static PlayerInfoModel CreatePlayer(int playerNumber)
         {
             PlayerInfoModel player = new PlayerInfoModel();
-            GameLogic.InitializeShotGrids(player);
+            GameLogic.InitializeShotGrid(player);
             GetUserName(player, playerNumber);
             DisplayShotGrid(player);
             GetShipPlacements(player);
             return player;
         }
 
-        static void GetUserName(PlayerInfoModel player, int playerNumber)
+        public static void GetUserName(PlayerInfoModel player, int playerNumber)
         {
             Console.Write($"Player {playerNumber} please enter your name: ");
             player.UsersName = Console.ReadLine();
@@ -83,21 +88,20 @@ namespace BattleshipLite
             return;
         }
 
-        static void GetShipPlacements(PlayerInfoModel player)
+        public static void GetShipPlacements(PlayerInfoModel player)
         {
             bool isValid;
             int returnCode;
             int returnCode1;
             int returnCode2;
-            string entry;
             string row;
             int column;
-            string coordinates;
+            string entry;
 
-            (row, column, coordinates) = GameLogic.IndexToRowColCoords(GameLogic.GridSize * GameLogic.GridSize - 1);
+            string highestCoordinates = GameLogic.GetHighestGridCoordinates();
 
             Console.WriteLine("Have your opponent turn around or leave the room while you enter your secret ship locations into your opponent's grid.");
-            Console.WriteLine($"Enter your secret ship locations using grid coordinates from A1 to {coordinates}.");
+            Console.WriteLine($"Enter your secret ship locations using grid coordinates from A1 to {highestCoordinates}.");
 
             for (int i = 0; i < GameLogic.GridSize; i++)
             {
@@ -108,9 +112,11 @@ namespace BattleshipLite
                     entry = Console.ReadLine();
 
                     // ReturnCode1 = 0=success, 1=nothing entered or whitespace, 2=wrong format
-                    (returnCode1, row, column) = GameLogic.IsValidSpotForShip(entry);
-                    // ReturnCode2 = 0=success, 4=repeated entry
-                    returnCode2 = GameLogic.IsRepeatEntry(player, row, column);
+                    (returnCode1, row, column) = GameLogic.IsValidCoordinates(entry);
+
+
+                    // ReturnCode2 = 0=success, 4=repeated ship location entry
+                    returnCode2 = GameLogic.IsRepeatShipLocationEntry(player, row, column);
                     // Bitwize OR function
                     returnCode = returnCode1 | returnCode2;
 
@@ -128,7 +134,7 @@ namespace BattleshipLite
 
                         case 2:
                             // Not A1..E5 format
-                            Console.WriteLine($"Invalid entry: \'{entry}\'.  Enter coordinates as \'A1\' ... \'{coordinates}\'");
+                            Console.WriteLine($"Invalid entry: \'{entry}\'.  Enter coordinates as \'A1\' ... \'{highestCoordinates}\'");
                             break;
 
                         case 4: // Repeated entry
@@ -157,7 +163,7 @@ namespace BattleshipLite
                  O  O  O  O  O
 
         */
-        static void DisplayShotGrid(PlayerInfoModel player)
+        public static void DisplayShotGrid(PlayerInfoModel player)
         {
             // Start with a blank line
             // Start each line with 8 space chars
@@ -211,27 +217,80 @@ namespace BattleshipLite
         }
 
         // UI but validity check can be lib
-        static void RecordPlayerShot(PlayerInfoModel activePlayer, PlayerInfoModel opponent)
+        public static void RecordPlayerShot(PlayerInfoModel activePlayer)
         {
-            // Get grid location to fire at on opponents grid
+            int returnCode = -1;
+            int validatedColumn;
+            string validatedRow;
 
 
-            // Check if valid location
-            // A..E, 1..5
-            // Not prev missed or hit
-            //IsValidSpotForShot();
-            // If miss update cell to miss
-            // If hit update cell to hit
-            //Redraw grids
-            // if 5 hits return GameOver
+            string highestCoordinates = GameLogic.GetHighestGridCoordinates();
 
+            Console.WriteLine();
+
+            do
+            {
+                // Get grid location to fire upon
+                Console.Write($"{activePlayer.UsersName}, enter a grid location to fire upon: ");
+                string entry = Console.ReadLine();
+
+                // Does Trim() and ToUpper()
+                // Checks for nothing or just white space or Code 1
+                // Checks for Regex match or Code 2
+                // Success = Code 0
+                (returnCode, validatedRow, validatedColumn) = GameLogic.IsValidCoordinates(entry);
+
+                switch (returnCode)
+                {
+                    case 0: // success
+                        break;
+
+                    case 1: // Nothing or whitespace only
+                        Console.WriteLine($"Invalid entry: \'{entry}\'.  Please try again.");
+                        break;
+
+                    case 2:
+                        // Not A1..EX format
+                        Console.WriteLine($"Wrong format: \'{entry}\'.  Enter coordinates as \'A1\' ... \'{highestCoordinates}\'");
+                        break;
+                } // switch
+            } while (returnCode != 0);
+
+            // Now we have valid grid coordinates
+            GridSpotModel spot = activePlayer.ShotGrid[GameLogic.RowColumnToIndex(validatedRow, validatedColumn)];
+
+            // Next check the GridSpot Status
+            switch (spot.Status)
+            {
+                case GridSpotStatus.Empty:
+                    Console.WriteLine($"{activePlayer.UsersName}, IT'S A MISS !!!");
+                    spot.Status = GridSpotStatus.Miss;
+                    break;
+
+                case GridSpotStatus.Ship:
+                    spot.Status = GridSpotStatus.Hit;
+                    activePlayer.HitCount++;
+                    Console.WriteLine($"{activePlayer.UsersName}, IT'S A HIT !!! YOU HAVE DESTROYED {activePlayer.HitCount} OF {GameLogic.GridSize} SHIPS !!!  ");
+                    break;
+
+                case GridSpotStatus.Hit:
+                case GridSpotStatus.Sunk:
+                    Console.WriteLine($"{activePlayer.UsersName}, That location was already hit.  You lose your turn.");
+                    break;
+
+                case GridSpotStatus.Miss:
+                    Console.WriteLine($"{activePlayer.UsersName}, That location was already a miss.  You lose your turn.");
+                    break;
+            }
+
+            activePlayer.ShotCount++;
+            return;
         }
 
-        // UI
-        static void ShowWinnerAndStats()
+        public static void ShowWinnerAndStats(PlayerInfoModel winner)
         {
-            // Print {UserName1} or {UserName2} is the winner.
-            // Print number of shots to winn
+            Console.WriteLine();
+            Console.WriteLine($"{winner.UsersName}, YOU ARE THE WINNER!!!  You took {winner.ShotCount} shots and sank {winner.HitCount} ships!!!");
         }
     }
 }

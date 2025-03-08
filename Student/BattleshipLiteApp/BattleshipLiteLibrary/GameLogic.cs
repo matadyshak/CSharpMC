@@ -1,5 +1,4 @@
 ﻿using BattleshipLiteLibrary.Models;
-using System;
 using System.Text.RegularExpressions;
 
 namespace BattleshipLiteLibrary
@@ -11,15 +10,13 @@ namespace BattleshipLiteLibrary
 
         public static Regex BuildRegexString()
         {
-            //private static readonly Regex rowColRegex = new Regex(@"^[A-E][1-5]$");
-
             (string row, int column, string coordinates) = IndexToRowColCoords(GridSize * GridSize - 1);
             string regexString = $@"^[A-{row}][1-{column}]$";
             Regex rowColRegex = new Regex(regexString);
             return rowColRegex;
         }
 
-        public static void InitializeShotGrids(PlayerInfoModel player)
+        public static void InitializeShotGrid(PlayerInfoModel player)
         {
             string[] rows = new string[GridSize];
             int[] columns = new int[GridSize];
@@ -45,7 +42,7 @@ namespace BattleshipLiteLibrary
             return;
         }
 
-        public static (int valid, string row, int column) IsValidSpotForShip(string entry)
+        public static (int valid, string row, int column) IsValidCoordinates(string entry)
         {
             int valid; //0=success, 1=failure
             string row = "";
@@ -72,13 +69,13 @@ namespace BattleshipLiteLibrary
             return (valid, row, column);
         }
 
-        public static int IsRepeatEntry(PlayerInfoModel player, string row, int column)
+        public static int IsRepeatShipLocationEntry(PlayerInfoModel player, string row, int column)
         {
             foreach (GridSpotModel shipLocation in player.ShipLocations)
             {
                 if ((shipLocation.SpotLetter == row) && (shipLocation.SpotNumber == column))
                 {
-                    return 4;  //Error message: duplicate entry
+                    return 4;  //Error message: duplicate ship location entry
                 }
             }
 
@@ -115,22 +112,6 @@ namespace BattleshipLiteLibrary
             return 0;
         }
 
-
-
-        //Lib
-        static bool IsValidSpotForShot()
-        {
-            // Check first char is A-E
-            // Check 2nd char is 1-5
-            // Check that not already ship hit or miss
-            return false;
-        }
-
-        public static bool PlayerStillActive(PlayerInfoModel opponent)
-        {
-            throw new NotImplementedException();
-        }
-
         public static int RowColumnToIndex(string row, int column)
         {
             //Rows are "A", "B", "C",...,"GridSize"
@@ -141,7 +122,7 @@ namespace BattleshipLiteLibrary
 
             int rowIndex = (int)((char)(row[0]) - 'A');
             int columnIndex = column - 1;
-            return rowIndex * GameLogic.GridSize + columnIndex;
+            return rowIndex * GridSize + columnIndex;
         }
 
         public static (string row, int column, string coordinates) IndexToRowColCoords(int index)
@@ -152,14 +133,30 @@ namespace BattleshipLiteLibrary
 
             //In actual Lists the indices are 0, 1, 2,...,GridSize-1
 
-            int rowIndex = index / GameLogic.GridSize;
-            int columnIndex = index % GameLogic.GridSize;
+            int rowIndex = index / GridSize;
+            int columnIndex = index % GridSize;
 
             string row = ((char)('A' + rowIndex)).ToString();
             int column = columnIndex + 1;
             string coordinates = ((char)(row[0])).ToString()  + column.ToString();
 
             return (row, column, coordinates);
+        }
+
+        public static string GetHighestGridCoordinates()
+        {
+            string row;
+            int column;
+            string coordinates;
+
+            (row, column, coordinates) = IndexToRowColCoords(GridSize * GridSize - 1);
+
+            return coordinates;
+        }
+
+        public static bool PlayerStillActive(PlayerInfoModel activePlayer)
+        {
+            return (activePlayer.HitCount < GridSize);
         }
     }
 }
