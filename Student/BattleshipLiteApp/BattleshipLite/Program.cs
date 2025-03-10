@@ -46,8 +46,6 @@ namespace BattleshipLite
 
                 RecordPlayerShot(activePlayer);
 
-                //DisplayShotGrid(activePlayer);
-
                 bool DoesGameContinue = GameLogic.PlayerStillActive(activePlayer);
 
                 if (DoesGameContinue == true)
