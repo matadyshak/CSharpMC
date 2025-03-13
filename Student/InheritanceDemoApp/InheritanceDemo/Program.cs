@@ -106,39 +106,3 @@ namespace InheritanceDemoApp
     }
 }
 
-
-/*
-Vehicles come in many forms, each designed for specific purposes. Here are some common types:
-
-
-Land Vehicles
-
-Cars: Personal transportation for individuals or small groups.
-
-Trucks: Used for transporting goods and materials.
-
-Motorcycles: Two-wheeled vehicles for personal transport.
-
-Buses: Public transportation for larger groups of people.
-
-Trains: Rail-based transportation for passengers and cargo.
-
-
-Water Vehicles
-
-Boats: Small to medium-sized watercraft for personal or commercial use.
-
-Ships: Large watercraft for transporting goods and passengers over long distances.
-
-Submarines: Underwater vehicles used for exploration, research, and military purposes.
-
-
-Air Vehicles
-
-Airplanes: Fixed-wing aircraft for transporting passengers and cargo.
-
-Helicopters: Rotary-wing aircraft for versatile transportation and rescue operations.
-
-Drones: Unmanned aerial vehicles used for various purposes, including surveillance and delivery.
-
-*/
