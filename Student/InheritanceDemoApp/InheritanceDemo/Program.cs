@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace InheritanceDemoApp
 {
@@ -8,100 +9,55 @@ namespace InheritanceDemoApp
         {
             List<Vehicle> vehicles = new List<Vehicle>();
 
+            Vehicle veh = new Vehicle();
+            LandVehicle landVehicle = new LandVehicle();
             Car car = new Car();
             Motorcycle motorcycle = new Motorcycle();
+            WaterVehicle waterVehicle = new WaterVehicle();
             Boat boat = new Boat();
 
+            vehicles.Add(veh);
+            vehicles.Add(landVehicle);
             vehicles.Add(car);
             vehicles.Add(motorcycle);
+            vehicles.Add(waterVehicle);
             vehicles.Add(boat);
-        }
-    }
 
-    public class Vehicle
-    {
-        public int Start()
-        {
-            return 0;
-        }
-        public int Stop()
-        {
-            return 0;
-        }
-        public int Decellerate()
-        {
-            return 0;
-        }
-        public int Accelerate()
-        {
-            return 0;
-        }
-        public int ChangeGear()
-        {
-            return 0;
-        }
-    }
+            foreach (Vehicle vehicle in vehicles)
+            {
+                Console.WriteLine();
+                if (vehicle is Vehicle v)
+                {
+                    v.Start();
+                    v.Stop();
+                }
 
-    public class LandVehicle : Vehicle
-    {
-        public int AscendHill()
-        {
-            return 0;
-        }
-        public int DecendHill()
-        {
-            return 0;
-        }
-        public int Steer(int direction)
-        {
-            return 0;
-        }
-    }
+                if (vehicle is LandVehicle l)
+                {
+                    l.AscendHill();
+                    l.DecendHill();
+                }
 
-    public class Car : LandVehicle
-    {
-        public int Speed { get; set; }
-        public int LeftOrRight { get; set; }
+                if (vehicle is WaterVehicle w)
+                {
+                    w.Steer(90);
+                }
 
-        public int TurnSignal(int leftOrRight)
-        {
-            return 0;
-        }
-        public int ChangeLane(int leftOrRight)
-        {
-            return 0;
-        }
-        public int SpeedControl(int speed)
-        {
-            return 0;
-        }
-    }
+                if (vehicle is Car c)
+                {
+                    c.TurnSignal(1);
+                }
 
-    public class Motorcycle : LandVehicle
-    {
-        public int ChangeGear(int UpDown)
-        {
-            return 0;
-        }
-    }
+                if (vehicle is Motorcycle m)
+                {
+                    m.ChangeGear(1);
+                }
 
-    public class WaterVehicle : Vehicle
-    {
-        public int Steer(int direction)
-        {
-            return 0;
-        }
-    }
-
-    public class Boat : WaterVehicle
-    {
-        public int PullSkiers()
-        {
-            return 0;
-        }
-        public int GoFishing()
-        {
-            return 0;
+                if (vehicle is Boat b)
+                {
+                    b.PullSkiers();
+                }
+            }
         }
     }
 }
