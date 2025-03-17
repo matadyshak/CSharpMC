@@ -43,6 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IInventoryItem.cs" />
+    <Compile Include="Interfaces\IPurchaseable.cs" />
+    <Compile Include="Interfaces\IRentable.cs" />
+    <Compile Include="Interfaces\IUseable.cs" />
+    <Compile Include="Models\BowlingBallModel.cs" />
+    <Compile Include="Models\BowlingLaneModel.cs" />
+    <Compile Include="Models\BowlingShoesModel.cs" />
+    <Compile Include="Models\InventoryItemModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
