@@ -25,15 +25,15 @@ namespace DemoLibrary
             Console.WriteLine("\nTestCallsFromPersonClass()");
             Dog dog = new Dog();
             // Test #3 - Fails
-            Console.WriteLine("Call a private method in the same file but in a different unrelated class FAILS.");
+            Console.WriteLine("Call a private method in a different unrelated Dog class FAILS.");
             //dog.PrivateSay();
 
             // test #4
-            Console.WriteLine("Public function dog.TestCallsFromDogClass() is able to work with all six access modifiers.");
-            dog.TestCallsFromDogClass();
+            //Console.WriteLine("Public function dog.TestCallsFromDogClass() is able to work with all six access modifiers.");
+            //dog.TestCallsFromDogClass();
 
             // Test #5
-            Console.WriteLine("Calling them directly only works for public, internal and protected internal.");
+            Console.WriteLine("Calling Dog methods directly from unrelated Person class only works for public, internal and protected internal.");
             dog.PublicSay();
             //dog.PrivateSay();    - Inaccessible
             //dog.ProtectedSay();  - Inaccessible
