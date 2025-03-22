@@ -20,24 +20,84 @@ namespace CardGameApp
         {
             bool quit = false;
             int score = 0;
+            string entry;
             List<PlayingCard> hand = new List<PlayingCard>();
+
 
             while (!quit)
             {
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.Clear(); // Apply the background color change
+                Console.ForegroundColor = ConsoleColor.Black; // Set text color for better visibility
                 Console.WriteLine("Welcome to the BlackJack game!");
                 Console.WriteLine("Hit H <enter> for 'Hit me' or S <enter> to stand");
                 // status: 1-21=score, 22=Bust
                 (hand, score) = blackjack.StartBlackjackHand();
                 PrintBlackjackHand(hand, score);
+                Console.Write("Play again? (y/n): ");
+                entry = Console.ReadLine();
+                if (entry.ToLower() != "y")
+                {
+                    quit = true;
+                }
             }
             return 0;
         }
 
         public static void PrintBlackjackHand(List<PlayingCard> cards, int score)
         {
+            string output = "";
+
             foreach (PlayingCard card in cards)
             {
+                output += $"{card.Value} {Symbol(card.Suit)}  ";
             }
+
+            //Console.WriteLine(output);
+
+            //char heart = '\u2665';
+
+            //char diamond = '\u2666';
+
+            //char spade = '\u2660';
+
+            //char club = '\u2663';
+
+            //Console.WriteLine("Heart: " + heart);
+
+            //Console.WriteLine("Diamond: " + diamond);
+
+            //Console.WriteLine("Spade: " + spade);
+
+            //Console.WriteLine("Club: " + club);
+
+        }
+
+        public static char Symbol(CardSuits suit)
+        {
+            char symbol = '\u2665';
+
+            switch (suit)
+            {
+                case CardSuits.Hearts:
+                    symbol = '\u2665';
+                    break;
+
+                case CardSuits.Diamonds:
+                    symbol = '\u2666';
+                    break;
+
+                case CardSuits.Spades:
+                    symbol = '\u2660';
+                    break;
+
+                case CardSuits.Clubs:
+                    symbol = '\u2663';
+                    break;
+            }
+
+            return symbol;
+
         }
     }
 
@@ -95,7 +155,7 @@ namespace CardGameApp
 
             foreach (PlayingCard card in cards)
             {
-                Console.WriteLine($"{card.Values} of {card.Suits}");
+                Console.WriteLine($"{card.Value} of {card.Suit}");
             }
         }
 
@@ -115,13 +175,13 @@ namespace CardGameApp
 
     public class PlayingCard
     {
-        public CardSuits Suits { get; set; }
-        public CardValues Values { get; set; }
+        public CardSuits Suit { get; set; }
+        public CardValues Value { get; set; }
 
-        public PlayingCard(CardSuits suits, CardValues values)
+        public PlayingCard(CardSuits suit, CardValues value)
         {
-            Suits = suits;
-            Values = values;
+            Suit = suit;
+            Value = value;
         }
     }
 
@@ -145,7 +205,7 @@ namespace CardGameApp
 
             foreach (PlayingCard card in cards)
             {
-                switch (card.Values)
+                switch (card.Value)
                 {
                     case CardValues.Ace:
                         sum += 1;
@@ -161,7 +221,7 @@ namespace CardGameApp
                     case CardValues.Eight:
                     case CardValues.Nine:
                     case CardValues.Ten:
-                        sum += (int)(card.Values) + 1;
+                        sum += (int)(card.Value) + 1;
                         break;
 
                     case CardValues.Jack:
