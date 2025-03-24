@@ -8,7 +8,14 @@ namespace CardGameApp
         public static void Main()
         {
             bool gameOver = false;
-            int status = 0;
+            int status;
+            int winLossStatus;
+            int wins1 = 0;
+            int losses1 = 0;
+            int ties1 = 0;
+            int wins2 = 0;
+            int losses2 = 0;
+            int ties2 = 0;
 
             SetupConsole();
 
@@ -22,7 +29,24 @@ namespace CardGameApp
             while (!gameOver)
             {
                 status = PlayBlackjack(blackjack);
-                ReportStatus(status);
+                winLossStatus = ReportStatus(status);
+                if (winLossStatus == 10)
+                {
+                    wins1++;
+                    losses2++;
+                }
+                else if (winLossStatus == 20)
+                {
+                    wins2++;
+                    losses1++;
+                }
+                else
+                {
+                    ties1++;
+                    ties2++;
+                }
+                Console.WriteLine($"Player 1 -> {wins1} wins, {losses1} losses, {ties1} ties");
+                Console.WriteLine($"Player 2 -> {wins2} wins, {losses2} losses, {ties2} ties");
                 gameOver = PromptEndOfGame();
             }
         }
@@ -250,26 +274,31 @@ namespace CardGameApp
             //Player 2 returns -2, 0, or 2
             return rtn;
         }
-        public static void ReportStatus(int status)
+        public static int ReportStatus(int status)
         {
+            int rtn = 0;
+
             switch (status)
             {
                 case 1:
                 case -2:
                 case 10:
+                    rtn = 10;
                     Console.WriteLine("Player 1 Wins!");
                     break;
                 case 2:
                 case -1:
                 case 20:
+                    rtn = 20;
                     Console.WriteLine("Player 2 Wins!");
                     break;
 
                 case 15:
+                    rtn = 15;
                     Console.WriteLine("Player 1 and Player 2 are tied!");
                     break;
             }
-            return;
+            return rtn;
         }
     }
 }
