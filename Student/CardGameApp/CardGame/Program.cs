@@ -116,41 +116,42 @@ namespace CardGameApp
             {
                 if (PromptForHitMe(1, scorePlayer1))
                 {
-                    (handPlayer1, scorePlayer1) = blackjack.DrawOneCard(handPlayer1);
+                    handPlayer1.Add(blackjack.DrawOneCard());
+                    scorePlayer1 = blackjack.CalculateSumOfCards(handPlayer1);
                     status1 = PrintBlackjackHand(handPlayer1, scorePlayer1, 1);
-                    if ((status1 == -1) || (status1 == 1))
+                    if ((status1 == -1) || (status1 == 1)) //Player 1 Bust or 21
                     {
                         return status1;
                     }
-                    standPlayer1 = false;   //???
+                    standPlayer1 = false; //We just did a hit, we are not standing
                 }
 
                 if (PromptForHitMe(2, scorePlayer2))
                 {
-                    (handPlayer2, scorePlayer2) = blackjack.DrawOneCard(handPlayer2);
+                    handPlayer2.Add(blackjack.DrawOneCard());
+                    scorePlayer2 = blackjack.CalculateSumOfCards(handPlayer2);
                     status2 = PrintBlackjackHand(handPlayer2, scorePlayer2, 2);
-                    if ((status2 == -2) || (status2 == 2))
+                    if ((status2 == -2) || (status2 == 2)) //Player2 bust or 21
                     {
                         return status2;
                     }
-                    standPlayer2 = false;   //???
+                    standPlayer2 = false;   //We just did a hit, we are not standing
                 }
             } while (!standPlayer1 || !standPlayer2);
 
+            // Both players standing - compare scores
             if (scorePlayer1 > scorePlayer2)
             {
-                return 10;
+                return 10; // Win for Player 1
             }
             else if (scorePlayer2 > scorePlayer1)
             {
-                return 20;
+                return 20; // Win for Player 2
             }
             else
             {
                 return 15; //Tie
             }
-            Console.WriteLine();
-            return 0;
         }
 
         public static bool PromptEndOfGame()
@@ -254,7 +255,6 @@ namespace CardGameApp
                         break;
                 }
 
-                //output += $"{number} {symbol.ToString()}  ";
                 output += $"{number} {symbol}  ";
             }
 

@@ -58,37 +58,35 @@ namespace CardGameApp
             return sum;
         }
 
-        public List<PlayingCard> Deal(int Number)
+        public override List<PlayingCard> DealCards()
         {
-            return base.DrawCards(Number);
-        }
+            int numberOfCards = 2;
+            if (DrawPile.Count < numberOfCards)
+            {
+                Console.WriteLine("Not enough cards in the draw pile.");
+                return null;
+            }
 
+            List<PlayingCard> drawnCards = new List<PlayingCard>();
+
+            for (int i = 0; i<numberOfCards; i++)
+            {
+                drawnCards.Add(DrawOneCard());
+            }
+
+            return drawnCards;
+        }
         public (List<PlayingCard>, int) StartBlackjackHand()
         {
             List<PlayingCard> cards = new List<PlayingCard>();
             int score;
 
-            cards = Deal(2);
+            cards = DealCards();
             if (cards == null)
             {
                 return (null, 0);
             }
 
-            score = CalculateSumOfCards(cards);
-            return (cards, score);
-        }
-        public (List<PlayingCard>, int) DrawOneCard(List<PlayingCard> cards)
-        {
-            List<PlayingCard> newCard = new List<PlayingCard>();
-            int score;
-
-            newCard = Deal(1);
-            if (newCard == null)
-            {
-                // Out of cards
-                return (null, 0);
-            }
-            cards.Add(newCard[0]);
             score = CalculateSumOfCards(cards);
             return (cards, score);
         }

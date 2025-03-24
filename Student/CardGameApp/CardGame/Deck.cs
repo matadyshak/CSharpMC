@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CardGameApp
 {
-    public class Deck
+    public abstract class Deck
     {
         protected Random Rand = null;
         protected List<PlayingCard> FullDeck = new List<PlayingCard>();
@@ -63,18 +63,19 @@ namespace CardGameApp
             }
         }
 
-        public List<PlayingCard> DrawCards(int number)
+        internal virtual PlayingCard DrawOneCard()
         {
-            if (DrawPile.Count < number)
+            PlayingCard output = DrawPile.Take(1).First();
+            if (output == null)
             {
-                Console.WriteLine("Not enough cards in the draw pile.");
-                return null;
+                // Out of cards
+                return (null);
             }
 
-            List<PlayingCard> drawnCards = DrawPile.Take(number).ToList();
-            DrawPile.RemoveRange(0, number);
-            return drawnCards;
+            DrawPile.Remove(output);  //OK to skip this?
+            return output;
         }
+        public abstract List<PlayingCard> DealCards();
 
         public int GetDrawPileCount()
         {
