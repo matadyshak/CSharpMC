@@ -43,8 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="enums.cs" />
+    <Compile Include="BlackjackDeck.cs" />
+    <Compile Include="Deck.cs" />
+    <Compile Include="enums\enums.cs" />
+    <Compile Include="PlayingCard.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ProgramFontControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

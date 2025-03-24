@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CardGameApp
 {
@@ -8,210 +7,208 @@ namespace CardGameApp
     {
         public static void Main()
         {
+            bool gameOver = false;
+            int status = 0;
+
+            SetupConsole();
+
+            WelcomeMessage();
+
             // Set pseudo-random number generator seed one-time
             Random random = new Random();
 
             BlackjackDeck blackjack = new BlackjackDeck(random);
 
-            int status = PlayBlackjack(blackjack);
+            while (!gameOver)
+            {
+                status = PlayBlackjack(blackjack);
+                ReportStatus(status);
+                gameOver = PromptEndOfGame();
+            }
+        }
+
+        public static void SetupConsole()
+        {
+            //ProgramFontControl.FontControl("Lucida Console");
+            //ProgramFontControl.FontControl("Consolas");
+            //ProgramFontControl.FontControl("Segoe UI Symbol");
+            ProgramFontControl.FontControl("Courier New");
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.BackgroundColor = ConsoleColor.White;
+            // Apply the background color change
+            Console.Clear();
+            // Set text color for better visibility
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+
+        public static void WelcomeMessage()
+        {
+            Console.WriteLine("+==================================+");
+            Console.WriteLine("|                                  |");
+            Console.WriteLine("|  Welcome to the BlackJack game!  |");
+            Console.WriteLine("|                                  |");
+            Console.WriteLine("+==================================+");
+            Console.WriteLine();
         }
 
         public static int PlayBlackjack(BlackjackDeck blackjack)
         {
-            bool quit = false;
-            int score = 0;
-            string entry;
-            List<PlayingCard> hand = new List<PlayingCard>();
+            bool standPlayer1 = true;
+            bool standPlayer2 = true;
+            int scorePlayer1;
+            int scorePlayer2;
+            int status1;
+            int status2;
+            List<PlayingCard> handPlayer1 = new List<PlayingCard>();
+            List<PlayingCard> handPlayer2 = new List<PlayingCard>();
 
-
-            while (!quit)
+            (handPlayer1, scorePlayer1) = blackjack.StartBlackjackHand();
+            if (handPlayer1 == null)
             {
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.Clear(); // Apply the background color change
-                Console.ForegroundColor = ConsoleColor.Black; // Set text color for better visibility
-                Console.WriteLine("Welcome to the BlackJack game!");
-                Console.WriteLine("Hit H <enter> for 'Hit me' or S <enter> to stand");
-                // status: 1-21=score, 22=Bust
-                (hand, score) = blackjack.StartBlackjackHand();
-                PrintBlackjackHand(hand, score);
-                Console.Write("Play again? (y/n): ");
-                entry = Console.ReadLine();
-                if (entry.ToLower() != "y")
-                {
-                    quit = true;
-                }
+                //Out of cards
+                return 0;
             }
+            // Appends msg about 21 or bust
+            status1 = PrintBlackjackHand(handPlayer1, scorePlayer1, 1);
+            if ((status1 == -1) || (status1 == 1))
+            {
+                return status1;
+            }
+
+            (handPlayer2, scorePlayer2) = blackjack.StartBlackjackHand();
+            if (handPlayer2 == null)
+            {
+                //Out of cards
+                return 0;
+            }
+            // Appends msg about 21 or bust
+            status2 = PrintBlackjackHand(handPlayer2, scorePlayer2, 2);
+            if ((status2 == -2) || (status2 == 2))
+            {
+                return status2;
+            }
+
+            do
+            {
+                if (PromptForHitMe(1, scorePlayer1))
+                {
+                    (handPlayer1, scorePlayer1) = blackjack.DrawOneCard(handPlayer1);
+                    status1 = PrintBlackjackHand(handPlayer1, scorePlayer1, 1);
+                    if ((status1 == -1) || (status1 == 1))
+                    {
+                        return status1;
+                    }
+                    standPlayer1 = false;   //???
+                }
+
+                if (PromptForHitMe(2, scorePlayer2))
+                {
+                    (handPlayer2, scorePlayer2) = blackjack.DrawOneCard(handPlayer2);
+                    status2 = PrintBlackjackHand(handPlayer2, scorePlayer2, 2);
+                    if ((status2 == -2) || (status2 == 2))
+                    {
+                        return status2;
+                    }
+                    standPlayer2 = false;   //???
+                }
+            } while (!standPlayer1 || !standPlayer2);
+
+            if (scorePlayer1 > scorePlayer2)
+            {
+                return 10;
+            }
+            else if (scorePlayer2 > scorePlayer1)
+            {
+                return 20;
+            }
+            else
+            {
+                return 15; //Tie
+            }
+            Console.WriteLine();
             return 0;
         }
 
-        public static void PrintBlackjackHand(List<PlayingCard> cards, int score)
+        public static bool PromptEndOfGame()
         {
-            string output = "";
+            string entry;
+            string entryLow;
 
-            foreach (PlayingCard card in cards)
+            while (true)
             {
-                output += $"{card.Value} {Symbol(card.Suit)}  ";
-            }
-
-            //Console.WriteLine(output);
-
-            //char heart = '\u2665';
-
-            //char diamond = '\u2666';
-
-            //char spade = '\u2660';
-
-            //char club = '\u2663';
-
-            //Console.WriteLine("Heart: " + heart);
-
-            //Console.WriteLine("Diamond: " + diamond);
-
-            //Console.WriteLine("Spade: " + spade);
-
-            //Console.WriteLine("Club: " + club);
-
-        }
-
-        public static char Symbol(CardSuits suit)
-        {
-            char symbol = '\u2665';
-
-            switch (suit)
-            {
-                case CardSuits.Hearts:
-                    symbol = '\u2665';
-                    break;
-
-                case CardSuits.Diamonds:
-                    symbol = '\u2666';
-                    break;
-
-                case CardSuits.Spades:
-                    symbol = '\u2660';
-                    break;
-
-                case CardSuits.Clubs:
-                    symbol = '\u2663';
-                    break;
-            }
-
-            return symbol;
-
-        }
-    }
-
-    public class Deck
-    {
-        protected Random Rand = null;
-        protected List<PlayingCard> FullDeck = new List<PlayingCard>();
-        protected List<PlayingCard> DrawPile = new List<PlayingCard>();
-        protected List<PlayingCard> DiscardPile = new List<PlayingCard>();
-
-        // Constructor with one-time Random object
-        public Deck(Random random)
-        {
-            Rand = random;
-        }
-
-        protected void CreateDeck()
-        {
-            FullDeck.Clear();
-
-            for (int suit = 0; suit < 4; suit++)
-            {
-                for (int value = 0; value < 13; value++)
+                Console.Write("\nPlay again? (y/n): ");
+                entry = Console.ReadLine();
+                entryLow = entry.ToLower();
+                if ((entryLow == "y") || (entryLow == "n"))
                 {
-                    FullDeck.Add(new PlayingCard((CardSuits)suit, (CardValues)value));
+                    return (entryLow == "n");
+                }
+                else
+                {
+                    Console.WriteLine($"The entry: \'{entry}\' was invalid.  Try again.");
                 }
             }
-            return;
         }
-
-        protected void ShuffleDeck()
+        public static bool PromptForHitMe(int player, int score)
         {
-            DrawPile.Clear();
+            string entry;
+            string entryLow;
 
-            // Even though DrawPile gets OrderBy random numbers it can still be zero-based indexed 
-            DrawPile = FullDeck.OrderBy(x => Rand.Next()).ToList();
-        }
-
-        public void PrintDeck(DeckTypes deck)
-        {
-            List<PlayingCard> cards = null;
-
-            switch (deck)
+            while (true)
             {
-                case DeckTypes.Full:
-                    cards = FullDeck;
-                    break;
-                case DeckTypes.Draw:
-                    cards = DrawPile;
-                    break;
-                case DeckTypes.Discard:
-                    cards = DiscardPile;
-                    break;
+                Console.Write($"\nPlayer {player} Score: {score} -> Type \'H <enter>\' for \'Hit Me\' or \'S <enter>\' for \'Stand\': ");
+                entry = Console.ReadLine();
+                entryLow = entry.ToLower();
+                if ((entryLow == "h") || (entryLow == "s"))
+                {
+                    return (entryLow == "h");
+                }
+                else
+                {
+                    Console.WriteLine($"The entry: \'{entry}\' was invalid.  Try again.");
+                }
+            }
+        }
+
+        public static int PrintBlackjackHand(List<PlayingCard> cards, int score, int player)
+        {
+            char symbol;
+            string number;
+            string output = $"Player {player} -> ";
+            int rtn = 0; // -1=Bust, +1=21, 0=0-20
+
+            if (cards == null)
+            {
+                return 0;
             }
 
             foreach (PlayingCard card in cards)
             {
-                Console.WriteLine($"{card.Value} of {card.Suit}");
-            }
-        }
+                switch (card.Suit)
+                {
+                    case CardSuits.Hearts:
+                        symbol = '\u2665';
+                        break;
+                    case CardSuits.Diamonds:
+                        symbol = '\u2666';
+                        break;
+                    case CardSuits.Spades:
+                        symbol = '\u2660';
+                        break;
+                    case CardSuits.Clubs:
+                        symbol = '\u2663';
+                        break;
+                    default:
+                        symbol = '\0';
+                        break;
+                }
 
-        public List<PlayingCard> DrawCards(int number)
-        {
-            if (DrawPile.Count < number)
-            {
-                //Error
-            }
 
-            List<PlayingCard> drawnCards = DrawPile.Take(number).ToList();
-            DrawPile.RemoveRange(0, number);
-            return drawnCards;
-        }
-
-    }
-
-    public class PlayingCard
-    {
-        public CardSuits Suit { get; set; }
-        public CardValues Value { get; set; }
-
-        public PlayingCard(CardSuits suit, CardValues value)
-        {
-            Suit = suit;
-            Value = value;
-        }
-    }
-
-    public class BlackjackDeck : Deck
-    {
-        public BlackjackDeck(Random random) : base(random)
-        {
-            CreateDeck();
-            ShuffleDeck();
-        }
-
-        public List<PlayingCard> Deal(int Number)
-        {
-            return base.DrawCards(2);
-        }
-
-        public int CalculateSumOfCards(List<PlayingCard> cards)
-        {
-            int sum = 0;
-            int aceCount = 0;
-
-            foreach (PlayingCard card in cards)
-            {
                 switch (card.Value)
                 {
                     case CardValues.Ace:
-                        sum += 1;
-                        aceCount++;
+                        number = "A";
                         break;
-
                     case CardValues.Two:
                     case CardValues.Three:
                     case CardValues.Four:
@@ -220,91 +217,118 @@ namespace CardGameApp
                     case CardValues.Seven:
                     case CardValues.Eight:
                     case CardValues.Nine:
-                    case CardValues.Ten:
-                        sum += (int)(card.Value) + 1;
+                        number = ((int)(card.Value) + 1).ToString();
                         break;
-
+                    case CardValues.Ten:
                     case CardValues.Jack:
                     case CardValues.Queen:
                     case CardValues.King:
-                        sum += 10;
+                        number = "10";
+                        break;
+                    default:
+                        number = "";
                         break;
                 }
 
-                while (aceCount > 0)
-                {
-                    if (sum + 10 <= 21)
-                    {
-                        sum += 10;
-                    }
-                    aceCount--;
-                }
+                //output += $"{number} {symbol.ToString()}  ";
+                output += $"{number} {symbol}  ";
             }
 
-            return sum;
-        }
-
-        public (List<PlayingCard>, int) StartBlackjackHand()
-        {
-            List<PlayingCard> cards = new List<PlayingCard>();
-            int score = 0;
-
-            cards = Deal(2);
-            score = CalculateSumOfCards(cards);
-            if (score > 21)
+            output += $"Score: {score}";
+            if (score == 21)
             {
-                score = 22; //Busted
+                rtn = player;
+                output += $"  BLACK JACK! YOU WIN!";
             }
-            return (cards, score);
+            else if (score > 21)
+            {
+                rtn = -1 * player;
+                output += $"  YOU ARE BUSTED! YOU LOSE!";
+            }
+            Console.WriteLine(output);
+            //Player 1 returns -1, 0, or 1
+            //Player 2 returns -2, 0, or 2
+            return rtn;
+        }
+        public static void ReportStatus(int status)
+        {
+            switch (status)
+            {
+                case 1:
+                case -2:
+                case 10:
+                    Console.WriteLine("Player 1 Wins!");
+                    break;
+                case 2:
+                case -1:
+                case 20:
+                    Console.WriteLine("Player 2 Wins!");
+                    break;
+
+                case 15:
+                    Console.WriteLine("Player 1 and Player 2 are tied!");
+                    break;
+            }
+            return;
         }
     }
 }
 
 /*
-Blackjack Game
+    Blackjack Game
 
-Objective: The goal is to have a hand value closer to 21 than the dealer's hand without exceeding 21.
+    Objective: The goal is to have a hand value closer to 21 than the dealer's hand without exceeding 21.
 
-Card Values:
+    Card Values:
 
-Number cards (2-10) are worth their face value.
-Face cards (Jack, Queen, King) are worth 10 points.
-Aces can be worth 1 or 11 points, depending on which value benefits the hand more.
-Gameplay:
+    Number cards (2-10) are worth their face value.
+    Face cards (Jack, Queen, King) are worth 10 points.
+    Aces can be worth 1 or 11 points, depending on which value benefits the hand more.
+    Gameplay:
 
-Each player is dealt two cards, and the dealer also gets two cards (one face up, one face down).
-Players can choose to "hit" (take another card) or "stand" (keep their current hand).
-Players can continue to hit until they either stand or their hand value exceeds 21 (bust).
-Dealer's Turn:
+    Each player is dealt two cards, and the dealer also gets two cards (one face up, one face down).
+    Players can choose to "hit" (take another card) or "stand" (keep their current hand).
+    Players can continue to hit until they either stand or their hand value exceeds 21 (bust).
+    Dealer's Turn:
 
-After all players have finished their turns, the dealer reveals their face-down card.
-The dealer must hit until their hand value is at least 17.
-If the dealer busts, all remaining players win.
-Winning:
+    After all players have finished their turns, the dealer reveals their face-down card.
+    The dealer must hit until their hand value is at least 17.
+    If the dealer busts, all remaining players win.
+    Winning:
 
-If your hand value is closer to 21 than the dealer's without busting, you win.
-If you bust, you lose regardless of the dealer's hand.
-If both you and the dealer have the same hand value, it's a push (tie), and your bet is returned.
-Blackjack:
+    If your hand value is closer to 21 than the dealer's without busting, you win.
+    If you bust, you lose regardless of the dealer's hand.
+    If both you and the dealer have the same hand value, it's a push (tie), and your bet is returned.
+    Blackjack:
 
-A hand with an Ace and a 10-point card (10, Jack, Queen, King) is called a "Blackjack" and usually pays out at 3:2 odds.
+    A hand with an Ace and a 10-point card (10, Jack, Queen, King) is called a "Blackjack" and usually pays out at 3:2 odds.
 
 	1. Single player
 	2. Deal out 2 cards from draw pile
-        3. Compute sum.
+    3. Compute sum.
 *	4. Player decides to either draw 1 card from draw pile or stop
-        5. If "stop" chosen, compute sum
-        6. If "hit me" chosen, draw 1 card from draw pile
-        7. Compute sum
-        8. If over 21 player loses
-        9. If not over 21, go back to step 3
+    5. If "stop" chosen, compute sum
+    6. If "hit me" chosen, draw 1 card from draw pile
+    7. Compute sum
+    8. If over 21 player loses
+    9. If not over 21, go back to step 3
+    10. Ace counts as 1 or 11.
+    11. Ten-Jack-Queen-King count as 10.
 
-        Ace counts as 1 or 11.
-        Ten-Jack-Queen-King count as 10.
+    UI could ask player if they want to play Blackjack
+    Explain to hit 'H' for "Hit Me", or 'S' for "Stand"
+    UI Then asks to play again
 
-        UI could ask player if they want to play Blackjack
-        Explain to hit 'H' for "Hit Me", or 'S' for "Stand"
-        UI Then asks to play again
+
+    Mixing regular characters with Unicode characters should work, but sometimes the console settings or font might not support certain Unicode symbols.
+    Here are a few things you can try:
+
+    Ensure Console Font Supports Unicode: Make sure the console font supports Unicode characters. You can change the console font to one that supports 
+    Unicode, such as "Consolas" or "Lucida Console".
+
+    Use Unicode Escape Sequences: You can use Unicode escape sequences directly in your string. For example, instead of using Symbol(card.Suit),
+    you can directly include the Unicode escape sequences in your string.
+
 */
 
 
