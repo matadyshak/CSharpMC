@@ -37,7 +37,8 @@ namespace CardGameApp
             DrawPile.Clear();
 
             // Even though DrawPile gets OrderBy random numbers it can still be zero-based indexed 
-            DrawPile = FullDeck.OrderBy(x => Rand.Next()).ToList();
+            DrawPile = FullDeck.OrderBy(x => Rand.Next(12345)).ToList();
+            return;
         }
 
         public void PrintDeck(DeckTypes deck)
@@ -65,14 +66,15 @@ namespace CardGameApp
 
         internal virtual PlayingCard DrawOneCard()
         {
-            PlayingCard output = DrawPile.Take(1).First();
-            if (output == null)
+            if (DrawPile.Count == 0)
             {
                 // Out of cards
                 return (null);
             }
 
-            DrawPile.Remove(output);  //OK to skip this?
+            //PlayingCard output = DrawPile.Take(1).First();
+            PlayingCard output = DrawPile.First();
+            DrawPile.Remove(output);
             return output;
         }
         public abstract List<PlayingCard> DealCards();

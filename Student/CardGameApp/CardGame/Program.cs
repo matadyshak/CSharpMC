@@ -21,7 +21,10 @@ namespace CardGameApp
 
             WelcomeMessage();
 
-            // Set pseudo-random number generator seed one-time
+            // Use a fixed seed for debugging - sequence will be exactly the same
+            // Random random = new Random(12345);
+
+            // Normal operation based on clock tick
             Random random = new Random();
 
             BlackjackDeck blackjack = new BlackjackDeck(random);
@@ -116,6 +119,7 @@ namespace CardGameApp
             {
                 if (PromptForHitMe(1, scorePlayer1))
                 {
+                    // Note here that even though we have a BlackjackDeck object DrawOneCard() 
                     handPlayer1.Add(blackjack.DrawOneCard());
                     scorePlayer1 = blackjack.CalculateSumOfCards(handPlayer1);
                     status1 = PrintBlackjackHand(handPlayer1, scorePlayer1, 1);
@@ -245,10 +249,16 @@ namespace CardGameApp
                         number = ((int)(card.Value) + 1).ToString();
                         break;
                     case CardValues.Ten:
-                    case CardValues.Jack:
-                    case CardValues.Queen:
-                    case CardValues.King:
                         number = "10";
+                        break;
+                    case CardValues.Jack:
+                        number = "J";
+                        break;
+                    case CardValues.Queen:
+                        number = "Q";
+                        break;
+                    case CardValues.King:
+                        number = "K";
                         break;
                     default:
                         number = "";
