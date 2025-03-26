@@ -184,8 +184,8 @@ namespace CardGameApp
 
         public static int DecodeScoresAndStatus(int score1, int score2, int status1, int status2)
         {
-            Console.WriteLine($"\nScore 1: {score1}, Score 2: {score2}");
-            Console.WriteLine($"Status 1: {status1}, Status 2: {status2}\n");
+            //Console.WriteLine($"\nScore 1: {score1}, Score 2: {score2}");
+            //Console.WriteLine($"Status 1: {status1}, Status 2: {status2}\n");
 
             // Both players standing - compare scores
             if ((status1 == 1) || (status2 == -2)) // Player 1 21 or Player 2 bust
