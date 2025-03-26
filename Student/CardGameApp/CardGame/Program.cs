@@ -32,6 +32,7 @@ namespace CardGameApp
             while (!gameOver)
             {
                 status = PlayBlackjack(blackjack);
+
                 winLossStatus = ReportStatus(status);
                 if (winLossStatus == 10)
                 {
@@ -86,76 +87,126 @@ namespace CardGameApp
             int scorePlayer2;
             int status1;
             int status2;
-            List<PlayingCard> handPlayer1 = new List<PlayingCard>();
-            List<PlayingCard> handPlayer2 = new List<PlayingCard>();
+            List<PlayingCard> handPlayer1;
+            List<PlayingCard> handPlayer2;
 
-            (handPlayer1, scorePlayer1) = blackjack.StartBlackjackHand();
+            (handPlayer1, scorePlayer1, status1) = HandleNewHand(blackjack, 1);
+
             if (handPlayer1 == null)
             {
                 //Out of cards
-                return 0;
+                return (0);
             }
-            // Appends msg about 21 or bust
-            status1 = PrintBlackjackHand(handPlayer1, scorePlayer1, 1);
+
+            // IF BUST OR 21 - Player 1
             if ((status1 == -1) || (status1 == 1))
             {
                 return status1;
             }
 
-            (handPlayer2, scorePlayer2) = blackjack.StartBlackjackHand();
+            // What about scorePlayer1?
+
+            (handPlayer2, scorePlayer2, status2) = HandleNewHand(blackjack, 2);
+
             if (handPlayer2 == null)
             {
                 //Out of cards
-                return 0;
+                return (0);
             }
-            // Appends msg about 21 or bust
-            status2 = PrintBlackjackHand(handPlayer2, scorePlayer2, 2);
+
+            // IF BUST OR 21 - Player 2
             if ((status2 == -2) || (status2 == 2))
             {
                 return status2;
             }
 
+            // If neither bust nor 21 continue and ask to Hit or Stand
+
             do
             {
-                if (PromptForHitMe(1, scorePlayer1))
+                (scorePlayer1, status1, standPlayer1) = HandleHitMe(blackjack, handPlayer1, scorePlayer1, 1);
+                if ((status1 == -1) || (status1 == 1))
                 {
-                    // Note here that even though we have a BlackjackDeck object DrawOneCard() 
-                    handPlayer1.Add(blackjack.DrawOneCard());
-                    scorePlayer1 = blackjack.CalculateSumOfCards(handPlayer1);
-                    status1 = PrintBlackjackHand(handPlayer1, scorePlayer1, 1);
-                    if ((status1 == -1) || (status1 == 1)) //Player 1 Bust or 21
-                    {
-                        return status1;
-                    }
-                    standPlayer1 = false; //We just did a hit, we are not standing
+                    break;
                 }
 
-                if (PromptForHitMe(2, scorePlayer2))
+                (scorePlayer2, status2, standPlayer2) = HandleHitMe(blackjack, handPlayer2, scorePlayer2, 2);
+                if ((status2 == -2) || (status2 == 2))
                 {
-                    handPlayer2.Add(blackjack.DrawOneCard());
-                    scorePlayer2 = blackjack.CalculateSumOfCards(handPlayer2);
-                    status2 = PrintBlackjackHand(handPlayer2, scorePlayer2, 2);
-                    if ((status2 == -2) || (status2 == 2)) //Player2 bust or 21
-                    {
-                        return status2;
-                    }
-                    standPlayer2 = false;   //We just did a hit, we are not standing
+                    break;
                 }
+
             } while (!standPlayer1 || !standPlayer2);
 
+            return DecodeScoresAndStatus(scorePlayer1, scorePlayer2, status1, status2);
+        }
+
+        public static (List<PlayingCard> hand, int score, int status) HandleNewHand(BlackjackDeck blackjack, int player)
+        {
+            int score;
+            int status = 0;
+            List<PlayingCard> hand = new List<PlayingCard>();
+
+            (hand, score) = blackjack.StartBlackjackHand();
+
+            if (hand == null)
+            {
+                //Out of cards
+                return (hand, score, 0);
+            }
+
+            // Appends msg about 21 or bust
+            status = PrintBlackjackHand(hand, score, player);
+
+            return (hand, score, status);
+        }
+
+        public static (int score, int status, bool stand) HandleHitMe(BlackjackDeck blackjack, List<PlayingCard> hand, int score, int player)
+        {
+            bool stand = true;
+            int status = 0;
+
+            if (PromptForHitMe(player, score))
+            {
+                hand.Add(blackjack.DrawOneCard());
+                score = blackjack.CalculateSumOfCards(hand);
+                status = PrintBlackjackHand(hand, score, player);
+                if ((status == -1) || (status == 1) || (status == -2) || (status == 2))
+                {
+                    // 21 or bust so stand is true
+                    return (score, status, stand);
+                }
+                stand = false; //We just did a hit, and have neither 21 or bust
+            }
+
+            return (score, 0, stand);
+        }
+
+        public static int DecodeScoresAndStatus(int score1, int score2, int status1, int status2)
+        {
+            Console.WriteLine($"\nScore 1: {score1}, Score 2: {score2}");
+            Console.WriteLine($"Status 1: {status1}, Status 2: {status2}\n");
+
             // Both players standing - compare scores
-            if (scorePlayer1 > scorePlayer2)
+            if ((status1 == 1) || (status2 == -2)) // Player 1 21 or Player 2 bust
             {
                 return 10; // Win for Player 1
             }
-            else if (scorePlayer2 > scorePlayer1)
+            else if ((status2 == 2) || (status1 == -1)) // Player 2 21 or Player 1 bust
             {
                 return 20; // Win for Player 2
             }
-            else
+
+            if (score1 > score2)
             {
-                return 15; //Tie
+                return 10; // Win for Player 1
             }
+            else if (score2 > score1)
+            {
+                return 20; // Win for Player 2
+            }
+
+            return 15; //Tie
         }
 
         public static bool PromptEndOfGame()
@@ -178,6 +229,7 @@ namespace CardGameApp
                 }
             }
         }
+
         public static bool PromptForHitMe(int player, int score)
         {
             string entry;
