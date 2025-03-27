@@ -6,72 +6,116 @@ namespace MethodOverload
     {
         static void Main()
         {
-            EmployeeModel michael = new EmployeeModel("Michael", "Tadyshak", 25.00m, "Customer Service");
-            EmployeeModel myra = new EmployeeModel("Myra", "Tadyshak");
-            EmployeeModel daniel = new EmployeeModel();
+            CarBuyerModel michael = new CarBuyerModel("Michael", "Tadyshak", "Honda", "Civic");
+            michael.CarSearch(michael.Make, michael.Model, michael.MaxPrice);
+
+            CarBuyerModel myra = new CarBuyerModel("Myra", "Tadyshak");
+            myra.Make = myra.PromptForMake();
+            myra.Model = myra.PromptForModel();
+            myra.CarSearch("Toyota", "Corolla", 50000, 15000.00m);
+
+
+            CarBuyerModel daniel = new CarBuyerModel();
+            daniel.Make = daniel.PromptForMake();
+            daniel.Model = daniel.PromptForModel();
+            (daniel.FirstName, daniel.LastName) = daniel.PromptForName();
+            daniel.CarSearch(1968, 1975, "Dodge", "Challenger");
 
             Console.ReadLine();
         }
     }
 
-    public class EmployeeModel
+    public class CarBuyerModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public decimal HourlyRate { get; set; }
-        public string Department { get; set; }
+        public int MinYear { get; set; }
+        public int MaxYear { get; set; }
+        public string Make { get; set; }
+        public string Model { get; set; }
+        public int MaxMileage { get; set; }
+        public decimal MaxPrice { get; set; }
 
-        public EmployeeModel()
-        {
-        }
-        public EmployeeModel(string firstName, string lastName, decimal hourlyRate, string department)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            HourlyRate = hourlyRate;
-            Department = department;
-        }
-
-        public EmployeeModel(string firstName, string lastName)
+        public CarBuyerModel(string firstName, string lastName, string make, string model)
         {
             FirstName = firstName;
             LastName = lastName;
-            HourlyRate = GetHourlyRate();
-            Department = GetDepartment();
+            Make = make;
+            Model = model;
         }
 
-        public decimal GetHourlyRate()
+        public CarBuyerModel(string firstName, string lastName)
         {
-            decimal rate = 0;
-            bool valid = false;
-
-            while (!valid)
-            {
-                Console.Write("Enter hourly rate: ");
-                string input = Console.ReadLine();
-                try
-                {
-                    decimal.TryParse(input, out rate);
-                    valid = true;
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine($"Input: {input} was invalid.  Try again.");
-                }
-            }
-
-            return rate;
+            FirstName = firstName;
+            LastName = lastName;
         }
 
-        public string GetDepartment()
+        public CarBuyerModel()
         {
-            string department = "";
-
-            Console.Write("Enter department name: ");
-            department = Console.ReadLine();
-
-            return department;
         }
 
+        public string PromptForMake()
+        {
+            string make;
+
+            Console.Write("Enter Make: ");
+            make = Console.ReadLine();
+
+            return make;
+        }
+
+        public string PromptForModel()
+        {
+            string model;
+
+            Console.Write("Enter Model: ");
+            model = Console.ReadLine();
+
+            return model;
+        }
+
+        public (string firstName, string lastName) PromptForName()
+        {
+            string first;
+            string last;
+
+            Console.Write("Enter First Name: ");
+            first = Console.ReadLine();
+
+            Console.Write("Enter Last Name: ");
+            last = Console.ReadLine();
+
+            return (first, last);
+        }
+
+        public void CarSearch(string make, string model, decimal maxPrice)
+        {
+            int minYear = 1974;
+            int maxYear = 2025;
+            int maxMileage = 250000;
+
+            CarSearch(minYear, maxYear, make, model, maxMileage, maxPrice);
+        }
+
+        public void CarSearch(string make, string model, int maxMileage, decimal maxPrice)
+        {
+            int minYear = 1974;
+            int maxYear = 2025;
+
+            CarSearch(minYear, maxYear, make, model, maxMileage, maxPrice);
+        }
+
+        public void CarSearch(int minYear, int maxYear, string make, string model)
+        {
+            int maxMileage = 250000;
+            decimal maxPrice = 100000.00m;
+
+            CarSearch(minYear, maxYear, make, model, maxMileage, maxPrice);
+        }
+
+        public void CarSearch(int minYear, int maxYear, string make, string model, int maxMileage, decimal maxPrice)
+        {
+            Console.WriteLine($"Search Parameters: Years {minYear}-{maxYear} Make: {make} Model: {model} MaxMileage: {maxMileage} Max Price: {maxPrice}");
+        }
     }
 }
