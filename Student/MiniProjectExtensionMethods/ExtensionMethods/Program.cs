@@ -10,9 +10,16 @@ namespace ExtensionMethods
 
             person.FirstName = "Enter your first name: ".RequestString();
             person.LastName = "Enter your last name: ".RequestString();
-            //            person.Age = "Enter your age in years: ".RequestInt();
+            person.Age = person.Age.RequestInt("Enter your age in years: ", true, 0, 120);
+            Console.WriteLine($"{person.FirstName} {person.LastName} {person.Age}");
 
-            Console.WriteLine($"{person.FirstName} {person.LastName}");
+            person.Age = person.Age.RequestInt("Enter your age in years: ", false);
+            Console.WriteLine($"{person.FirstName} {person.LastName} {person.Age}");
+
+            person.Age = person.Age.RequestInt("Enter your age in years: ");
+            Console.WriteLine($"{person.FirstName} {person.LastName} {person.Age}");
+
+            Console.ReadLine();
         }
     }
 
@@ -39,6 +46,42 @@ namespace ExtensionMethods
                     valid = true;
                 }
             }
+            return output;
+        }
+        public static int RequestInt(this int number, string message, bool useMinMax, int minValue = 0, int maxValue = 0)
+        {
+            int output = 0;
+            bool validInt = false;
+            bool validRange = false;
+            string entry = "";
+
+            while ((validInt == false) || (validRange == false))
+            {
+                Console.Write(message);
+                entry = Console.ReadLine();
+                try
+                {
+                    validInt = int.TryParse(entry, out output);
+                    validRange = true;
+                    if (useMinMax)
+                    {
+                        validRange = ((output >= minValue) && (output <= maxValue));
+                    }
+
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"The entry: {entry} was not a valid integer value.");
+                }
+            }
+            return output;
+        }
+
+        public static int RequestInt(this int number, string message)
+        {
+            int output = 0;
+
+            output = output.RequestInt(message);
             return output;
         }
     }
