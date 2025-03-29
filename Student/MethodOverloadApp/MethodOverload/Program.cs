@@ -6,20 +6,21 @@ namespace MethodOverload
     {
         static void Main()
         {
-            CarBuyerModel michael = new CarBuyerModel("Michael", "Tadyshak", "Honda", "Civic");
-            michael.CarSearch(michael.Make, michael.Model, michael.MaxPrice);
+            CarBuyerModel michael = new CarBuyerModel("Michael", "Tadyshak", 75002, 50);
+            michael.CarSearch("Chevrolet", "Corvette", 25000.00m);
 
             CarBuyerModel myra = new CarBuyerModel("Myra", "Tadyshak");
-            myra.Make = myra.PromptForMake();
-            myra.Model = myra.PromptForModel();
-            myra.CarSearch("Toyota", "Corolla", 50000, 15000.00m);
-
+            Console.WriteLine("\nPlease provide a ZIP code and search radius in miles.");
+            myra.ZipCode = myra.PromptForZipCode();
+            myra.SearchRadius = myra.PromptForSearchRadius();
+            myra.CarSearch("Chevrolet", "Camero", 50000, 20000.00m);
 
             CarBuyerModel daniel = new CarBuyerModel();
-            daniel.Make = daniel.PromptForMake();
-            daniel.Model = daniel.PromptForModel();
+            Console.WriteLine("\nPlease provide your name, ZIP code and search radius in miles.");
             (daniel.FirstName, daniel.LastName) = daniel.PromptForName();
-            daniel.CarSearch(1968, 1975, "Dodge", "Challenger");
+            daniel.ZipCode = daniel.PromptForZipCode();
+            daniel.SearchRadius = daniel.PromptForSearchRadius();
+            daniel.CarSearch(1970, 1974, "Dodge", "Challenger");
 
             Console.ReadLine();
         }
@@ -29,19 +30,15 @@ namespace MethodOverload
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int MinYear { get; set; }
-        public int MaxYear { get; set; }
-        public string Make { get; set; }
-        public string Model { get; set; }
-        public int MaxMileage { get; set; }
-        public decimal MaxPrice { get; set; }
+        public int ZipCode { get; set; }
+        public int SearchRadius { get; set; }
 
-        public CarBuyerModel(string firstName, string lastName, string make, string model)
+        public CarBuyerModel(string firstName, string lastName, int zipCode, int searchRadius)
         {
             FirstName = firstName;
             LastName = lastName;
-            Make = make;
-            Model = model;
+            ZipCode = zipCode;
+            SearchRadius = searchRadius;
         }
 
         public CarBuyerModel(string firstName, string lastName)
@@ -54,26 +51,51 @@ namespace MethodOverload
         {
         }
 
-        public string PromptForMake()
+        public int PromptForZipCode()
         {
-            string make;
+            int zipCode = 0;
+            string entry = "";
+            bool valid = false;
 
-            Console.Write("Enter Make: ");
-            make = Console.ReadLine();
-
-            return make;
+            while (!valid)
+            {
+                Console.Write("Enter ZIP code: ");
+                entry = Console.ReadLine();
+                try
+                {
+                    valid = int.TryParse(entry, out zipCode);
+                    valid = true;
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"The entry: {entry} was invalid.");
+                }
+            }
+            return zipCode;
         }
 
-        public string PromptForModel()
+        public int PromptForSearchRadius()
         {
-            string model;
+            int radius = 0;
+            string entry = "";
+            bool valid = false;
 
-            Console.Write("Enter Model: ");
-            model = Console.ReadLine();
-
-            return model;
+            while (!valid)
+            {
+                Console.Write("Enter search radius in miles: ");
+                entry = Console.ReadLine();
+                try
+                {
+                    valid = int.TryParse(entry, out radius);
+                    valid = true;
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"The entry: {entry} was invalid.");
+                }
+            }
+            return radius;
         }
-
         public (string firstName, string lastName) PromptForName()
         {
             string first;
@@ -115,7 +137,8 @@ namespace MethodOverload
 
         public void CarSearch(int minYear, int maxYear, string make, string model, int maxMileage, decimal maxPrice)
         {
-            Console.WriteLine($"Search Parameters: Years {minYear}-{maxYear} Make: {make} Model: {model} MaxMileage: {maxMileage} Max Price: {maxPrice}");
+            Console.Write($"Car Search for {FirstName} {LastName} within {SearchRadius} miles of ZIP code {ZipCode}.");
+            Console.WriteLine($"Search Params: Years {minYear}-{maxYear} Make: {make} Model: {model} MaxMileage: {maxMileage} Max Price: {maxPrice}");
         }
     }
 }

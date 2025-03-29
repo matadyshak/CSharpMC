@@ -10,14 +10,15 @@ namespace ExtensionMethods
 
             person.FirstName = "Enter your first name: ".RequestString();
             person.LastName = "Enter your last name: ".RequestString();
-            person.Age = person.Age.RequestInt("Enter your age in years: ", true, 0, 120);
+            person.Age = "Enter your age in years: ".RequestInt(0, 120);
             Console.WriteLine($"{person.FirstName} {person.LastName} {person.Age}");
 
-            person.Age = person.Age.RequestInt("Enter your age in years: ", false);
+            person.Age = "Enter your age in years: ".RequestInt();
             Console.WriteLine($"{person.FirstName} {person.LastName} {person.Age}");
 
-            person.Age = person.Age.RequestInt("Enter your age in years: ");
-            Console.WriteLine($"{person.FirstName} {person.LastName} {person.Age}");
+	    person.GradePointAverage = "Enter your Grade Point Average (0.00 - 4.00): ".RequestDouble(0.00, 4.00);
+	    person.StartingSalary = "Enter your starting annual salary: ".RequestDecimal();
+
 
             Console.ReadLine();
         }
@@ -28,6 +29,8 @@ namespace ExtensionMethods
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
+        public double GradePointAverage { get; set; }
+        public decimal StartingSalary { get; set; }
     }
 
     public static class ConsoleHelper
@@ -48,7 +51,8 @@ namespace ExtensionMethods
             }
             return output;
         }
-        public static int RequestInt(this int number, string message, bool useMinMax, int minValue = 0, int maxValue = 0)
+
+        private static int RequestInt(this string message, bool useMinMax, int minValue = 0, int maxValue = 0)
         {
             int output = 0;
             bool validInt = false;
@@ -77,13 +81,94 @@ namespace ExtensionMethods
             return output;
         }
 
-        public static int RequestInt(this int number, string message)
+        public static int RequestInt(this string message)
         {
-            int output = 0;
+            return message.RequestInt(false);
+        }
 
-            output = output.RequestInt(message);
+        public static int RequestInt(this string message, int minvalue, int maxValue)
+        {
+            return message.RequestInt(true, minValue, maxValue);
+        }
+
+        private static double RequestDouble(this string message, bool useMinMax, double minValue = 0.0, double maxValue = 0.0)
+        {
+            bool validDouble = false;
+            bool validRange = false;
+            string entry = "";
+            double output = 0.0;
+
+            while ((validDouble == false) || (validRange == false))
+            {
+                Console.Write(message);
+                entry = Console.ReadLine();
+                try
+                {
+                    validDouble = double.TryParse(entry, out output);
+                    validRange = true;
+                    if (useMinMax)
+                    {
+                        validRange = ((output >= minValue) && (output <= maxValue));
+                    }
+
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"The entry: {entry} was not a valid double-precision floating point value.");
+                }
+            }
             return output;
         }
+
+        public static double RequestDouble(this string message)
+        {
+            return message.RequestDouble(false);
+        }
+
+        public static double RequestDouble(this string message, double minValue, double maxValue)
+        {
+            return message.RequestDouble(true, minValue, maxValue);
+        }
+
+        private static double RequestDouble(this string message, bool useMinMax, double minValue = 0.0, double maxValue = 0.0)
+        {
+            bool validDouble = false;
+            bool validRange = false;
+            string entry = "";
+            double output = 0.0;
+
+            while ((validDouble == false) || (validRange == false))
+            {
+                Console.Write(message);
+                entry = Console.ReadLine();
+                try
+                {
+                    validDouble = double.TryParse(entry, out output);
+                    validRange = true;
+                    if (useMinMax)
+                    {
+                        validRange = ((output >= minValue) && (output <= maxValue));
+                    }
+
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"The entry: {entry} was not a valid double-precision floating point value.");
+                }
+            }
+            return output;
+        }
+
+        public static decimal RequestDecimal(this string message)
+        {
+            return message.RequestDecimal(false);
+        }
+
+        public static decimal RequestDecimal(this string message, decimalouble minValue, double maxValue)
+        {
+            return message.RequestDouble(true, minValue, maxValue);
+        }
+
     }
 }
 
