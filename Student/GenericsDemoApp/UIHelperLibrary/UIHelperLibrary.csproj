@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AddressModel.cs" />
     <Compile Include="ExtensionElemDataTypes.cs" />
+    <Compile Include="IErrorCheck.cs" />
     <Compile Include="PersonModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

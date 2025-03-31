@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace UIHelperLibrary
 {
-    public class PersonModel
+    public class PersonModel : IErrorCheck, IPrintable
     {
         private string _firstName;
         private string _lastName;
@@ -38,7 +38,7 @@ namespace UIHelperLibrary
                 _lastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
             }
         }
-
+        public bool HasError { get; set; } = false;
         public string RequestName(string prompt)
         {
             string entry;
@@ -65,6 +65,11 @@ namespace UIHelperLibrary
 
                 Console.WriteLine($"Entry: \'{entry}\' is invalid.  Please try again."); ;
             } while (true);
+        }
+
+        public void Print()
+        {
+            Console.WriteLine($"{FirstName} {LastName}");
         }
     }
 }

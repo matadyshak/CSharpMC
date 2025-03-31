@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace UIHelperLibrary
 {
-    public class AddressModel
+    public class AddressModel : IErrorCheck, IPrintable
     {
         private string _addressLine1;
         private string _addressLine2;
@@ -96,6 +96,7 @@ namespace UIHelperLibrary
                 _zipCode = value;
             }
         }
+        public bool HasError { get; set; } = false;
         public string RequestAddressLine1(string prompt)
         {
             string address1;
@@ -226,6 +227,15 @@ namespace UIHelperLibrary
             string output = result.Trim();
 
             return output;
+        }
+        public void Print()
+        {
+            Console.WriteLine($"{AddressLine1}");
+            if (AddressLine2.Length > 0)
+            {
+                Console.WriteLine($"{AddressLine2}");
+            }
+            Console.WriteLine($"{City}, {State} {ZipCode}");
         }
     }
 }
