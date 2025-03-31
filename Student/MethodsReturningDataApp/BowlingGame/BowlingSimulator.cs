@@ -285,6 +285,7 @@
 
             //Frame 1 (index 0)
             // Scores will be the accumulative score
+
             Scores[0] = FrameScores[0];
 
             for (int i = 1; i<=9; i++)
