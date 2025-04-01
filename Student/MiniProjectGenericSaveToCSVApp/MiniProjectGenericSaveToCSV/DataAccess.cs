@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace MiniProjectGenericSaveToCSV
 {
     public class DataAccess<T> where T : new()
     {
         public event EventHandler<T> BadEntryFound;
+        public event EventHandler<T> FileNotFoundOrEmpty;
+        //public event EventHandler<T> ColumnNotFound;
         public void SaveToCSVFile(List<T> items, string filePath)
         {
             string val = "";
@@ -52,6 +55,63 @@ namespace MiniProjectGenericSaveToCSV
             }
 
             File.WriteAllLines(filePath, rows);
+        }
+        public List<T> LoadFromCSVFile(string filePath)
+        {
+            List<T> Items = new List<T>();
+            bool FileNotFoundOrEmptyError = false;
+
+            try
+            {
+                // Without the catch blocks this will cause an unhandled exception
+                string[] lines = File.ReadAllLines(filePath);
+
+                // In case of file not found the below lines will be skipped over
+                // HeaderRow is never checked to see if it matches the property names of T
+                string[] HeaderRow = lines[0].Split(',');
+
+                // Additions could be done to handle missing columns, extra columns, re-arranged columns, etc.
+
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string[] values = lines[i].Split(',');
+
+                    //Use reflection to get the properties of T
+                    T entry = new T();
+                    var properties = entry.GetType().GetProperties();
+
+                    // properties.Length should equal values.Length
+                    for (int j = 0; j < properties.Length && j < values.Length; j++)
+                    {
+                        PropertyInfo prop = properties[j];
+                        // Initially entry is null null null
+                        if (prop.CanWrite)
+                        {
+                            // This sets the three properties of entry to the values[j]
+                            prop.SetValue(entry, Convert.ChangeType(values[j], prop.PropertyType));
+                        }
+                    }
+                    Items.Add(entry);
+                }
+            }
+            catch (IOException e)
+            {
+                FileNotFoundOrEmptyError = true;
+                Console.WriteLine($"Error reading file: {e.Message}");
+            }
+            catch (Exception e)
+            {
+                FileNotFoundOrEmptyError = true;
+                Console.WriteLine($"Processing error: {e.Message}");
+            }
+
+            if (FileNotFoundOrEmptyError == true)
+            {
+                T Dummy = new T();
+                FileNotFoundOrEmpty?.Invoke(this, Dummy);
+            }
+
+            return Items;
         }
 
         public bool BadWordDetector(string input)
