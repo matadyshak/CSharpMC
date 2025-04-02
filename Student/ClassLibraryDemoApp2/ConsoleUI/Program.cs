@@ -55,11 +55,11 @@
         }
         private static void PeopleData_FileNotFoundOrEmpty(object sender, PersonModel e)
         {
-            Console.WriteLine($"File not found or empty for {e.FirstName} {e.LastName} {e.Email}");
+            Console.WriteLine("File not found or empty.");
         }
         private static void CarData_FileNotFoundOrEmpty(object sender, CarModel e)
         {
-            Console.WriteLine($"File not found or empty for {e.Manufacturer} {e.YearManufactured}");
+            Console.WriteLine("File not found or empty.");
         }
     }
 }
