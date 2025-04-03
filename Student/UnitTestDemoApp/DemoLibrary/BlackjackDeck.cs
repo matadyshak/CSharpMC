@@ -1,7 +1,16 @@
-﻿namespace DemoLibrary
+﻿﻿using System;
+using System.Collections.Generic;
+
+namespace DemoLibrary
 {
-    public class BlackjackDeck
+    public class BlackjackDeck : Deck
     {
+        public BlackjackDeck(Random random) : base(random)
+        {
+            CreateDeck();
+            ShuffleDeck();
+        }
+
         public int CalculateSumOfCards(List<PlayingCard> cards)
         {
             int sum = 0;
@@ -49,5 +58,41 @@
 
             return sum;
         }
+
+        public override List<PlayingCard> DealCards()
+        {
+            int numberOfCards = 2;
+            if (DrawPile.Count < numberOfCards)
+            {
+                Console.WriteLine("Not enough cards in the draw pile.");
+                return null;
+            }
+
+            List<PlayingCard> drawnCards = new List<PlayingCard>();
+
+            for (int i = 0; i<numberOfCards; i++)
+            {
+                drawnCards.Add(DrawOneCard());
+            }
+
+            return drawnCards;
+        }
+
+        public (List<PlayingCard>, int) StartBlackjackHand()
+        {
+            List<PlayingCard> cards = new List<PlayingCard>();
+            int score;
+
+            cards = DealCards();
+            if (cards == null)
+            {
+                return (null, 0);
+            }
+
+            score = CalculateSumOfCards(cards);
+            return (cards, score);
+        }
     }
 }
+
+

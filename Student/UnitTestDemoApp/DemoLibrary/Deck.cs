@@ -1,4 +1,9 @@
-﻿namespace DemoLibrary
+﻿﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+
+namespace DemoLibrary
 {
     public abstract class Deck
     {
@@ -72,6 +77,7 @@
             DrawPile.Remove(output);
             return output;
         }
+
         public abstract List<PlayingCard> DealCards();
 
         public int GetDrawPileCount()
@@ -80,5 +86,3 @@
         }
     }
 }
-
-
