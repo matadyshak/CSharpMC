@@ -5,6 +5,35 @@ namespace DemoLibrary.Tests
     public class BlackjackTests
     {
         [Fact]
+        public void CalculateSumOfCards_4A_42_33_ShouldReturn21()
+        {
+            // Arrange
+            Random random = new Random(12345);
+            BlackjackDeck blackjack = new BlackjackDeck(random);
+            List<PlayingCard> hand = new List<PlayingCard>
+            {
+                new PlayingCard(CardSuits.Hearts, CardValues.Ace),
+                new PlayingCard(CardSuits.Diamonds, CardValues.Ace),
+                new PlayingCard(CardSuits.Spades, CardValues.Ace),
+                new PlayingCard(CardSuits.Clubs, CardValues.Ace),
+                new PlayingCard(CardSuits.Hearts, CardValues.Two),
+                new PlayingCard(CardSuits.Diamonds, CardValues.Two),
+                new PlayingCard(CardSuits.Spades, CardValues.Two),
+                new PlayingCard(CardSuits.Clubs, CardValues.Two),
+                new PlayingCard(CardSuits.Spades, CardValues.Three),
+                new PlayingCard(CardSuits.Clubs, CardValues.Three),
+                new PlayingCard(CardSuits.Hearts, CardValues.Three)
+            };
+
+            // Act
+            int actual = blackjack.CalculateSumOfCards(hand);
+            int expected = 21;
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void CalculateSumOfCards_AH_10D_ShouldReturn21()
         {
             // Arrange
