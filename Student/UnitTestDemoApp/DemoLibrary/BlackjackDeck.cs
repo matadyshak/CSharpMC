@@ -1,7 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-
-namespace DemoLibrary
+﻿namespace DemoLibrary
 {
     public class BlackjackDeck : Deck
     {
