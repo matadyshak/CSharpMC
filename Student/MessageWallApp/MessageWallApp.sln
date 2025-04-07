@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35806.99 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageWall", "MessageWall\MessageWall.csproj", "{035C1C57-DD55-48E2-947D-573B5F53AD2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonModel", "PersonModel\PersonModel.csproj", "{9A0B55BF-8F46-4BD1-8EC5-B002B05ED6D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{035C1C57-DD55-48E2-947D-573B5F53AD2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{035C1C57-DD55-48E2-947D-573B5F53AD2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{035C1C57-DD55-48E2-947D-573B5F53AD2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{035C1C57-DD55-48E2-947D-573B5F53AD2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A0B55BF-8F46-4BD1-8EC5-B002B05ED6D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A0B55BF-8F46-4BD1-8EC5-B002B05ED6D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A0B55BF-8F46-4BD1-8EC5-B002B05ED6D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A0B55BF-8F46-4BD1-8EC5-B002B05ED6D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AF58BC41-E72D-4167-BBAE-4D69CF9EDFED}
+	EndGlobalSection
+EndGlobal
