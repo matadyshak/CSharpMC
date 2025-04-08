@@ -16,6 +16,7 @@ namespace MiniProjectWinForm
             this.textBoxAddressLine1.Text = temp;
             this.textBoxAddressLine1.SelectionStart = this.textBoxAddressLine1.TextLength;
             address.AddressLine1 = temp;
+            SetResetOKButtonEnable();
         }
 
         private void textBoxAddressLine2_TextChanged(object sender, System.EventArgs e)
@@ -24,6 +25,7 @@ namespace MiniProjectWinForm
             this.textBoxAddressLine2.Text = temp;
             this.textBoxAddressLine2.SelectionStart = this.textBoxAddressLine2.TextLength;
             address.AddressLine2 = temp;
+            SetResetOKButtonEnable();
         }
 
         private void textBoxCity_TextChanged(object sender, System.EventArgs e)
@@ -32,6 +34,7 @@ namespace MiniProjectWinForm
             this.textBoxCity.Text = temp;
             this.textBoxCity.SelectionStart = this.textBoxCity.TextLength;
             address.City = temp;
+            SetResetOKButtonEnable();
         }
 
         private void textBoxState_TextChanged(object sender, System.EventArgs e)
@@ -46,6 +49,7 @@ namespace MiniProjectWinForm
             this.textBoxState.Text = temp;
             this.textBoxState.SelectionStart = this.textBoxState.TextLength;
             address.State = temp;
+            SetResetOKButtonEnable();
             return;
         }
 
@@ -66,9 +70,10 @@ namespace MiniProjectWinForm
             this.textBoxZipcode.Text = temp;
             this.textBoxZipcode.SelectionStart = this.textBoxZipcode.TextLength;
             address.Zipcode = temp;
+            SetResetOKButtonEnable();
             return;
         }
-        private void buttonSave_Click(object sender, System.EventArgs e)
+        private void buttonOKClicked(object sender, System.EventArgs e)
         {
             Close();
         }
@@ -82,15 +87,20 @@ namespace MiniProjectWinForm
             return address;
         }
 
-        private bool CheckIfOKButtonCanBeEnabled()
+        private bool SetResetOKButtonEnable()
         {
+            bool enableOKButton = false;
+
             if ((this.textBoxAddressLine1.Text.Length > 0) &&
                 (this.textBoxCity.Text.Length > 0) &&
                 (this.textBoxState.Text.Length > 0) &&
                 (this.textBoxZipcode.Text.Length > 0))
             {
-
+                enableOKButton = true;
             }
+
+            this.buttonOK.Enabled = enableOKButton;
+            return enableOKButton;
         }
     }
 }
