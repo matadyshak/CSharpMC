@@ -26,7 +26,7 @@ namespace MiniProjectWinForm
             if (result == DialogResult.OK)
             {
                 address = addressModel.GetAddressModel();
-                string messageText = $"{person.FirstName} {person.LastName} {address.AddressLine1} {address.AddressLine2} {address.City} {address.State} {address.Zipcode}";
+                string messageText = $"{person.FirstName} {person.LastName} {address.AddressLine1} {address.AddressLine2} {address.City} {address.State}  {address.Zipcode}";
                 messages.Add(messageText);
                 clearNames();
             }

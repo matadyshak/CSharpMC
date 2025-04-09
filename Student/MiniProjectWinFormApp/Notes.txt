@@ -1,0 +1,69 @@
+4/8/25
+
+Corey: PerrsonModel class has a List<AddressModel>
+
+Me: I had a single AddressModel called address which holds the contents of the FormAddressModel
+
+
+Corey: BindingList<AddrssModel>
+Me: BindingList<string>
+
+Corey: 
+
+
+Corey: addresses.Add(new AddressModel {StreetAddress = "123 State Street", City = "Scranton", State = "PA", Zipcode = "12345" }
+       addressesList.DataSource = addresses
+       addressesList.DisplayMember = nameof(AddressModel.StreetAddress)
+
+Corey: public string AddressDisplayValue => $"{StreetAddress} {City} {State}  {Zipcode}"
+
+entry.Show() vs entry.ShowDialog()
+
+// In ISaveAddress.cs
+public interface ISaveAddress
+{
+    void SaveAddress(AddressModel address);
+}
+
+public partial class PersonEntry : Form, ISaveAddress
+
+public void SaveAddress(AddressModel address)
+{
+    addresses.Add(address);
+}
+
+public partial class AddressEntry : Form
+{
+    ISaveAddress _parent;
+
+    public AddressEntry(ISaveAddress parent)
+    {
+        InitializeComponent();
+
+        _parent = parent;
+    }
+
+    private void SaveRecord_Click(object sender, EventArgs e)
+    {
+        AddressModel address = new AddressModel
+        {
+            StreetAddress = streetAddressText.Text,
+            City = cityText.Text,
+            State = stateText.Text,
+	    ZipCode = zipCodeText.Text
+        };
+
+        _parent.SaveAddress(address);
+
+        this.Close();
+     }
+
+
+In PersonEntry.cs
+
+private void AddNewAddress_Click(object sender, EventArgs e)
+{
+	// This is how the parent class is passed into the constructor
+    AddressEntry entry = new AddressEntry(this);
+    entry.Show();
+}
