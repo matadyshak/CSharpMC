@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
+﻿using DemoLibrary;
+using System.ComponentModel;
 using System.Windows.Forms;
-using UIHelperLibrary;
 
 namespace MiniProjectWinForm
 {
-    public partial class FormPersonModel : Form
+    public partial class FormPersonModel : Form, ISaveAddress
     {
         PersonModel person = new PersonModel();
         AddressModel address = new AddressModel();
@@ -54,6 +54,11 @@ namespace MiniProjectWinForm
             person.FirstName = "";
             this.textBoxLastName.Text = "";
             person.LastName = "";
+        }
+
+        public void SaveAddress(AddressModel address)
+        {
+            listBoxNamesAddresses.Add(address);
         }
     }
 }

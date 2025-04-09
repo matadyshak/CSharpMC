@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace UIHelperLibrary
+namespace DemoLibrary
 {
     public class PersonModel
     {
