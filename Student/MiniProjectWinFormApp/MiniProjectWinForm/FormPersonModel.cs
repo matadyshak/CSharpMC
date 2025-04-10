@@ -9,19 +9,19 @@ namespace MiniProjectWinForm
         PersonModel person = new PersonModel();
         AddressModel address = new AddressModel();
         BindingList<string> messages = new BindingList<string>();
+
         public FormPersonModel()
         {
             InitializeComponent();
-            WireUpLists();
+            listBoxNamesAddresses.DataSource = messages;
+            //listBoxNamesAddresses.DisplayMember = nameof(AddressModel.AddressDisplayValue);
+            
         }
 
-        private void WireUpLists()
-        {
-            listBoxNamesAddresses.DataSource = messages;
-        }
+
         private void buttonEnterAddress_Click(object sender, System.EventArgs e)
         {
-            FormAddressModel addressModel = new FormAddressModel();
+            FormAddressModel addressModel = new FormAddressModel(this);
             DialogResult result = addressModel.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -30,6 +30,16 @@ namespace MiniProjectWinForm
                 messages.Add(messageText);
                 clearNames();
             }
+        }
+
+
+	// This is called by SaveRecord_Click() after storing the form
+        // data members in a AddressModel object but before the AddressForm is closed
+        // Save button on AddressForm is like my OK button
+        // I also have a cancel button
+        public void SaveAddress(AddressModel address)
+        {
+            listBoxNamesAddresses.Add(address);
         }
 
         private void textBoxFirstName_TextChanged(object sender, System.EventArgs e)
@@ -54,11 +64,6 @@ namespace MiniProjectWinForm
             person.FirstName = "";
             this.textBoxLastName.Text = "";
             person.LastName = "";
-        }
-
-        public void SaveAddress(AddressModel address)
-        {
-            listBoxNamesAddresses.Add(address);
         }
     }
 }
