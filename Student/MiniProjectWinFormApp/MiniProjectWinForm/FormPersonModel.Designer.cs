@@ -45,7 +45,7 @@
             this.buttonEnterAddress.TabIndex = 7;
             this.buttonEnterAddress.Text = "Enter Address Info";
             this.buttonEnterAddress.UseVisualStyleBackColor = true;
-            this.buttonEnterAddress.Click += new System.EventHandler(this.buttonEnterAddress_Click);
+            this.buttonEnterAddress.Click += new System.EventHandler(this.ButtonEnterAddress_Click);
             // 
             // labelLastName
             // 
@@ -74,7 +74,7 @@
             this.textBoxLastName.Name = "textBoxLastName";
             this.textBoxLastName.Size = new System.Drawing.Size(452, 31);
             this.textBoxLastName.TabIndex = 6;
-            this.textBoxLastName.TextChanged += new System.EventHandler(this.textBoxLastName_TextChanged);
+            this.textBoxLastName.TextChanged += new System.EventHandler(this.TextBoxLastName_TextChanged);
             // 
             // textBoxFirstName
             // 
@@ -83,7 +83,7 @@
             this.textBoxFirstName.Name = "textBoxFirstName";
             this.textBoxFirstName.Size = new System.Drawing.Size(468, 31);
             this.textBoxFirstName.TabIndex = 5;
-            this.textBoxFirstName.TextChanged += new System.EventHandler(this.textBoxFirstName_TextChanged);
+            this.textBoxFirstName.TextChanged += new System.EventHandler(this.TextBoxFirstName_TextChanged);
             // 
             // listBoxNamesAddresses
             // 

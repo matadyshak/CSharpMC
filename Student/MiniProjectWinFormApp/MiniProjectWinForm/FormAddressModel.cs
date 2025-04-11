@@ -60,6 +60,7 @@ namespace MiniProjectWinForm
             if ((this.textBoxZipcode.TextLength < 5) ||
                ((this.textBoxZipcode.TextLength > 5) && (this.textBoxZipcode.TextLength < 10)))
             {
+                SetResetOKButtonEnable();
                 return;
             }
 
@@ -77,13 +78,13 @@ namespace MiniProjectWinForm
 
         private void buttonOKClicked(object sender, System.EventArgs e)
         {
-	    address.AddressLine1 = this.textBoxAddressLine1.Text;
-	    address.AddressLine2 = this.textBoxAddressLine2.Text;
-	    address.City = this.textBoxCity.Text;
-	    address.State = this.textBoxState.Text;
-	    address.Zipcode = this.textBoxZipcode.Text;
+            address.AddressLine1 = this.textBoxAddressLine1.Text;
+            address.AddressLine2 = this.textBoxAddressLine2.Text;
+            address.City = this.textBoxCity.Text;
+            address.State = this.textBoxState.Text;
+            address.Zipcode = this.textBoxZipcode.Text;
 
-	    _parent.SaveAddress(address);
+            _parent.SaveAddress(address);
 
             this.Close();
         }
