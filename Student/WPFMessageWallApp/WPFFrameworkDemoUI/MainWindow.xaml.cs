@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +20,18 @@ namespace WPFFrameworkDemoUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        BindingList<string> messages = new BindingList<string>();
+
         public MainWindow()
         {
             InitializeComponent();
+            MessageList.ItemsSource = messages;
+        }
+
+        private void addMessage_Click(object sender, RoutedEventArgs e)
+        {
+            messages.Add(messageText.Text);
+            messageText.Text = "";
         }
     }
 }
