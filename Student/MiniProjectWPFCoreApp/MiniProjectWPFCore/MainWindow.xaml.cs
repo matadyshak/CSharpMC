@@ -24,7 +24,7 @@ namespace MiniProjectWPFCore
         public MainWindow()
         {
             InitializeComponent();
-            listBoxNamesAddresses. = NamesAndAddresses;
+            listBoxNamesAddresses.DataContext = NamesAndAddresses;
             //listBoxNamesAddresses.DisplayMember = nameof(AddressModel.AddressDisplayValue);
             SetEnterAddressButtonEnable();
         }
