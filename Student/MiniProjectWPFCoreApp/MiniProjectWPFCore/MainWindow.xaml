@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MiniProjectWPFCore"
         mc:Ignorable="d" FontSize="22"
-        Title="MainWindow" Height="450" Width="1000">
+        Title="Name Entry" Height="750" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -24,25 +24,25 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Margin="0 20 10 20" Grid.Row="0" Grid.Column="1">First Name:</TextBlock>
-        <TextBox x:Name="FirstName" Margin="0 20 0 20" Grid.Row="0" Grid.Column="2" MinWidth="500" MaxWidth="750300" TextWrapping="Wrap" />
+        <TextBox x:Name="textBoxFirstName" Margin="0 20 0 20" Grid.Row="0" Grid.Column="2" MinWidth="750" MaxWidth="1000" TextWrapping="Wrap"
+        TextChanged = "TextBoxFirstName_TextChanged" />
+
 
         <TextBlock Margin="0 20 10 20" Grid.Row="1" Grid.Column="1">Last Name:</TextBlock>
-        <TextBox x:Name="LastName" Margin="0 20 0 20" Grid.Row="1" Grid.Column="2" TextWrapping="Wrap" />
+        <TextBox x:Name="textBoxLastName" Margin="0 20 0 20" Grid.Row="1" Grid.Column="2" TextWrapping="Wrap"
+        TextChanged = "TextBoxLastName_TextChanged" />
 
-        <Button x:Name="addAddress" Margin="0 10 0 10" Grid.Row="2" Grid.Column="2" Padding="0 5" Width="75"
-                Click="addAddress_Click" >Add</Button>
+        <Button x:Name="buttonEnterAddress" Margin="0 10 0 10" Grid.Row="2" Grid.Column="2" Padding="0 5" Width="75"
+                Click="ButtonEnterAddress_Click" >Add</Button>
 
         <TextBlock Margin="0 0 10 0" Grid.Row="3" Grid.Column="1">Addresses:</TextBlock>
 
-        <ListBox x:Name="AddressList" Margin="0 20 0 20" Grid.Row="3" Grid.Column="2">
+        <ListBox x:Name="listBoxNamesAddresses" Margin="0 20 0 20" Grid.Row="3" Grid.Column="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
-        <Button x:Name="SaveRecord" Margin="0 10 0 10" Grid.Row="4" Grid.Column="2" Padding="0 5" Width="75"
-                Click="saveRecord_Click" >Save</Button>
     </Grid>
 </Window>
