@@ -98,12 +98,14 @@ namespace MiniProjectWPFCore
             address.Zipcode = textBoxZipcode.Text;
 
             _parent.SaveAddress(address);
+            this.DialogResult = true;
 
             Close();
         }
 
         private void ButtonCancel_Click(object sender, System.EventArgs e)
         {
+            this.DialogResult = false;
             Close();
         }
 

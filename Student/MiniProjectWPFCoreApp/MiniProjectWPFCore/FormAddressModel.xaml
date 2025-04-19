@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MiniProjectWPFCore"
-        mc:Ignorable="d" FontSize="22"
-        Title="Address Entry" Height="750" Width="1000">
+        mc:Ignorable="d" FontSize="16"
+        Title="Address Entry" Height="400" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -22,42 +22,48 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-                     
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Margin="0 20 0 10">
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Margin="0 20 0 10"
+            HorizontalAlignment="Right">
             <TextBlock Margin="0 0 10 0">Address Line 1:</TextBlock>
-            <TextBox x:Name="textBoxAddressLine1" MinWidth="600" MaxWidth="800" TextWrapping="Wrap"
+            <TextBox x:Name="textBoxAddressLine1" MinWidth="600" MaxWidth="850" Padding="5 0 5 0" TextWrapping="Wrap"
             TextChanged = "TextBoxAddressLine1_TextChanged" />
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="0 20 0 10">
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="0 20 0 10"
+            HorizontalAlignment="Right">
             <TextBlock Margin="0 0 10 0">Address Line 2:</TextBlock>
-            <TextBox x:Name="textBoxAddressLine2" TextWrapping="Wrap"
+            <TextBox x:Name="textBoxAddressLine2" MinWidth="600" MaxWidth="850" Padding="5 0 5 0" TextWrapping="Wrap"
             TextChanged = "TextBoxAddressLine2_TextChanged" />
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Margin="0 20 0 10">
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Margin="0 20 0 10"
+            HorizontalAlignment="Right">        
             <TextBlock Margin="0 0 10 0">City:</TextBlock>
-            <TextBox x:Name="textBoxCity" TextWrapping="Wrap"
+            <TextBox x:Name="textBoxCity" MinWidth="600" MaxWidth="850" Padding="5 0 5 0" TextWrapping="Wrap"
             TextChanged = "TextBoxCity_TextChanged" />
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Margin="0 20 0 10">
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Margin="0 20 0 10"
+            HorizontalAlignment="Right">
             <TextBlock Margin="0 0 10 0">State:</TextBlock>
-            <TextBox x:Name="textBoxState"
+            <TextBox x:Name="textBoxState" MinWidth="25" 
             TextChanged = "TextBoxState_TextChanged" />
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Margin="0 20 0 10">
+        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Margin="0 20 0 10"
+            HorizontalAlignment="Right">
             <TextBlock Margin="0 0 10 0">Zip Code:</TextBlock>
-            <TextBox x:Name="textBoxZipcode"
+            <TextBox x:Name="textBoxZipcode" MinWidth="95" 
             TextChanged = "TextBoxZipcode_TextChanged" />
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" Margin="0 20 10 10">
-            <Button x:Name="buttonOK" Grid.Row="5" Grid.Column="1" Padding="0 5"
-                    Click="ButtonOKClicked" >OK</Button>
-            <Button x:Name="buttonCancel" Grid.Row="5" Grid.Column="1" Padding="0 5"
-                    Click="ButtonCancel_Click" >Cancel</Button>
+        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" Margin="0 20 10 10" 
+                    HorizontalAlignment="Center">
+            <Button x:Name="buttonOK" Grid.Row="5" Grid.Column="1" Padding="35 4 35 4" Margin="0 0 20 0"
+                    Click="ButtonOKClicked">OK</Button>
+            <Button x:Name="buttonCancel" Grid.Row="5" Grid.Column="1" Padding="20 4 20 4"
+                    Click="ButtonCancel_Click" IsCancel="True" >Cancel</Button>
         </StackPanel>
     </Grid>
 </Window>
