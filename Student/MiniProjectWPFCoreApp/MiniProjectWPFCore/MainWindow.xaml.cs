@@ -72,7 +72,7 @@ namespace MiniProjectWPFCore
             SetEnterAddressButtonEnable();
         }
 
-        private void EnterAddress_Click(object sender, System.EventArgs e)
+        private void AddressEntry_Click(object sender, System.EventArgs e)
         {
             AddressEntry addressForm = new AddressEntry(this);
             // Modal dialog - Keeps focus until you close it.  Use Show() for modeless dialog

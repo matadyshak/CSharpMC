@@ -7,7 +7,7 @@ namespace MiniProjectWinForm
     {
         ISaveAddress _parent;
 
-        // This is needed to call the validation
+        // This is needed to call the validation code
         AddressModel address = new AddressModel();
 
         public FormAddressModel(ISaveAddress parent)
@@ -16,80 +16,80 @@ namespace MiniProjectWinForm
             _parent = parent;       //this pointer of class that opened FormAddressModel
         }
 
-        private void textBoxAddressLine1_TextChanged(object sender, System.EventArgs e)
+        private void AddressLine1_TextChanged(object sender, System.EventArgs e)
         {
-            string temp = address.ValidateAddressLine1(this.textBoxAddressLine1.Text);
-            this.textBoxAddressLine1.Text = temp;
-            this.textBoxAddressLine1.SelectionStart = this.textBoxAddressLine1.TextLength;
+            string temp = address.ValidateAddressLine1(this.AddressLine1Text.Text);
+            this.AddressLine1Text.Text = temp;
+            this.AddressLine1Text.SelectionStart = this.AddressLine1Text.TextLength;
             SetResetOKButtonEnable();
         }
 
-        private void textBoxAddressLine2_TextChanged(object sender, System.EventArgs e)
+        private void AddressLine2_TextChanged(object sender, System.EventArgs e)
         {
-            string temp = address.ValidateAddressLine2(this.textBoxAddressLine2.Text);
-            this.textBoxAddressLine2.Text = temp;
-            this.textBoxAddressLine2.SelectionStart = this.textBoxAddressLine2.TextLength;
+            string temp = address.ValidateAddressLine2(this.AddressLine2Text.Text);
+            this.AddressLine2Text.Text = temp;
+            this.AddressLine2Text.SelectionStart = this.AddressLine2Text.TextLength;
             SetResetOKButtonEnable();
         }
 
-        private void textBoxCity_TextChanged(object sender, System.EventArgs e)
+        private void City_TextChanged(object sender, System.EventArgs e)
         {
-            string temp = address.ValidateCity(this.textBoxCity.Text);
-            this.textBoxCity.Text = temp;
-            this.textBoxCity.SelectionStart = this.textBoxCity.TextLength;
+            string temp = address.ValidateCity(this.CityText.Text);
+            this.CityText.Text = temp;
+            this.CityText.SelectionStart = this.CityText.TextLength;
             SetResetOKButtonEnable();
         }
 
-        private void textBoxState_TextChanged(object sender, System.EventArgs e)
+        private void State_TextChanged(object sender, System.EventArgs e)
         {
-            if (this.textBoxState.TextLength < 2)
+            if (this.StateText.TextLength < 2)
             {
-                this.textBoxState.Text = this.textBoxState.Text.ToUpper();
-                this.textBoxState.SelectionStart = this.textBoxState.TextLength;
+                this.StateText.Text = this.StateText.Text.ToUpper();
+                this.StateText.SelectionStart = this.StateText.TextLength;
                 return;
             }
-            string temp = address.ValidateState(this.textBoxState.Text);
-            this.textBoxState.Text = temp;
-            this.textBoxState.SelectionStart = this.textBoxState.TextLength;
+            string temp = address.ValidateState(this.StateText.Text);
+            this.StateText.Text = temp;
+            this.StateText.SelectionStart = this.StateText.TextLength;
             SetResetOKButtonEnable();
             return;
         }
 
-        private void textBoxZipcode_TextChanged(object sender, System.EventArgs e)
+        private void Zipcode_TextChanged(object sender, System.EventArgs e)
         {
-            if ((this.textBoxZipcode.TextLength < 5) ||
-               ((this.textBoxZipcode.TextLength > 5) && (this.textBoxZipcode.TextLength < 10)))
+            if ((this.ZipcodeText.TextLength < 5) ||
+               ((this.ZipcodeText.TextLength > 5) && (this.ZipcodeText.TextLength < 10)))
             {
                 SetResetOKButtonEnable();
                 return;
             }
 
-            if (this.textBoxZipcode.Text.Length > 10)
+            if (this.ZipcodeText.Text.Length > 10)
             {
-                this.textBoxZipcode.Text = this.textBoxZipcode.Text.Substring(0, 10);
+                this.ZipcodeText.Text = this.ZipcodeText.Text.Substring(0, 10);
             }
 
-            string temp = address.ValidateZipcode(this.textBoxZipcode.Text);
-            this.textBoxZipcode.Text = temp;
-            this.textBoxZipcode.SelectionStart = this.textBoxZipcode.TextLength;
+            string temp = address.ValidateZipcode(this.ZipcodeText.Text);
+            this.ZipcodeText.Text = temp;
+            this.ZipcodeText.SelectionStart = this.ZipcodeText.TextLength;
             SetResetOKButtonEnable();
             return;
         }
 
-        private void buttonOKClicked(object sender, System.EventArgs e)
+        private void OKButton_Click(object sender, System.EventArgs e)
         {
-            address.AddressLine1 = this.textBoxAddressLine1.Text;
-            address.AddressLine2 = this.textBoxAddressLine2.Text;
-            address.City = this.textBoxCity.Text;
-            address.State = this.textBoxState.Text;
-            address.Zipcode = this.textBoxZipcode.Text;
+            address.AddressLine1 = this.AddressLine1Text.Text;
+            address.AddressLine2 = this.AddressLine2Text.Text;
+            address.City = this.CityText.Text;
+            address.State = this.StateText.Text;
+            address.Zipcode = this.ZipcodeText.Text;
 
             _parent.SaveAddress(address);
 
             this.Close();
         }
 
-        private void buttonCancel_Click(object sender, System.EventArgs e)
+        private void CancelButton_Click(object sender, System.EventArgs e)
         {
             this.Close();
         }
@@ -98,15 +98,15 @@ namespace MiniProjectWinForm
         {
             bool enableOKButton = false;
 
-            if ((this.textBoxAddressLine1.Text.Length > 0) &&
-                (this.textBoxCity.Text.Length > 0) &&
-                (this.textBoxState.Text.Length == 2) &&
-                ((this.textBoxZipcode.Text.Length == 5) || (this.textBoxZipcode.Text.Length == 10)))
+            if ((this.AddressLine1Text.Text.Length > 0) &&
+                (this.CityText.Text.Length > 0) &&
+                (this.StateText.Text.Length == 2) &&
+                ((this.ZipcodeText.Text.Length == 5) || (this.ZipcodeText.Text.Length == 10)))
             {
                 enableOKButton = true;
             }
 
-            this.buttonOK.Enabled = enableOKButton;
+            this.OKButton.Enabled = enableOKButton;
             return enableOKButton;
         }
     }
