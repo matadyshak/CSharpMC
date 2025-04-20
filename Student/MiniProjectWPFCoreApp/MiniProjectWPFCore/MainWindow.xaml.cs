@@ -51,7 +51,14 @@ using System.Windows;
 /// reducing the risk of errors during refactoring.
 ///
 /// Default access mode is private except for interfaces which take no access modifier and are always public
-
+///  
+/// Copied DemoLibrary.DLL from MiniProjectWinFormApp to MiniProjectWinFormApp\DemoLibrary\bin\Debug
+/// R Click Dependencies
+/// Add project reference
+/// Browse to the DLL file in folder where .exe file goes
+/// Check box for DemoLibrary.DLL and click OK
+/// Working.  DLL is .NET Framework.  WPF app is .NET Core 3.1
+////////////////////////////////////////////////////////////////////////////////////////////////
 namespace MiniProjectWPFCore
 {
     /// <summary>
