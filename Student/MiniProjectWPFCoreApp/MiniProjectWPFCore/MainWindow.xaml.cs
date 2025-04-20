@@ -61,29 +61,29 @@ namespace MiniProjectWPFCore
     {
         private PersonModel personModel = new PersonModel();
         private AddressModel addressModel = new AddressModel();
-        private ObservableCollection<string> NamesAndAddresses = new ObservableCollection<string>();
+        private ObservableCollection<string> nameAddressData = new ObservableCollection<string>();
 
         public MainWindow()
         {
             InitializeComponent();
             // Makes sure that the DataContext of the Window itself is not overriding the ListBox
             this.DataContext = this;
-            listBoxNamesAddresses.DataContext = NamesAndAddresses;
+            NameAddressList.DataContext = nameAddressData;
             SetEnterAddressButtonEnable();
         }
 
-        private void ButtonEnterAddress_Click(object sender, System.EventArgs e)
+        private void EnterAddress_Click(object sender, System.EventArgs e)
         {
-            FormAddressModel addressForm = new FormAddressModel(this);
+            AddressEntry addressForm = new AddressEntry(this);
             // Modal dialog - Keeps focus until you close it.  Use Show() for modeless dialog
             bool? result = addressForm.ShowDialog();
             if (result == true)
             {
                 //SaveAddress() has already run before Address Form was closed
-                personModel.FirstName = textBoxFirstName.Text;
-                personModel.LastName = textBoxLastName.Text;
-                string NameAndAddressText = $"{personModel.FirstName} {personModel.LastName} {addressModel.AddressLine1} {addressModel.AddressLine2} {addressModel.City} {addressModel.State}  {addressModel.Zipcode}";
-                NamesAndAddresses.Add(NameAndAddressText);
+                personModel.FirstName = FirstNameText.Text;
+                personModel.LastName = LastNameText.Text;
+                string NameAddressText = $"{personModel.FirstName} {personModel.LastName} {addressModel.AddressLine1} {addressModel.AddressLine2} {addressModel.City} {addressModel.State}  {addressModel.Zipcode}";
+                nameAddressData.Add(NameAddressText);
                 ClearNames();
             }
         }
@@ -93,39 +93,39 @@ namespace MiniProjectWPFCore
             addressModel = address;
         }
 
-        private void TextBoxFirstName_TextChanged(object sender, System.EventArgs e)
+        private void FirstName_TextChanged(object sender, System.EventArgs e)
         {
-            string temp = personModel.ValidateName(textBoxFirstName.Text);
-            textBoxFirstName.Text = temp;
-            textBoxFirstName.SelectionStart = textBoxFirstName.Text.Length;
+            string temp = personModel.ValidateName(FirstNameText.Text);
+            FirstNameText.Text = temp;
+            FirstNameText.SelectionStart = FirstNameText.Text.Length;
             SetEnterAddressButtonEnable();
         }
 
-        private void TextBoxLastName_TextChanged(object sender, System.EventArgs e)
+        private void LastName_TextChanged(object sender, System.EventArgs e)
         {
-            string temp = personModel.ValidateName(textBoxLastName.Text);
-            textBoxLastName.Text = temp;
-            textBoxLastName.SelectionStart = textBoxLastName.Text.Length;
+            string temp = personModel.ValidateName(LastNameText.Text);
+            LastNameText.Text = temp;
+            LastNameText.SelectionStart = LastNameText.Text.Length;
             SetEnterAddressButtonEnable();
         }
 
         private void ClearNames()
         {
-            textBoxFirstName.Text = "";
-            textBoxLastName.Text = "";
+            FirstNameText.Text = "";
+            LastNameText.Text = "";
             SetEnterAddressButtonEnable();
         }
         private bool SetEnterAddressButtonEnable()
         {
             bool enableButton = false;
 
-            if ((string.IsNullOrEmpty(textBoxFirstName.Text) == false) &&
-                (string.IsNullOrEmpty(textBoxLastName.Text) == false))
+            if ((string.IsNullOrEmpty(FirstNameText.Text) == false) &&
+                (string.IsNullOrEmpty(LastNameText.Text) == false))
             {
                 enableButton = true;
             }
 
-            buttonEnterAddress.IsEnabled = enableButton;
+            EnterAddressButton.IsEnabled = enableButton;
             return enableButton;
         }
     }

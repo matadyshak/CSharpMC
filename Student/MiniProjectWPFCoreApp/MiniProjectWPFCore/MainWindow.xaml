@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MiniProjectWPFCore"
         mc:Ignorable="d" FontSize="16"
-        Title="Name Entry" Height="700" Width="1000">
+        Title="Name and Address Entry" Height="700" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -24,21 +24,21 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="1" Margin="0 20 10 20">First Name:</TextBlock>
-        <TextBox x:Name="textBoxFirstName" Grid.Row="0" Grid.Column="2" Margin="0 20 0 20" MinWidth="600" MaxWidth="850" TextWrapping="Wrap"
-        TextChanged = "TextBoxFirstName_TextChanged" />
+        <TextBox x:Name="FirstNameText" Grid.Row="0" Grid.Column="2" Margin="0 20 0 20" MinWidth="600" MaxWidth="850" TextWrapping="Wrap"
+        TextChanged = "FirstName_TextChanged" />
 
 
         <TextBlock Grid.Row="1" Grid.Column="1" Margin="0 20 10 20">Last Name:</TextBlock>
-        <TextBox x:Name="textBoxLastName" Grid.Row="1" Grid.Column="2" Margin="0 20 0 20"   MinWidth="600" MaxWidth="850" TextWrapping="Wrap"
-        TextChanged = "TextBoxLastName_TextChanged" />
+        <TextBox x:Name="LastNameText" Grid.Row="1" Grid.Column="2" Margin="0 20 0 20"   MinWidth="600" MaxWidth="850" TextWrapping="Wrap"
+        TextChanged = "LastName_TextChanged" />
 
-        <Button x:Name="buttonEnterAddress" Grid.Row="2" Grid.Column="2" Margin="0 10 0 10" Padding="10" 
+        <Button x:Name="EnterAddressButton" Grid.Row="2" Grid.Column="2" Margin="0 10 0 10" Padding="10" 
                 HorizontalAlignment="Center"
-                Click="ButtonEnterAddress_Click">Enter Address</Button>
+                Click="EnterAddress_Click">Enter Address</Button>
 
         <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 20 0 20">Contacts:</TextBlock>
 
-        <ListBox x:Name="listBoxNamesAddresses" ItemsSource="{Binding}" Grid.Row="3" Grid.Column="2" Margin="0 20 0 20"  MinWidth="600" MaxWidth="850" MinHeight="25">
+        <ListBox x:Name="NameAddressList" ItemsSource="{Binding}" Grid.Row="3" Grid.Column="2" Margin="0 20 0 20"  MinWidth="600" MaxWidth="850" MinHeight="25">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding}" />
