@@ -1,4 +1,21 @@
 ﻿@page
 @model MiniProjectRazorTwoPages.Pages.AddressModel
 @{
+    ViewData["Title"] = "Address Entry"; 
 }
+
+<h1>Address Entry</h1>
+
+<form method="post">
+    <div class="form-group">
+        <input type="text" asp-for="AddressLine1" placeholder="Type Address Line 1" />
+        <input type="text" asp-for="AddressLine2" placeholder="Type Address Line 2" />
+        <input type="text" asp-for="City" placeholder="Type City" />
+        <input type="text" asp-for="State" placeholder="Type State" />
+        <input type="text" asp-for="Zipcode" placeholder="Type Zipcode" />
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<h2>This is the address:</h2>
+<h3>@Model.AddressAll</h3>

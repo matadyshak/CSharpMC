@@ -1,4 +1,18 @@
 ﻿@page
 @model MiniProjectRazorTwoPages.Pages.PersonModel
 @{
+    ViewData["Title"] = "Name Entry"; 
 }
+
+<h1>Name Entry</h1>
+
+<form method="post">
+    <div class="form-group">
+        <input type="text" asp-for="FirstName" placeholder="Type your first name" />
+        <input type="text" asp-for="LastName" placeholder="Type your last name" />
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<h2>This is the greeting:</h2>
+<h3>@Model.Greeting</h3>

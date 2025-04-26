@@ -10,8 +10,18 @@ namespace MiniProjectRazorTwoPages.Pages
 
         [BindProperty]
         public string LastName { get; set; }
+
+        public string Greeting { get; set; }
+
         public void OnGet()
         {
+            Greeting = "";
+        }
+
+        public IActionResult OnPost()
+        {
+            Greeting = $"Hello, {FirstName} {LastName}!";
+            return Page();  // Will go right back to the same page
         }
     }
 }
