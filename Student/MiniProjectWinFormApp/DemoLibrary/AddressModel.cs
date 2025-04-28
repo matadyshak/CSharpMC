@@ -16,9 +16,14 @@ namespace DemoLibrary
             get { return _addressLine1; }
             set
             {
-                value = value.Trim();
                 // Match letters, numbers and single spaces
-                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$"))
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    value = "";
+                }
+                value = value.Trim();
+
+                if (!Regex.IsMatch(value, "^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$"))
                 {
                     value = "";
                 }
@@ -32,33 +37,35 @@ namespace DemoLibrary
             get { return _addressLine2; }
             set
             {
-                value = value.Trim();
                 // For this property allow empty string
                 if (string.IsNullOrEmpty(value))
                 {
                     _addressLine2 = "";
                 }
-                else
+                value = value.Trim();
+
+                if (!Regex.IsMatch(value, "^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$"))
                 {
-                    if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$"))
-                    {
-                        value = "";
-                    }
-                    _addressLine2 = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                    value = "";
                 }
+                _addressLine2 = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
             }
         }
+
         public string City
         {
             get { return _city; }
             set
             {
-                value = value.Trim();
-                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, "^[A-Za-z ]+$"))
+                if (string.IsNullOrWhiteSpace(value))
                 {
                     value = "";
                 }
-
+                value = value.Trim();
+                if (!Regex.IsMatch(value, "^[A-Za-z ]+$"))
+                {
+                    value = "";
+                }
                 _city = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
             }
         }
@@ -67,10 +74,14 @@ namespace DemoLibrary
             get { return _state; }
             set
             {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    value = "";
+                }
                 value = value.Trim().ToUpper();
                 // 50 states and Washington, DC
                 string regexState = @"^(A[LKZR]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[DLN]|K[SY]|LA|M[ADEINOST]|N[CDEJMSTVY]|O[HKR]|P[A]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY])$";
-                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, regexState))
+                if (!Regex.IsMatch(value, regexState))
                 {
                     value = "";
                 }
@@ -83,12 +94,16 @@ namespace DemoLibrary
             get { return _zipcode; }
             set
             {
-                value = value.Trim();
-                if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, @"^\d{5}(-\d{4})?$"))
+                if (string.IsNullOrWhiteSpace(value))
                 {
                     value = "";
                 }
 
+                value = value.Trim();
+                if (!Regex.IsMatch(value, @"^\d{5}(-\d{4})?$"))
+                {
+                    value = "";
+                }
                 _zipcode = value;
             }
         }

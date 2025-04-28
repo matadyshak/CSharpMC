@@ -1,5 +1,5 @@
 ﻿@page
-@model MiniProjectRazorTwoPages.Pages.PersonModel
+@model MiniProjectRazorTwoPages.Pages.PeopleModel
 @{
     ViewData["Title"] = "Name Entry"; 
 }
@@ -8,8 +8,8 @@
 
 <form method="post">
     <div class="form-group">
-        <input type="text" asp-for="FirstName" placeholder="Type your first name" />
-        <input type="text" asp-for="LastName" placeholder="Type your last name" />
+        <input type="text" asp-for="Person.FirstName" placeholder="First name" />
+        <input type="text" asp-for="Person.LastName" placeholder="Last name" />
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>

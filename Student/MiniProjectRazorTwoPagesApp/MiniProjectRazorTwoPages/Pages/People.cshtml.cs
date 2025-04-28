@@ -1,18 +1,14 @@
+using DemoLibrary;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MiniProjectRazorTwoPages.Pages
 {
-    public class PersonModel : PageModel
+    public class PeopleModel : PageModel
     {
         [BindProperty]
-        public string FirstName { get; set; }
-
-        [BindProperty]
-        public string LastName { get; set; }
-
+        public PersonModel Person { get; set; }
         public string Greeting { get; set; }
-
         public void OnGet()
         {
             Greeting = "";
@@ -20,7 +16,10 @@ namespace MiniProjectRazorTwoPages.Pages
 
         public IActionResult OnPost()
         {
-            Greeting = $"Hello, {FirstName} {LastName}!";
+            Person.FirstName = (Person.FirstName != null) ? Person.ValidateName(Person.FirstName) : "";
+            Person.LastName = (Person.LastName != null) ? Person.ValidateName(Person.LastName) : "";
+
+            Greeting = $"Hello, {Person.FirstName} {Person.LastName}!";
             return Page();  // Will go right back to the same page
         }
     }
