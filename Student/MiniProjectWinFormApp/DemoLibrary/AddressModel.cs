@@ -40,7 +40,7 @@ namespace DemoLibrary
                 // For this property allow empty string
                 if (string.IsNullOrEmpty(value))
                 {
-                    _addressLine2 = "";
+                    value = "";
                 }
                 value = value.Trim();
 
