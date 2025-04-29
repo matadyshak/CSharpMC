@@ -170,7 +170,15 @@ namespace ValidateInSetterLibrary
             string regexZipcode = @"^\d{5}(-\d{4})?$";
             string zipcode = entry.Trim();
 
-            if (!string.IsNullOrWhiteSpace(zipcode) && Regex.IsMatch(zipcode, regexZipcode))
+            if (string.IsNullOrWhiteSpace(zipcode))
+            {
+                return "";
+            }
+
+            zipcode = CleanZipcodeString(zipcode);
+            zipcode = (zipcode.Length > 10) ? zipcode.Substring(0, 10) : zipcode;
+
+            if (Regex.IsMatch(zipcode, regexZipcode))
             {
                 return zipcode;
             }
@@ -208,6 +216,13 @@ namespace ValidateInSetterLibrary
         {
             // Step 1: Remove all non-alpha characters
             string result = Regex.Replace(input, @"[^a-zA-Z]", "");
+
+            return result;
+        }
+        private string CleanZipcodeString(string input)
+        {
+            // Step 1: Remove all non-digits and dash
+            string result = Regex.Replace(input, @"[^0-9-]", "");
 
             return result;
         }
