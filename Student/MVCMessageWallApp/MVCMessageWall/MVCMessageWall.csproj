@@ -9,13 +9,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.32" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="DemoLibrary">
-      <HintPath>..\..\MiniProjectWPFCoreApp\MiniProjectWPFCore\bin\Debug\netcoreapp3.1\DemoLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="ValidateInSetterLibrary">
-      <HintPath>bin\Debug\netcoreapp3.1\ValidateInSetterLibrary.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

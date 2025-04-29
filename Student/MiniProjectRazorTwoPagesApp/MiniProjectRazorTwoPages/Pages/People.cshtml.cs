@@ -1,6 +1,6 @@
-using DemoLibrary;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ValidateInSetterLibrary;
 
 namespace MiniProjectRazorTwoPages.Pages
 {
