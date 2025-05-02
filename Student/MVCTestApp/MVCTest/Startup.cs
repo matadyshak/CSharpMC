@@ -1,10 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace MVCMessageWall
+namespace MVCTest
 {
     public class Startup
     {
@@ -19,7 +24,6 @@ namespace MVCMessageWall
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            // services.AddMvc(); // Can login and logout without this
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,14 +41,13 @@ namespace MVCMessageWall
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseAuthentication(); // Dialog is there to login but name does not appear
+
             app.UseRouting();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                // endpoints.MapControllers();
-                endpoints.MapRazorPages();    //makes register & login work
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
