@@ -19,7 +19,7 @@ namespace MVCMessageWall
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            // services.AddMvc(); // Can login and logout without this
+            services.AddRazorPages();  // Necessary for Razor Pages applications or MVC apps with Identity
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,14 +37,14 @@ namespace MVCMessageWall
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseAuthentication(); // Dialog is there to login but name does not appear
+            app.UseAuthentication(); // Requires Identity
             app.UseRouting();
-            app.UseAuthorization();
+            app.UseAuthorization(); // Authorization applied to requests
 
             app.UseEndpoints(endpoints =>
             {
                 // endpoints.MapControllers();
-                endpoints.MapRazorPages();    //makes register & login work
+                endpoints.MapRazorPages();    // Required by MVC with Identity since Identity is a Razor Class Library
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
