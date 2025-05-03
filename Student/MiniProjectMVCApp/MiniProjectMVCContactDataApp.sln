@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35806.99 d17.13
+VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniProjectMVC", "MiniProjectMVC\MiniProjectMVC.csproj", "{83E528C0-C49D-4CD5-A342-F44C81F86383}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniProjectMVCContactData", "MiniProjectMVC\MiniProjectMVCContactData.csproj", "{83E528C0-C49D-4CD5-A342-F44C81F86383}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

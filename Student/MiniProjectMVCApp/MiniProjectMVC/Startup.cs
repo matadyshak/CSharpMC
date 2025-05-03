@@ -19,6 +19,7 @@ namespace MiniProjectMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            //services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,9 +37,9 @@ namespace MiniProjectMVC
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseAuthentication();
+            //app.UseAuthentication(); // requires setting up Identity or another authentication mechanism
             app.UseRouting();
-            app.UseAuthorization();
+            app.UseAuthorization(); // ensures that authorization is applied to requests
 
             app.UseEndpoints(endpoints =>
             {
