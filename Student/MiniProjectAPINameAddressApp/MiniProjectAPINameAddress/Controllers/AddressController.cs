@@ -35,6 +35,7 @@ namespace MiniProjectAPINameAddress.Controllers
         [HttpPost]
         public void Post([FromBody] AddressModel address)
         {
+
             _logger.LogInformation("Posted address: {AddressLine1} {AddressLine2} {City} {State}  {Zipcode}",
                 address.AddressLine1, address.AddressLine2, address.City, address.State, address.Zipcode);
         }
