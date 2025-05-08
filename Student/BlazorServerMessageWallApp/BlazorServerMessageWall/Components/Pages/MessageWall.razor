@@ -6,13 +6,24 @@
     <ValidationSummary />
 
     <label for="message" class="form-label">@nameof(model.Message)</label>
-    <InputText id="message" @bind-Value="model.Message" />
+    <InputText id="message" @bind-Value="model.Message" class="form-control" />
+    <button class="btn btn-primary" type="submit">Submit</button>
 </EditForm>
+
+<ul>
+    @foreach (string message in messages)
+    {
+        <li>@message</li>
+    }
+</ul>
 
 @code {
     private MessageModel model = new();
+    private List<string> messages = new();
 
     private void ValidSubmission()
     {
+        messages.Add(model.Message);
+        model = new();
     }
 }
