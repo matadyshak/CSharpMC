@@ -1,7 +1,9 @@
 ﻿@page "/MessageWall"
 
+<PageTitle>Custom Message Wall</PageTitle>
+
 <h3>Message Wall</h3>
-<EditForm Model="model" on OnValidSubmit="ValidSubmission">
+<EditForm Model="model" FormName="UserMessageForm" on OnValidSubmit="ValidSubmission">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
