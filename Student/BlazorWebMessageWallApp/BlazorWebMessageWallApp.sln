@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35806.99 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerMessageWall", "BlazorServerMessageWall\BlazorServerMessageWall.csproj", "{8A809D56-6DA5-485B-9176-935979B31408}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWebMessageWall", "BlazorWebMessageWall\BlazorWebMessageWall.csproj", "{7A59CD5B-2FF3-480C-A120-2312B276C73E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8A809D56-6DA5-485B-9176-935979B31408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A809D56-6DA5-485B-9176-935979B31408}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A809D56-6DA5-485B-9176-935979B31408}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A809D56-6DA5-485B-9176-935979B31408}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A59CD5B-2FF3-480C-A120-2312B276C73E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A59CD5B-2FF3-480C-A120-2312B276C73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A59CD5B-2FF3-480C-A120-2312B276C73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A59CD5B-2FF3-480C-A120-2312B276C73E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0ECC6C0E-8911-4BB5-90DA-828AA13B7662}
+		SolutionGuid = {3603C66B-3996-44DD-BC9D-959A9378AF07}
 	EndGlobalSection
 EndGlobal
