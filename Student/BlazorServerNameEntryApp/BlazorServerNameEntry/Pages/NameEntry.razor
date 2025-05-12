@@ -13,12 +13,15 @@
 
     <label for="lastNameTag" class="form-label">@nameof(thePerson.LastName)</label>
     <InputText id="lastNameTag" class="form-control" @bind-value="thePerson.LastName" />
+
+    <button class="btn btn-primary" type="submit">Submit</button> 
 </EditForm>
 
 <ul>
     @foreach (PersonModel person in people)
     {
-        <li>@person</li>    
+        string Name = $"{person.FirstName} {person.LastName}";
+        <li>@Name</li>    
     }
 </ul>
 
