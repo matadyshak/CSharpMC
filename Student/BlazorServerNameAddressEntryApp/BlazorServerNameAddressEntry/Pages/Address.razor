@@ -1,0 +1,44 @@
+﻿@page "/address"
+
+<PageTitle>Address Entry</PageTitle>
+
+<h3>Address Entry</h3>
+
+<EditForm Model="theAddress" OnValidSubmit="ValidSubmission">
+    <label id="AddressLine1Id" class="form-label">@nameof(theAddress.AddressLine1)</label>
+    <InputText id="AddressLine1Id" class="form-control" @data-bind="theAddress.AddressLine1" />
+
+    <label id="AddressLine2Id" class="form-label">@nameof(theAddress.AddressLine2)</label>
+    <InputText id="AddressLine2Id" class="form-control" @data-bind="theAddress.AddressLine2" />
+
+    <label id="CityId" class="form-label">@nameof(theAddress.City)</label>
+    <InputText id="CityId" class="form-control" @data-bind="theAddress.City" />
+
+    <label id="StateId" class="form-label">@nameof(theAddress.State)</label>
+    <InputText id="StateId" class="form-control" @data-bind="theAddress.State" />
+
+    <label id="ZipcodeId" class="form-label">@nameof(theAddress.Zipcode)</label>
+    <InputText id="ZipcodeId" class="form-control" @data-bind="theAddress.Zipcode" />
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>
+
+<ul>
+    @foreach (AddressModel address in addresses)
+    {
+        string addressString = $"{address.AddressLine1} {address.AddressLine2} {address.City} {address.State}  {address.Zipcode}";
+        <li>@addressString</li>
+    }
+</ul>
+
+@code 
+{
+    private AddressModel theAddress = new();
+    private List<AddressModel> addresses = new();
+
+    private void ValidSubmission()
+    {
+        addresses.Add(theAddress);
+        theAddress = new();
+    }
+}

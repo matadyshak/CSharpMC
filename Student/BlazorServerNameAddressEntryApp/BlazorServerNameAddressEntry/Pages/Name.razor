@@ -1,0 +1,36 @@
+﻿@page "/Name"
+<PageTitle>Name Entry</PageTitle>
+
+<h3>Name Entry</h3>
+
+<EditForm Model="thePerson"  OnValidSubmit="ValidSubmission"> 
+    <label id="firstNameId" class="form-label">@nameof(thePerson.FirstName)</label>
+    <InputText id="firstNameId" class="form-control" data-bind="thePerson.FirstName"></InputText>
+
+    <label id="lastNameId" class="form-label">@nameof(thePerson.LastName)</label>
+    <InputText id="lastNameId" class="form-control" data-bind="thePerson.LastName"></InputText>
+
+    <button class="btn btn-primary" type="submit">Submit</button> 
+</EditForm>
+
+<ul>
+    @foreach(PersonModel person in people)
+    {
+        string nameString = $"{person.FirstName} {person.LastName}";
+        <li>
+            @nameString;
+        </li>
+    }
+</ul>
+
+@code 
+{
+    private PersonModel thePerson = new();
+    private List<PersonModel> people = new();
+
+    private void ValidSubmission()
+    {
+        people.Add(thePerson);
+        thePerson = new();
+    }
+}
