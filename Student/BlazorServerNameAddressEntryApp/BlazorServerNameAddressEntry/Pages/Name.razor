@@ -5,10 +5,10 @@
 
 <EditForm Model="thePerson"  OnValidSubmit="ValidSubmission"> 
     <label id="firstNameId" class="form-label">@nameof(thePerson.FirstName)</label>
-    <InputText id="firstNameId" class="form-control" data-bind="thePerson.FirstName"></InputText>
+    <InputText id="firstNameId" class="form-control" @bind-value="thePerson.FirstName"></InputText>
 
     <label id="lastNameId" class="form-label">@nameof(thePerson.LastName)</label>
-    <InputText id="lastNameId" class="form-control" data-bind="thePerson.LastName"></InputText>
+    <InputText id="lastNameId" class="form-control" @bind-value="thePerson.LastName"></InputText>
 
     <button class="btn btn-primary" type="submit">Submit</button> 
 </EditForm>
