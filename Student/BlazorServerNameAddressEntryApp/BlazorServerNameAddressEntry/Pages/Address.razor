@@ -4,41 +4,38 @@
 
 <h3>Address Entry</h3>
 
-<EditForm Model="theAddress" OnValidSubmit="ValidSubmission">
-    <label for="AddressLine1Id" class="form-label">@nameof(theAddress.AddressLine1)</label>
-    <InputText id="AddressLine1Id" class="form-control" @bind-Value="theAddress.AddressLine1" />
+<EditForm Model="model" OnValidSubmit="ValidSubmission">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-    <label for="AddressLine2Id" class="form-label">@nameof(theAddress.AddressLine2)</label>
-    <InputText id="AddressLine2Id" class="form-control" @bind-Value="theAddress.AddressLine2" />
+    <InputText class="form-control" @bind-Value="model.AddressLine1" placeholder="Address Line 1" />
 
-    <label for="CityId" class="form-label">@nameof(theAddress.City)</label>
-    <InputText id="CityId" class="form-control" @bind-Value="theAddress.City" />
+    <InputText class="form-control" @bind-Value="model.AddressLine2" placeholder="Address Line 2" />
 
-    <label for="StateId" class="form-label">@nameof(theAddress.State)</label>
-    <InputText id="StateId" class="form-control" @bind-Value="theAddress.State" />
+    <InputText class="form-control" @bind-Value="model.City" placeholder="City" />
 
-    <label for="ZipcodeId" class="form-label">@nameof(theAddress.Zipcode)</label>
-    <InputText id="ZipcodeId" class="form-control" @bind-Value="theAddress.Zipcode" />
+    <InputText class="form-control" @bind-Value="model.State" placeholder="State" />
+
+    <InputText class="form-control" @bind-Value="model.Zipcode" placeholder="Zipcode" />
 
     <button class="btn btn-primary" type="submit">Submit</button>
 </EditForm>
 
 <ul>
-    @foreach (AddressModel address in addresses)
+    @foreach (var a in addresses)
     {
-        string addressString = $"{address.AddressLine1} {address.AddressLine2} {address.City} {address.State}  {address.Zipcode}";
-        <li>@addressString</li>
+        <li>@a.AddressLine1 @a.AddressLine2 @a.City @a.State @a.Zipcode</li>
     }
 </ul>
 
 @code 
 {
-    private AddressModel theAddress = new();
+    private AddressModel model = new();
     private List<AddressModel> addresses = new();
 
     private void ValidSubmission()
     {
-        addresses.Add(theAddress);
-        theAddress = new();
+        addresses.Add(model);
+        model = new();
     }
 }

@@ -3,34 +3,27 @@
 
 <h3>Name Entry</h3>
 
-<EditForm Model="thePerson"  OnValidSubmit="ValidSubmission"> 
-    <label for="firstNameId" class="form-label">@nameof(thePerson.FirstName)</label>
-    <InputText id="firstNameId" class="form-control" @bind-Value="thePerson.FirstName"></InputText>
-
-    <label for="lastNameId" class="form-label">@nameof(thePerson.LastName)</label>
-    <InputText id="lastNameId" class="form-control" @bind-Value="thePerson.LastName"></InputText>
-
+<EditForm Model="model"  OnValidSubmit="ValidSubmission"> 
+    <InputText @bind-Value="model.FirstName" placeholder="First Name" class="form-control"></InputText>
+    <InputText @bind-Value="model.LastName" placeholder="Last Name" class="form-control"></InputText>
     <button class="btn btn-primary" type="submit">Submit</button> 
 </EditForm>
 
 <ul>
-    @foreach(PersonModel person in people)
+    @foreach(var p in people)
     {
-        string nameString = $"{person.FirstName} {person.LastName}";
-        <li>
-            @nameString;
-        </li>
+        <li>@p.FirstName @p.LastName</li>
     }
 </ul>
 
 @code 
 {
-    private PersonModel thePerson = new();
+    private PersonModel model = new();
     private List<PersonModel> people = new();
 
     private void ValidSubmission()
     {
-        people.Add(thePerson);
-        thePerson = new();
+        people.Add(model);
+        model = new();
     }
 }
