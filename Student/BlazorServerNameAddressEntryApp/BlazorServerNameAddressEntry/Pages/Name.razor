@@ -4,11 +4,11 @@
 <h3>Name Entry</h3>
 
 <EditForm Model="thePerson"  OnValidSubmit="ValidSubmission"> 
-    <label id="firstNameId" class="form-label">@nameof(thePerson.FirstName)</label>
-    <InputText id="firstNameId" class="form-control" @bind-value="thePerson.FirstName"></InputText>
+    <label for="firstNameId" class="form-label">@nameof(thePerson.FirstName)</label>
+    <InputText id="firstNameId" class="form-control" @bind-Value="thePerson.FirstName"></InputText>
 
-    <label id="lastNameId" class="form-label">@nameof(thePerson.LastName)</label>
-    <InputText id="lastNameId" class="form-control" @bind-value="thePerson.LastName"></InputText>
+    <label for="lastNameId" class="form-label">@nameof(thePerson.LastName)</label>
+    <InputText id="lastNameId" class="form-control" @bind-Value="thePerson.LastName"></InputText>
 
     <button class="btn btn-primary" type="submit">Submit</button> 
 </EditForm>
