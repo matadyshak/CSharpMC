@@ -1,0 +1,52 @@
+﻿@page "/person"
+<PageTitle>Person Entry</PageTitle>
+<h3>Name</h3>
+
+<EditForm Model="person" OnValidSubmit="OnValidSubmitName">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputText @bind-Value="person.FirstName" placeholder="First Name" control="form-control"></InputText>
+    <InputText @bind-Value="person.LastName" placeholder="Last Name" control="form-control"></InputText>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>  
+
+<h3>Address</h3>
+
+<EditForm Model="address" OnValidSubmit="OnValidSubmitAddress">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputText @bind-Value="address.AddressLine1" placeholder="Address Line 1" control="form-control"></InputText>
+    <InputText @bind-Value="address.AddressLine2" placeholder="Address Line 2" control="form-control"></InputText>
+    <InputText @bind-Value="address.City" placeholder="City" control="form-control"></InputText>
+    <InputText @bind-Value="address.State" placeholder="State" control="form-control"></InputText>
+    <InputText @bind-Value="address.Zipcode" placeholder="Zipcode" control="form-control"></InputText>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>
+
+<ul>
+    @for (int i = 0; i < people.Count; i++)
+    {
+        <li>@people[i].FirstName @people[i].LastName</li>
+        <li>@addresses[i].AddressLine1 @addresses[i].AddressLine2 @addresses[i].City @addresses[i].State  @addresses[i].Zipcode</li>
+    }
+</ul>
+
+@code 
+{
+    private PersonModel person = new();
+    private List<PersonModel> people = new();
+    private AddressModel address = new();
+    private List<AddressModel> addresses = new();
+
+    private void OnValidSubmitName()
+    {
+        people.Add(person);
+        person = new();
+    }
+
+    private void OnValidSubmitAddress()
+    {
+        addresses.Add(address);
+        address = new();
+    }
+}
