@@ -1,9 +1,10 @@
 ﻿@page "/person"
+
 <PageTitle>Person Entry</PageTitle>
 
-<h3>Person</h3>
+<h3>Name</h3>
 
-<EditForm Model="person"  OnValidSubmit="OnValidSubmissionName">
+<EditForm Model="person" OnValidSubmit=OnValidSubmissionName>
     <DataAnnotationsValidator />
     <ValidationSummary />
     <InputText @bind-Value="person.FirstName" placeholder="First Name" class="form-control"></InputText>
@@ -13,7 +14,7 @@
 
 <h3>Address</h3>
 
-<EditForm Model="address" OnValidSubmit="OnValidSubmissionAddress">
+<EditForm Model="address" OnValidSubmit=OnValidSubmissionAddress >
     <DataAnnotationsValidator />
     <ValidationSummary />
     <InputText @bind-Value="address.AddressLine1" placeholder="Address Line 1" class="form-control"></InputText>
@@ -24,15 +25,18 @@
     <button class="btn btn-primary" type="submit">Submit</button>
 </EditForm>
 
+@*
+    The below only executes once there have been both submit buttons hit
+*@
 <ul>
-    @for (int i = 0; i < people.Count; i++)
+    @for (int i = 0; i < @people.Count; i++)
     {
         <li>@people[i].FirstName @people[i].LastName</li>
-        <li>@addresses[i].AddressLine1 @addresses[i].AddressLine2 @addresses[i].City @addresses[i].State  @addresses[i].Zipcode</li>
+        <li>@addresses[i].AddressLine1  @addresses[i].AddressLine2 @addresses[i].City @addresses[i].State @addresses[i].Zipcode</li>
     }
 </ul>
 
-@code
+@code 
 {
     private PersonModel person = new();
     private List<PersonModel> people = new();
