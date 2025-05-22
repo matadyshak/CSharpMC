@@ -3,7 +3,7 @@
 
 <h3>Name</h3>
 
-<EditForm Model="person"  OnValidSubmit="OnValidSubmissionName">
+<EditForm Model="person" OnValidSubmit="OnValidSubmissionName">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <InputText @bind-Value="person.FirstName" placeholder="First Name" class="form-control"></InputText>
