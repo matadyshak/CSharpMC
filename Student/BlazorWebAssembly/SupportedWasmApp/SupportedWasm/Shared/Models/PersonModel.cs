@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SimpleWasm.Models
+namespace SupportedWasm.Shared.Models
 {
     public class PersonModel
     {

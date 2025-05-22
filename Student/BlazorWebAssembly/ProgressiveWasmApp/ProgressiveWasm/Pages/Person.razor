@@ -14,7 +14,7 @@
 
 <h3>Address</h3>
 
-<EditForm Model="address" OnValidSubmit=OnValidSubmissionAddress >
+<EditForm Model="address" OnValidSubmit=OnValidSubmissionAddress>
     <DataAnnotationsValidator />
     <ValidationSummary />
     <InputText @bind-Value="address.AddressLine1" placeholder="Address Line 1" class="form-control"></InputText>
@@ -26,7 +26,8 @@
 </EditForm>
 
 @*
-    The below only executes once there have been both submit buttons hit
+    The below executes for every refresh which occurs at every keystroke
+    But people.Count only changes on Name Submit
 *@
 <ul>
     @for (int i = 0; i < @people.Count; i++)
@@ -36,7 +37,7 @@
     }
 </ul>
 
-@code 
+@code
 {
     private PersonModel person = new();
     private List<PersonModel> people = new();
