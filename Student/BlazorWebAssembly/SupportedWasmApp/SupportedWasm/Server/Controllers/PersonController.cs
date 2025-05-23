@@ -5,7 +5,8 @@ using SupportedWasm.Shared.Models;
 
 namespace SupportedWasm.Server.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("api/person")]
     [ApiController]
     public class PersonController : ControllerBase
     {

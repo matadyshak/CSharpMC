@@ -5,7 +5,10 @@ using SupportedWasm.Shared.Models;
 
 namespace SupportedWasm.Server.Controllers
 {
-    [Route("api/[controller]")]
+
+    //[Route("api/[controller]")]
+
+    [Route("api/address")]
     [ApiController]
     public class AddressController : ControllerBase
     {

@@ -25,14 +25,17 @@
     <button class="btn btn-primary" type="submit">Submit</button>
 </EditForm>
 
-@*
-    The below only executes once there have been both submit buttons hit
-*@
 <ul>
-    @for (int i = 0; i < @people.Count; i++)
+    @foreach (PersonModel p in people)
     {
-        <li>@people[i].FirstName @people[i].LastName</li>
-        <li>@addresses[i].AddressLine1  @addresses[i].AddressLine2 @addresses[i].City @addresses[i].State @addresses[i].Zipcode</li>
+        <li>@p.FirstName @p.LastName</li>
+    }
+</ul>
+
+<ul>
+    @foreach (AddressModel a in addresses)
+    {
+        <li>@a.AddressLine1  @a.AddressLine2 @a.City @a.State @a.Zipcode</li>
     }
 </ul>
 
