@@ -5,10 +5,7 @@ using SupportedWasm.Shared.Models;
 
 namespace SupportedWasm.Server.Controllers
 {
-
-    //[Route("api/[controller]")]
-
-    [Route("api/address")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AddressController : ControllerBase
     {
@@ -35,10 +32,12 @@ namespace SupportedWasm.Server.Controllers
 
         // POST api/<AddressController>
         [HttpPost]
-        public void Post([FromBody] AddressModel address)
+        public IActionResult Post([FromBody] AddressModel address)
         {
             _logger.LogInformation("Posted address: {AddressLine1} {AddressLine2} {City} {State}  {Zipcode}",
                 address.AddressLine1, address.AddressLine2, address.City, address.State, address.Zipcode);
+
+            return Ok();
         }
 
         // PUT api/<AddressController>/5

@@ -5,9 +5,8 @@ using SupportedWasm.Shared.Models;
 
 namespace SupportedWasm.Server.Controllers
 {
-    //[Route("api/[controller]")]
-    [Route("api/person")]
     [ApiController]
+    [Route("api/person")]
     public class PersonController : ControllerBase
     {
         private ILogger<PersonController> _logger;
@@ -33,10 +32,12 @@ namespace SupportedWasm.Server.Controllers
 
         // POST api/<PersonController>
         [HttpPost]
-        public void Post([FromBody] PersonModel person)
+        public IActionResult Post([FromBody] PersonModel person)
         {
             _logger.LogInformation("Posted name: {FirstName} {LastName}",
                 person.FirstName, person.LastName);
+
+            return Ok();
 
         }
 

@@ -1,4 +1,5 @@
 ﻿@page "/person"
+@inject HttpClient Http
 
 <PageTitle>Person Entry</PageTitle>
 
@@ -46,15 +47,31 @@
     private AddressModel address = new();
     private List<AddressModel> addresses = new();
 
-    private void OnValidSubmissionName()
+    private async Task OnValidSubmissionName()
     {
-        people.Add(person);
-        person = new();
+        var response = await Http.PostAsJsonAsync("api/person", person);
+        if (response.IsSuccessStatusCode)
+        {
+            people.Add(person);
+            person = new();
+        }
+        else
+        {
+            // Handle error
+        }
     }
 
-    private void OnValidSubmissionAddress()
+    private async Task OnValidSubmissionAddress()
     {
-        addresses.Add(address);
-        address = new();
+        var response = await Http.PostAsJsonAsync("api/address", address);
+        if (response.IsSuccessStatusCode)
+        {
+            addresses.Add(address);
+            address = new();
+        }
+        else
+        {
+            // Handle error
+        }
     }
 }
