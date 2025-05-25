@@ -31,16 +31,16 @@
 *@
 
 <ul>
-    @foreach (AddressModel a in addresses)
+    @foreach (PersonModel p in people)
     {
-        <li>@a.AddressLine1  @a.AddressLine2 @a.City @a.State @a.Zipcode</li>
+        <li>@p.FirstName @p.LastName</li>
     }
 </ul>
 
 <ul>
-    @foreach (PersonModel p in people)
+    @foreach (AddressModel a in addresses)
     {
-        <li>@p.FirstName @p.LastName</li>
+        <li>@a.AddressLine1  @a.AddressLine2 @a.City @a.State @a.Zipcode</li>
     }
 </ul>
 
