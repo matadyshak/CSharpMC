@@ -1,0 +1,41 @@
+﻿@inject HttpClient Http
+
+<h3>Address</h3>
+
+<EditForm Model="address" OnValidSubmit=OnValidSubmissionAddress>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputText @bind-Value="address.AddressLine1" placeholder="Address Line 1" class="form-control"></InputText>
+    <InputText @bind-Value="address.AddressLine2" placeholder="Address Line 2" class="form-control"></InputText>
+    <InputText @bind-Value="address.City" placeholder="City" class="form-control"></InputText>
+    <InputText @bind-Value="address.State" placeholder="State" class="form-control"></InputText>
+    <InputText @bind-Value="address.Zipcode" placeholder="Zipcode" class="form-control"></InputText>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>
+
+<ul>
+    @foreach (AddressModel a in addresses)
+    {
+        <li>@a.AddressLine1  @a.AddressLine2 @a.City @a.State @a.Zipcode</li>
+    }
+</ul>
+
+@code
+{
+    private AddressModel address = new();
+    private List<AddressModel> addresses = new();
+
+    private async Task OnValidSubmissionAddress()
+    {
+        var response = await Http.PostAsJsonAsync("api/address", address);
+        if (response.IsSuccessStatusCode)
+        {
+            addresses.Add(address);
+            address = new();
+        }
+        else
+        {
+            // Handle error
+        }
+    }
+}

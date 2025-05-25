@@ -1,28 +1,12 @@
-﻿@page "/person"
-@inject HttpClient Http
+﻿@inject HttpClient Http
 
-<PageTitle>Person Entry</PageTitle>
-
-<h3>Name</h3>
+<h3>Person</h3>
 
 <EditForm Model="person" OnValidSubmit=OnValidSubmissionName>
     <DataAnnotationsValidator />
     <ValidationSummary />
     <InputText @bind-Value="person.FirstName" placeholder="First Name" class="form-control"></InputText>
     <InputText @bind-Value="person.LastName" placeholder="Last Name" class="form-control"></InputText>
-    <button class="btn btn-primary" type="submit">Submit</button>
-</EditForm>
-
-<h3>Address</h3>
-
-<EditForm Model="address" OnValidSubmit=OnValidSubmissionAddress>
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <InputText @bind-Value="address.AddressLine1" placeholder="Address Line 1" class="form-control"></InputText>
-    <InputText @bind-Value="address.AddressLine2" placeholder="Address Line 2" class="form-control"></InputText>
-    <InputText @bind-Value="address.City" placeholder="City" class="form-control"></InputText>
-    <InputText @bind-Value="address.State" placeholder="State" class="form-control"></InputText>
-    <InputText @bind-Value="address.Zipcode" placeholder="Zipcode" class="form-control"></InputText>
     <button class="btn btn-primary" type="submit">Submit</button>
 </EditForm>
 
@@ -33,19 +17,10 @@
     }
 </ul>
 
-<ul>
-    @foreach (AddressModel a in addresses)
-    {
-        <li>@a.AddressLine1  @a.AddressLine2 @a.City @a.State @a.Zipcode</li>
-    }
-</ul>
-
 @code
 {
     private PersonModel person = new();
     private List<PersonModel> people = new();
-    private AddressModel address = new();
-    private List<AddressModel> addresses = new();
 
     private async Task OnValidSubmissionName()
     {
@@ -54,20 +29,6 @@
         {
             people.Add(person);
             person = new();
-        }
-        else
-        {
-            // Handle error
-        }
-    }
-
-    private async Task OnValidSubmissionAddress()
-    {
-        var response = await Http.PostAsJsonAsync("api/address", address);
-        if (response.IsSuccessStatusCode)
-        {
-            addresses.Add(address);
-            address = new();
         }
         else
         {
