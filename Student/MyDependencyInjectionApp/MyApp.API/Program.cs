@@ -9,8 +9,8 @@ namespace MyApp.API
         {
             var builder = WebApplication.CreateBuilder(args);
             // Register services
-            // With AddScoped List _customers gets a new instance after each POST command
-            // With AddSingleton there is one instance of CustomerRepository over the life of the app
+            // With AddScoped CustomerRepository gets a new instance and a new List _customers after each POST command
+            // With AddSingleton there is one instance of CustomerRepository and _customers over the life of the app
             builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
