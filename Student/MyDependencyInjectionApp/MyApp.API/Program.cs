@@ -12,7 +12,9 @@ namespace MyApp.API
             // With AddScoped CustomerRepository gets a new instance and a new List _customers after each POST command
             // With AddSingleton there is one instance of CustomerRepository and _customers over the life of the app
             builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
+            builder.Services.AddLogging();
             builder.Services.AddControllers();
+
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
             var app = builder.Build();
