@@ -22,6 +22,13 @@ namespace MyApp.API.Controllers
         {
             _repository.AddCustomer(customer);
             _logger.LogInformation("Customer with ID {id} {name} added successfully!", customer.Id, customer.Name);
+
+            // Cannot call ExtraFunction() using the interface because it is not part of the interface
+            // string name = _repository.ExtraFunction(customer.Name);
+            // Would need to use an instance of CustomerRepository
+            // CustomerRepository customerRepository = new();
+            // string name = customerRepository.ExtraFunction(customer.Name);
+
             return Ok("Customer added successfully!");
         }
 

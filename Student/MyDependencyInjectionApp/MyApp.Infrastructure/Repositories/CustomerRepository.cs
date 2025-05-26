@@ -38,5 +38,12 @@ namespace MyApp.Infrastructure.Repositories
         {
             _customers.Add(customer);
         }
+
+        // Can only call this method using an instance of CustomerRepository
+        //public string ExtraFunction(string Name)
+        //{
+        //    string s = $"Hello, {Name}!";
+        //    return s;
+        //}
     }
 }
