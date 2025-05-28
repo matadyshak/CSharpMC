@@ -1,0 +1,35 @@
+///////////////////////////////////////////////////////////////////////////////////////
+// 05/27/25 
+///////////////////////////////////////////////////////////////////////////////////////
+
+Module 8 Lesson 5  SQL Server
+
+Set SQLContactsDB project Target Platform = SQL Server 2019
+
+To be able to publish using SQL Server Express 2019 LocalDB
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+Global usings being automatically generated but require C# 10
+
+SQLServerUI.csprog
+
+Change enable to disable:
+
+<ImplicitUsings>disable</ImplicitUsings>
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+appsettings.json file 
+SQLServerUI properties 
+"Copy to Output Directory" = "Copy if newer"
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+Installed NuGet package System.Data.SqlClient 4.9.0
+
+That was flagged as obsolete with a line thru SqlConnection
+
+Installed NuGet package Microsoft.Data.SqlClient 6.0.2
+
+Uninstalled System.Data.SqlClient

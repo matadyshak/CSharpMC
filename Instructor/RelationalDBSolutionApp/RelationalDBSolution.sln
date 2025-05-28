@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29512.175
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLServerUI", "SQLServerUI\SQLServerUI.csproj", "{F60D9C55-FAF4-42DF-82F8-C8A95C7277DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{CC687025-8701-4BB3-8438-C4EF9A254CCA}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SQLContactsDB", "SQLContactsDB\SQLContactsDB.sqlproj", "{5D8C42BF-D545-4395-9276-F21C777B7826}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F60D9C55-FAF4-42DF-82F8-C8A95C7277DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F60D9C55-FAF4-42DF-82F8-C8A95C7277DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F60D9C55-FAF4-42DF-82F8-C8A95C7277DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F60D9C55-FAF4-42DF-82F8-C8A95C7277DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC687025-8701-4BB3-8438-C4EF9A254CCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC687025-8701-4BB3-8438-C4EF9A254CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC687025-8701-4BB3-8438-C4EF9A254CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC687025-8701-4BB3-8438-C4EF9A254CCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D8C42BF-D545-4395-9276-F21C777B7826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D8C42BF-D545-4395-9276-F21C777B7826}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D8C42BF-D545-4395-9276-F21C777B7826}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5D8C42BF-D545-4395-9276-F21C777B7826}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D8C42BF-D545-4395-9276-F21C777B7826}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D8C42BF-D545-4395-9276-F21C777B7826}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {486A9AB7-42BC-4FAA-9991-C0C9745CADE3}
+	EndGlobalSection
+EndGlobal

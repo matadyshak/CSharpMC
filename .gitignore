@@ -28,5 +28,8 @@ obj/
 *.nupkg
 *.snupkg
 
+# Excel files
+*.xlsx
+
 # Generated files
 Generated/
