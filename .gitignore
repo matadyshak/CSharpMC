@@ -31,5 +31,9 @@ obj/
 # Excel files
 *.xlsx
 
+# Development Notes
+Notes.txt
+
 # Generated files
 Generated/
+
