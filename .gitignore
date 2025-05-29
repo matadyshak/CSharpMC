@@ -23,17 +23,38 @@ obj/
 .vs/
 .vscode/
 *.vcxproj.user
+.idea/
+*.sln.ide
 
 # Package files
 *.nupkg
 *.snupkg
 
+# Generated files
+Generated/
+
+# Ignore dependency files
+node_modules/
+packages/
+
+# Ignore environment configuration files
+.env
+.env.local
+
+# Ignore generated files from coverage tools
+coverage/
+*.coverage
+*.lcov
+
+# Ignore SQL Server Data Tools (SSDT) files
+*.dbmdl
+
+# Ignore JustMock temporary files
+*.jm
+
 # Excel files
 *.xlsx
 
 # Development Notes
-Notes.txt
-
-# Generated files
-Generated/
+Notes*.txt
 
