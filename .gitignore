@@ -51,6 +51,7 @@ coverage/
 
 # Ignore JustMock temporary files
 *.jm
+*.jfm
 
 # Excel files
 *.xlsx
