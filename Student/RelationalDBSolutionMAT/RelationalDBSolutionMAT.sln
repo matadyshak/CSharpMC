@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLServerUI", "SQLServerUI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{C373946D-767C-4A74-A1FF-C55EC795FC2C}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SqlContactsDB", "SqlContactsDB\SqlContactsDB.sqlproj", "{73C9D58D-546D-4A56-938B-8E181D809C3C}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SqlContactsDBMAT", "SqlContactsDB\SqlContactsDBMAT.sqlproj", "{73C9D58D-546D-4A56-938B-8E181D809C3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

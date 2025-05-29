@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>SqlContactsDB</Name>
+    <Name>SqlContactsDBMAT</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{73c9d58d-546d-4a56-938b-8e181d809c3c}</ProjectGuid>
@@ -56,5 +56,14 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="dbo" />
+    <Folder Include="dbo\Tables" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\ContactEmail.sql" />
+    <Build Include="dbo\Tables\ContactPhoneNumbers.sql" />
+    <Build Include="dbo\Tables\Contacts.sql" />
+    <Build Include="dbo\Tables\EmailAddresses.sql" />
+    <Build Include="dbo\Tables\PhoneNumbers.sql" />
   </ItemGroup>
 </Project>
