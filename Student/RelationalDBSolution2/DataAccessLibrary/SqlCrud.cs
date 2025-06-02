@@ -137,15 +137,60 @@ namespace DataAccessLibrary
             }
         }
 
-        public void UpdateContactName(BasicContactModel contact)
+        public void UpdateContactName(BasicContactModel newContact)
         {
+            // Check if Id exists in the DB
+            // If yes, Update FirstName, LastName in DB to values passed in
 
+            string sql = @"select Id, FirstName, LastName from dbo.Contacts where Id = @Id;";
+            BasicContactModel? oldContact = db.LoadData<BasicContactModel, dynamic>(sql, new { Id = newContact.Id },
+                _connectionString).FirstOrDefault();
+
+            if (oldContact == null)
+            {
+                // If no, "contact to be updated was not found" and return
+                Console.WriteLine($"Contact to be updated was not found.");
+                return;
+            }
+
+            sql = "update dbo.Contacts set FirstName = @FirstName, LastName = @LastName where Id = @Id;";
+
+            db.SaveData(sql,
+                new { FirstName = newContact.FirstName, LastName = newContact.LastName, Id = newContact.Id },
+                _connectionString);
         }
 
-        public void RemovePhoneNumberFromContact(int contactId, int phoneNumberId)
+        public void DeletePhoneNumberFromContact(int contactId, int phoneNumberId)
         {
+            // Search ContactPhoneNumbers table for ContactId = contactId and PhoneNumberId = phoneNumberId
+            string sql = @"select Id, ContactId, PhoneNumberId from dbo.ContactPhoneNumbers where ContactId = @ContactId and PhoneNumberId = @PhoneNumberId;";
+            var links = db.LoadData<ContactPhoneNumberModel, dynamic>(
+                sql,
+                new { ContactId = contactId, PhoneNumberId = phoneNumberId },
+                _connectionString);
+
+            if (links == null)
+            {
+                // If no, "contact to be updated was not found" and return
+                Console.WriteLine($"Phone number to be deleted was not found.");
+                return;
+            }
+
+            // If found, delete this table entry
+            sql = "delete from dbo.ContactPhoneNumbers where ContactId = @ContactId and PhoneNumberId = @PhoneNumberId;";
+            db.SaveData(sql,
+                new { ContactId = contactId, PhoneNumberId = phoneNumberId },
+                _connectionString);
+
+            if (links.Count == 1)
+            {
+                sql = "delete from dbo.PhoneNumbers where Id = @Id;";
+
+                db.SaveData(sql, new { Id = phoneNumberId }, _connectionString);
+            }
+
+            // Keep the phone number - shared with another contact
+            return;
         }
-
-
     }
 }

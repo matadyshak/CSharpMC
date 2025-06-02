@@ -10,9 +10,13 @@ namespace SQLServerUI
         {
             SqlCrud sql = new SqlCrud(GetConnectionString());
 
-            //ReadFullContactById(sql, 3);
+            // WriteFullContacts(sql);
 
-            WriteFullContacts(sql);
+            ChangeContactName(sql);
+
+            DeleteContactPhoneNumber(sql);
+
+            ReadFullContactById(sql, 1035);  //Jacob
 
             ReadAllContacts(sql);
 
@@ -70,6 +74,30 @@ namespace SQLServerUI
                 sql.CreateContact(fullContact);
                 Console.WriteLine($"Added: {fullContact.BasicInfo.FirstName} {fullContact.BasicInfo.LastName}");
             }
+        }
+
+        public static void ChangeContactName(SqlCrud sql)
+        {
+            BasicContactModel contact = new BasicContactModel
+            {
+                Id = 1032,
+                FirstName = "Kris",
+                LastName = "Kristopherson"
+            };
+
+            sql.UpdateContactName(contact);
+        }
+        public static void DeleteContactPhoneNumber(SqlCrud sql)
+        {
+            //Should wipe out 514-300-0000
+            sql.DeletePhoneNumberFromContact(1031, 2049);
+
+            Console.ReadLine();
+
+            // 514-300-9999 should remain since shared by joseph
+            sql.DeletePhoneNumberFromContact(1031, 2048);
+
+            Console.ReadLine();
         }
 
         static List<FullContactModel> fullContacts = new List<FullContactModel>
