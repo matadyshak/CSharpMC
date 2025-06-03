@@ -12,7 +12,7 @@ namespace SQLServerUI
 
             ClearTablesAndAllPrimaryKeys(sql);
 
-            // WriteFullContacts(sql);
+            WriteFullContacts(sql);
 
             ChangeContactName(sql);
 
