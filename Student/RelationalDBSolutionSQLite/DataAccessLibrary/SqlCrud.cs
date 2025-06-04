@@ -136,7 +136,6 @@ namespace DataAccessLibrary
                 db.SaveData(sql, new { ContactId = contact.BasicInfo.Id, EmailId = email.Id }, _connectionString);
             }
         }
-
         public void UpdateContactName(BasicContactModel newContact)
         {
             // Check if Id exists in the DB
@@ -159,6 +158,27 @@ namespace DataAccessLibrary
                 new { FirstName = newContact.FirstName, LastName = newContact.LastName, Id = newContact.Id },
                 _connectionString);
         }
+        public int FindContactId(BasicContactModel contact)
+        {
+            string sql = "select Id, FirstName, LastName from dbo.Contacts where FirstName = @FirstName and LastName = @LastName;";
+
+            int id = db.LoadData<BasicContactModel, dynamic>(
+                sql,
+                new { FirstName = contact.FirstName, LastName = contact.LastName },
+                _connectionString).First().Id;
+
+            return id;
+        }
+
+        public int FindPhoneNumberId(string phoneNumber)
+        {
+            string sql = "select Id, PhoneNumber from dbo.PhoneNumbers where PhoneNumber = @PhoneNumber;";
+
+            PhoneNumberModel phone = db.LoadData<PhoneNumberModel, dynamic>(sql, new { PhoneNumber = phoneNumber }, _connectionString).First();
+
+            return phone.Id;
+        }
+
 
         public void DeletePhoneNumberFromContact(int contactId, int phoneNumberId)
         {

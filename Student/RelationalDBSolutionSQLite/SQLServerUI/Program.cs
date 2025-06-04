@@ -18,7 +18,7 @@ namespace SQLServerUI
 
             DeleteContactPhoneNumber(sql);
 
-            ReadFullContactById(sql, 1035);  //Jacob
+            ReadFullContactById(sql);
 
             ReadAllContacts(sql);
 
@@ -52,9 +52,23 @@ namespace SQLServerUI
                 Console.WriteLine($"{row.Id}: {row.FirstName} {row.LastName}");
             }
         }
-        private static void ReadFullContactById(SqlCrud sql, int id)
+        private static void ReadFullContactById(SqlCrud sql)
         {
-            FullContactModel model = sql.GetFullContactById(id);
+            BasicContactModel contact = new BasicContactModel
+            {
+                Id = 0,
+                FirstName = "Michael",
+                LastName = "Tadyshak"
+            };
+
+            int contactId = sql.FindContactId(contact);
+            if (contactId <= 0)
+            {
+                Console.WriteLine("Contact ID was not found.");
+                return;
+            }
+
+            FullContactModel model = sql.GetFullContactById(contactId);
 
             Console.WriteLine($"{model.BasicInfo.FirstName} {model.BasicInfo.LastName}");
 
@@ -79,30 +93,84 @@ namespace SQLServerUI
                 Console.WriteLine($"Added: {fullContact.BasicInfo.FirstName} {fullContact.BasicInfo.LastName}");
             }
         }
-
+        public static int GetContactId(SqlCrud sql, BasicContactModel contact)
+        {
+            return sql.FindContactId(contact);
+        }
         public static void ChangeContactName(SqlCrud sql)
         {
             BasicContactModel contact = new BasicContactModel
             {
-                Id = 1032,
+                Id = 0,
+                FirstName = "Kristin",
+                LastName = "Tadyshak"
+            };
+
+            int contactId = sql.FindContactId(contact);
+            if (contactId <= 0)
+            {
+                Console.WriteLine("Contact ID was not found.");
+                return;
+            }
+
+            BasicContactModel newContact = new BasicContactModel
+            {
+                Id = contactId,
                 FirstName = "Kris",
                 LastName = "Kristopherson"
             };
 
-            sql.UpdateContactName(contact);
+
+            sql.UpdateContactName(newContact);
         }
         public static void DeleteContactPhoneNumber(SqlCrud sql)
         {
+            BasicContactModel contact = new BasicContactModel
+            {
+                Id = 0,
+                FirstName = "Erica",
+                LastName = "Tadyshak"
+            };
+
+            int contactId = sql.FindContactId(contact);
+            if (contactId <= 0)
+            {
+                Console.WriteLine("Contact ID for Erica Tadyshak not found.");
+                return;
+            }
+
+            contact.Id = contactId;
+
+            // Now search dbo.PhoneNumbers for
+            // 514-300-0000 (not shared)
+            // and
+            // 514-300-9999 (shared)
+
+            int phoneNumberId = sql.FindPhoneNumberId("514-300-0000");
+            if (phoneNumberId <= 0)
+            {
+                Console.WriteLine("Phone Number ID for 514-300-0000 not found.");
+                return;
+            }
+
             //Should wipe out 514-300-0000
-            sql.DeletePhoneNumberFromContact(1031, 2049);
+            sql.DeletePhoneNumberFromContact(contactId, phoneNumberId);
 
             Console.ReadLine();
 
+            phoneNumberId = sql.FindPhoneNumberId("514-300-9999");
+            if (phoneNumberId <= 0)
+            {
+                Console.WriteLine("Phone Number ID for 514-300-9999 not found.");
+                return;
+            }
+
             // 514-300-9999 should remain since shared by joseph
-            sql.DeletePhoneNumberFromContact(1031, 2048);
+            sql.DeletePhoneNumberFromContact(contactId, phoneNumberId);
 
             Console.ReadLine();
         }
+
         public static void ClearTablesAndAllPrimaryKeys(SqlCrud sql)
         {
             sql.ResetTablesAndAllPrimaryKeys();
