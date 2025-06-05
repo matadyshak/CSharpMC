@@ -157,6 +157,14 @@ namespace DataAccessLibrary
 
             return phone.Id;
         }
+        public int FindEmailId(string emailParam)
+        {
+            string sql = "select Id, EmailAddress from EmailAddresses where EmailAddress = @EmailAddress;";
+
+            int output = db.LoadData<EmailAddressModel, dynamic>(sql, new { EmailAddress = emailParam }, _connectionString).First().Id;
+
+            return output;
+        }
 
         public void UpdateContactName(BasicContactModel newContact)
         {
@@ -213,7 +221,12 @@ namespace DataAccessLibrary
             // Keep the phone number - shared with another contact
             return;
         }
+        public void ChangeEmailFromContact(int EmailId, string newEmail)
+        {
+            string sql = @"update EmailAddresses set EmailAddress = @EmailAddress where Id = @Id;";
 
+            db.SaveData(sql, new { EmailAddress = newEmail, Id = EmailId }, _connectionString);
+        }
         public void ResetTablesAndAllPrimaryKeys()
         {
             string sql = @"delete from ContactPhoneNumbers;

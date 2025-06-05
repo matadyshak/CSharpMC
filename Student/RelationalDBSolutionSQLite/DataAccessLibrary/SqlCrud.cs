@@ -162,24 +162,30 @@ namespace DataAccessLibrary
         {
             string sql = "select Id, FirstName, LastName from dbo.Contacts where FirstName = @FirstName and LastName = @LastName;";
 
-            int id = db.LoadData<BasicContactModel, dynamic>(
+            int output = db.LoadData<BasicContactModel, dynamic>(
                 sql,
                 new { FirstName = contact.FirstName, LastName = contact.LastName },
                 _connectionString).First().Id;
 
-            return id;
+            return output;
         }
 
         public int FindPhoneNumberId(string phoneNumber)
         {
             string sql = "select Id, PhoneNumber from dbo.PhoneNumbers where PhoneNumber = @PhoneNumber;";
 
-            PhoneNumberModel phone = db.LoadData<PhoneNumberModel, dynamic>(sql, new { PhoneNumber = phoneNumber }, _connectionString).First();
+            int output = db.LoadData<PhoneNumberModel, dynamic>(sql, new { PhoneNumber = phoneNumber }, _connectionString).First().Id;
 
-            return phone.Id;
+            return output;
         }
+        public int FindEmailId(string emailParam)
+        {
+            string sql = "select Id, EmailAddress from dbo.EmailAddresses where EmailAddress = @EmailAddress;";
 
+            int output = db.LoadData<EmailAddressModel, dynamic>(sql, new { EmailAddress = emailParam }, _connectionString).First().Id;
 
+            return output;
+        }
         public void DeletePhoneNumberFromContact(int contactId, int phoneNumberId)
         {
             // Search ContactPhoneNumbers table for ContactId = contactId and PhoneNumberId = phoneNumberId
@@ -211,6 +217,12 @@ namespace DataAccessLibrary
 
             // Keep the phone number - shared with another contact
             return;
+        }
+        public void ChangeEmailFromContact(int EmailId, string newEmail)
+        {
+            string sql = @"update dbo.EmailAddresses set EmailAddress = @EmailAddress where Id = @Id;";
+
+            db.SaveData(sql, new { EmailAddress = newEmail, Id = EmailId }, _connectionString);
         }
         public void ResetTablesAndAllPrimaryKeys()
         {

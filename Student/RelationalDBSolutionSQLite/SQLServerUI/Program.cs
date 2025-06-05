@@ -14,7 +14,9 @@ namespace SQLServerUI
 
             WriteFullContacts(sql);
 
-            ChangeContactName(sql);
+            UpdateContactName(sql);
+
+            UpdateContactEmail(sql);
 
             DeleteContactPhoneNumber(sql);
 
@@ -57,7 +59,7 @@ namespace SQLServerUI
             BasicContactModel contact = new BasicContactModel
             {
                 Id = 0,
-                FirstName = "Michael",
+                FirstName = "Myra",
                 LastName = "Tadyshak"
             };
 
@@ -69,7 +71,7 @@ namespace SQLServerUI
             }
 
             FullContactModel model = sql.GetFullContactById(contactId);
-
+            Console.WriteLine("Displaying full contact model: ");
             Console.WriteLine($"{model.BasicInfo.FirstName} {model.BasicInfo.LastName}");
 
             foreach (EmailAddressModel email in model.EmailAddresses)
@@ -81,6 +83,7 @@ namespace SQLServerUI
             {
                 Console.WriteLine($"{phoneNumber.PhoneNumber}");
             }
+            Console.WriteLine("\n");
         }
         private static void WriteFullContacts(SqlCrud sql)
         {
@@ -97,7 +100,7 @@ namespace SQLServerUI
         {
             return sql.FindContactId(contact);
         }
-        public static void ChangeContactName(SqlCrud sql)
+        public static void UpdateContactName(SqlCrud sql)
         {
             BasicContactModel contact = new BasicContactModel
             {
@@ -117,11 +120,46 @@ namespace SQLServerUI
             {
                 Id = contactId,
                 FirstName = "Kris",
-                LastName = "Kristopherson"
+                LastName = "Kristoferson"
             };
 
-
             sql.UpdateContactName(newContact);
+            Console.WriteLine("Changed Kristin's name.  Press any key to continue. ");
+            Console.ReadLine();
+        }
+        public static void UpdateContactEmail(SqlCrud sql)
+        {
+            BasicContactModel contact = new BasicContactModel
+            {
+                Id = 0,
+                FirstName = "Sarah",
+                LastName = "BaumBach"
+            };
+
+            int contactId = sql.FindContactId(contact);
+            if (contactId <= 0)
+            {
+                Console.WriteLine("Contact ID not found.");
+                return;
+            }
+
+            contact.Id = contactId;
+
+            // Now search dbo.EmailAddresses for
+            // EmailAddress = "Sarah@fema.com"
+
+            int emailId = sql.FindEmailId("Sarah@fema.com");
+            if (emailId <= 0)
+            {
+                Console.WriteLine("Email not found.");
+                return;
+            }
+
+            //Should wipe out
+            sql.ChangeEmailFromContact(emailId, "Sarah@Tesla.com");
+            Console.WriteLine("Changed Sarah's email to Sarah@Tesla.com.  Press any key to continue. ");
+
+            Console.ReadLine();
         }
         public static void DeleteContactPhoneNumber(SqlCrud sql)
         {
@@ -155,7 +193,7 @@ namespace SQLServerUI
 
             //Should wipe out 514-300-0000
             sql.DeletePhoneNumberFromContact(contactId, phoneNumberId);
-
+            Console.WriteLine("Deleted phone number 514-300-0000. Press any key to continue. ");
             Console.ReadLine();
 
             phoneNumberId = sql.FindPhoneNumberId("514-300-9999");
@@ -167,14 +205,13 @@ namespace SQLServerUI
 
             // 514-300-9999 should remain since shared by joseph
             sql.DeletePhoneNumberFromContact(contactId, phoneNumberId);
-
+            Console.WriteLine("Deleted phone number 514-300-9999. Press any key to continue. ");
             Console.ReadLine();
         }
-
         public static void ClearTablesAndAllPrimaryKeys(SqlCrud sql)
         {
             sql.ResetTablesAndAllPrimaryKeys();
-            Console.WriteLine("All tables cleared and primary keys reset.");
+            Console.WriteLine("All tables cleared and primary keys reset. Press any key to continue. ");
             Console.ReadLine();
         }
     }

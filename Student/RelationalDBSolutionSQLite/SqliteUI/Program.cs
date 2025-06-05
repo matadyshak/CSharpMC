@@ -14,7 +14,9 @@ namespace SqliteUI
 
             WriteFullContacts(sql);
 
-            ChangeContactName(sql);
+            UpdateContactName(sql);
+
+            UpdateContactEmail(sql);
 
             DeleteContactPhoneNumber(sql);
 
@@ -25,7 +27,12 @@ namespace SqliteUI
             Console.WriteLine("Done processing Sqlite");
             Console.ReadLine();
         }
-
+        public static void ClearTablesAndAllPrimaryKeys(SqliteCrud sql)
+        {
+            sql.ResetTablesAndAllPrimaryKeys();
+            Console.WriteLine("All tables cleared and primary keys reset. Hit return key to continue.");
+            Console.ReadLine();
+        }
         private static string GetConnectionString(string connectionStringName = "Default")
         {
             string? output = "";
@@ -70,6 +77,7 @@ namespace SqliteUI
 
             FullContactModel? model = sql.GetFullContactById(contactId);
 
+            Console.WriteLine("Displaying full contact model: ");
             Console.WriteLine($"{model.BasicInfo.FirstName} {model.BasicInfo.LastName}");
 
             foreach (EmailAddressModel email in model.EmailAddresses)
@@ -81,6 +89,7 @@ namespace SqliteUI
             {
                 Console.WriteLine($"{phoneNumber.PhoneNumber}");
             }
+            Console.WriteLine("\n");
         }
         private static void WriteFullContacts(SqliteCrud sql)
         {
@@ -97,12 +106,12 @@ namespace SqliteUI
         {
             return sql.FindContactId(contact);
         }
-        public static void ChangeContactName(SqliteCrud sql)
+        public static void UpdateContactName(SqliteCrud sql)
         {
             BasicContactModel contact = new BasicContactModel
             {
                 Id = 0,
-                FirstName = "Joseph",
+                FirstName = "Kristin",
                 LastName = "Tadyshak"
             };
 
@@ -118,6 +127,8 @@ namespace SqliteUI
             contact.FirstName = "Kris";
             contact.LastName = "Kristoferson";
             sql.UpdateContactName(contact);
+            Console.WriteLine("Changed Kristin's name.  Press any key to continue. ");
+            Console.ReadLine();
         }
         public static void DeleteContactPhoneNumber(SqliteCrud sql)
         {
@@ -152,7 +163,7 @@ namespace SqliteUI
 
             //Should wipe out 514-300-0000
             sql.DeletePhoneNumberFromContact(contactId, phoneNumberId);
-
+            Console.WriteLine("Deleted phone number 514-300-0000. Press any key to continue. ");
             Console.ReadLine();
 
             phoneNumberId = sql.FindPhoneNumberId("514-300-9999");
@@ -164,13 +175,40 @@ namespace SqliteUI
 
             // 514-300-9999 should remain since shared by joseph
             sql.DeletePhoneNumberFromContact(contactId, phoneNumberId);
-
+            Console.WriteLine("Deleted phone number 514-300-9999. Press any key to continue.  ");
             Console.ReadLine();
         }
-        public static void ClearTablesAndAllPrimaryKeys(SqliteCrud sql)
+        public static void UpdateContactEmail(SqliteCrud sql)
         {
-            sql.ResetTablesAndAllPrimaryKeys();
-            Console.WriteLine("All tables cleared and primary keys reset.");
+            BasicContactModel contact = new BasicContactModel
+            {
+                Id = 0,
+                FirstName = "Sarah",
+                LastName = "Baumbach"
+            };
+
+            int contactId = sql.FindContactId(contact);
+            if (contactId <= 0)
+            {
+                Console.WriteLine("Contact ID not found.");
+                return;
+            }
+
+            contact.Id = contactId;
+
+            // Now search EmailAddresses for
+            // EmailAddress = "Sarah@fema.com"
+
+            int emailId = sql.FindEmailId("Sarah@fema.com");
+            if (emailId <= 0)
+            {
+                Console.WriteLine("Email not found.");
+                return;
+            }
+
+            //Should wipe out
+            sql.ChangeEmailFromContact(emailId, "Sarah@Tesla.com");
+            Console.WriteLine("Changed Sarah's email to Sarah@Tesla.com.  Press any key to continue. ");
             Console.ReadLine();
         }
     }
