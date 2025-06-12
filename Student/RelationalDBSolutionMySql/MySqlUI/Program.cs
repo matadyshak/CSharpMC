@@ -10,17 +10,17 @@ namespace MySqlUI
         {
             MySqlCrud sql = new MySqlCrud(GetConnectionString());
 
-            //ClearTablesAndAllPrimaryKeys(sql);
+            ClearTablesAndAllPrimaryKeys(sql);
 
-            //WriteFullContacts(sql);
+            WriteFullContacts(sql);
 
-            //UpdateContactName(sql);
+            UpdateContactName(sql);
 
-            //UpdateContactEmail(sql);
+            UpdateContactEmail(sql);
 
-            //DeleteContactPhoneNumber(sql);
+            DeleteContactPhoneNumber(sql);
 
-            //ReadFullContactById(sql);
+            ReadFullContactById(sql);
 
             ReadAllContacts(sql);
 
