@@ -1,6 +1,8 @@
 ﻿using DataAccessLibrary;
 using DataAccessLibrary.Models;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
 
 namespace MongoDBUI
 {
@@ -24,7 +26,7 @@ namespace MongoDBUI
             //CreateContact(user);
 
             //GetAllContacts();
-            GetContactById("499af365-25eb-437f-8606-217c468334a2"); //Charity
+            //GetContactById("499af365-25eb-437f-8606-217c468334a2"); //Charity
 
             UpdateContactsFirstName("Timothy", "0a9bbc7d-a050-40e9-a761-b58728e591d8"); // Tim
 
