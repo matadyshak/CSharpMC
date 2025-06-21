@@ -7,35 +7,39 @@ using MongoDB.Bson.Serialization.Serializers;
 
 namespace MongoDBUI
 {
-    internal class Program
+    public class Program
     {
         private static MongoDBDataAccess? db;
         private static readonly string tableName = "Contacts";
+
+        private static DataInitializer data = new DataInitializer();
+        private static List<ContactModel> contacts = data.GetContactData();
+
+        // contacts initializes the DB
+        // contacts does not have to be updated to match the DB
+
         static void Main()
         {
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
             db = new MongoDBDataAccess("MongoContactsDB", GetConnectionString());
 
-            ContactModel user = new ContactModel
+            foreach (ContactModel contact in contacts)
             {
-                FirstName = "Tim",
-                LastName = "Corey"
-            };
-            user.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "tim@iamtimcorey.com" });
-            user.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "me@timothycorey.com" });
-            user.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-1212" });
-            user.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-1234" });
-            //CreateContact(user);
+                CreateContact(contact);
+            }
+            Console.WriteLine("New contacts stored in DB.  Press enter key to continue");
 
-            // Tim: 55f35b91-3ad0-4cd6-91ba-74e125337855
-            //      b7878cf2-fea3-46d0-a168-865a3a1f53b4
-            // Charity: 29cf5f3f-3919-427a-99c2-989fa8ee0c4b
+            Console.ReadLine();
 
-            //GetAllContacts();
+            Console.WriteLine("Reading back all contacts...");
+            GetAllContacts();
+            Console.WriteLine("Press enter key to continue");
+
+            Console.ReadLine();
 
             //GetContactById("29cf5f3f-3919-427a-99c2-989fa8ee0c4b"); //Charity
 
-            UpdateContactsFirstName("Michael", "b7878cf2-fea3-46d0-a168-865a3a1f53b4"); // Tim
+            //UpdateContactsFirstName("Michael", "b7878cf2-fea3-46d0-a168-865a3a1f53b4"); // Tim
 
             //RemovePhoneNumberFromUser("555-1212", "b7878cf2-fea3-46d0-a168-865a3a1f53b4");
 
@@ -50,6 +54,7 @@ namespace MongoDBUI
             Guid guid = new Guid(id);
             db.DeleteRecord<ContactModel>(tableName, guid);
         }
+
         public static void RemovePhoneNumberFromUser(string phoneNumber, string id)
         {
             Guid guid = new Guid(id);
@@ -60,6 +65,7 @@ namespace MongoDBUI
 
             db.UpsertRecord(tableName, contact.Id, contact);
         }
+
         private static void UpdateContactsFirstName(string firstName, string id)
         {
             Guid guid = new Guid(id);
@@ -68,12 +74,14 @@ namespace MongoDBUI
             contact.FirstName = firstName;
             db.UpsertRecord(tableName, contact.Id, contact);
         }
+
         private static void GetContactById(string id)
         {
             Guid guid = new Guid(id);
             var contact = db.LoadRecordById<ContactModel>(tableName, guid);
             Console.WriteLine($"{contact.Id}: {contact.FirstName} {contact.LastName}");
         }
+
         private static void GetAllContacts()
         {
             var contacts = db.LoadRecords<ContactModel>(tableName);
@@ -82,6 +90,7 @@ namespace MongoDBUI
                 Console.WriteLine($"{contact.Id}: {contact.FirstName} {contact.LastName}");
             }
         }
+
         private static void CreateContact(ContactModel contact)
         {
             if (db != null)
@@ -93,6 +102,7 @@ namespace MongoDBUI
                 Console.WriteLine("Error: db is NULL in CreateContact()");
             }
         }
+
         private static string? GetConnectionString(string connectionStringName = "Default")
         {
             string? output;
@@ -107,6 +117,5 @@ namespace MongoDBUI
 
             return output;
         }
-
     }
 }

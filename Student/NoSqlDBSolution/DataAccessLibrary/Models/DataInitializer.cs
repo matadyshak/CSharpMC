@@ -1,19 +1,19 @@
 ﻿namespace DataAccessLibrary.Models
 {
-    public class InitializationData
+    public class DataInitializer
     {
         public List<ContactModel> GetContactData()
         {
             return ContactData;
         }
 
-        List<ContactModel> ContactData = new List<ContactModel>
+        public List<ContactModel> ContactData = new List<ContactModel>
         {
             new ContactModel
             {
-                Id = Guid.NewGuid(),
-                FirstName = "Michael",
-                LastName = "Tadyshak",
+                // Id = Guid.NewGuid(),
+                FirstName = "Kahsydat",
+                LastName = "Leahcim",
                 EmailAddresses = new List<EmailAddressModel>
                 {
                     new EmailAddressModel { EmailAddress = "Michael@xyz.com" },
@@ -28,6 +28,9 @@
 
             new ContactModel
             {
+                // Id = Guid.NewGuid(),
+                FirstName = "Kahsydat",
+                LastName = "Arym",
                 EmailAddresses = new List<EmailAddressModel>
                 {
                     new EmailAddressModel { EmailAddress = "Myra@xyz.com" },
@@ -41,6 +44,9 @@
             },
             new ContactModel
             {
+                // Id = Guid.NewGuid(),
+                FirstName = "Kahsydat",
+                LastName = "Wehttam",
                 EmailAddresses = new List<EmailAddressModel>
                 {
                     new EmailAddressModel { EmailAddress = "Matt@xyz.com" },
@@ -55,6 +61,9 @@
 
             new ContactModel
             {
+                // Id = Guid.NewGuid(),
+                FirstName = "Kahsydat",
+                LastName = "Refinnej",
                 EmailAddresses = new List<EmailAddressModel>
                 {
                     new EmailAddressModel { EmailAddress = "Jenny@xyz.com" },
@@ -69,6 +78,9 @@
 
             new ContactModel
             {
+                // Id = Guid.NewGuid(),
+                FirstName = "Kahsydat",
+                LastName = "hpesoj",
                 EmailAddresses = new List<EmailAddressModel>
                 {
                     new EmailAddressModel { EmailAddress = "Joe@xyz.com" },
@@ -83,10 +95,13 @@
 
             new ContactModel
             {
+                // Id = Guid.NewGuid(),
+                FirstName = "Kahsydat",
+                LastName = "Acire",
                 EmailAddresses = new List<EmailAddressModel>
                 {
                     new EmailAddressModel { EmailAddress = "Erica@pisd.com" },
-                    new EmailAddressModel { EmailAddress = "Shaks@gmail.com" }
+                    new EmailAddressModel { EmailAddress = "Dats@gmail.com" }
                 },
                 PhoneNumbers = new List<PhoneNumberModel>
                 {
@@ -97,6 +112,9 @@
 
             new ContactModel
             {
+                // Id = Guid.NewGuid(),
+                FirstName = "Kahsydat",
+                LastName = "Nitsirk",
                 EmailAddresses = new List<EmailAddressModel>
                 {
                     new EmailAddressModel { EmailAddress = "kris@tiff.com" },
@@ -111,6 +129,9 @@
 
             new ContactModel
             {
+                // Id = Guid.NewGuid(),
+                FirstName = "Zeloznog",
+                LastName = "Rehpotsirc",
                 EmailAddresses = new List<EmailAddressModel>
                 {
                     new EmailAddressModel { EmailAddress = "Cristopher@purple.com" },
@@ -125,10 +146,13 @@
 
             new ContactModel
             {
+                // Id = Guid.NewGuid(),
+                FirstName = "Hcabmuab",
+                LastName = "Haras",
                 EmailAddresses = new List<EmailAddressModel>
                 {
                     new EmailAddressModel { EmailAddress = "Sarah@fema.com" },
-                    new EmailAddressModel { EmailAddress = "Baumbachs@xyz.com" }
+                    new EmailAddressModel { EmailAddress = "BBs@xyz.com" }
                 },
                 PhoneNumbers = new List<PhoneNumberModel>
                 {
@@ -139,10 +163,13 @@
 
             new ContactModel
             {
+                // Id = Guid.NewGuid(),
+                FirstName = "Hcabmuab",
+                LastName = "Bocaj",
                 EmailAddresses = new List<EmailAddressModel>
                 {
                     new EmailAddressModel { EmailAddress = "Jacob@purple.com" },
-                    new EmailAddressModel { EmailAddress = "Baumbachs@xyz.com" }
+                    new EmailAddressModel { EmailAddress = "BBs@xyz.com" }
                 },
                 PhoneNumbers = new List<PhoneNumberModel>
                 {
@@ -150,6 +177,6 @@
                     new PhoneNumberModel { PhoneNumber = "714-500-9199" }
                 }
             }
-        }
+        };
     }
 }
