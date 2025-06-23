@@ -28,27 +28,37 @@ namespace DataAccessLibrary
             return collection.Find(new BsonDocument()).ToList();
         }
 
-        public T LoadRecordById<T>(string table, Guid id)
+        public T LoadRecordById<T>(string table, Guid? id)
         {
             var collection = db.GetCollection<T>(table);
 
             var filter = Builders<T>.Filter.Eq("Id", id);
             return collection.Find(filter).First();
         }
+        public T LoadRecordByName<T>(string table, string firstName, string lastName)
+        {
+            var collection = db.GetCollection<T>(table);
+
+            var filter = Builders<T>.Filter.And(
+                Builders<T>.Filter.Eq("FirstName", firstName),
+                Builders<T>.Filter.Eq("LastName", lastName));
+
+            return collection.Find(filter).First();
+        }
         public void UpsertRecord<T>(string table, Guid id, T record)
         {
             var collection = db.GetCollection<T>(table);
-            var filter = Builders<T>.Filter.Eq("Id", id);  //was _id and worked
+            var filter = Builders<T>.Filter.Eq("Id", id);
             var options = new ReplaceOptions { IsUpsert = true };
 
             collection.ReplaceOne(filter, record, options);
         }
 
-        public void DeleteRecord<T>(string table, Guid id)
+        public void DeleteRecord<T>(string table, Guid? id)
         {
             var collection = db.GetCollection<T>(table);
 
-            var filter = Builders<T>.Filter.Eq("Id", id); // Did not work with "_id"
+            var filter = Builders<T>.Filter.Eq("Id", id);
             collection.DeleteOne(filter);
         }
     }

@@ -9,11 +9,11 @@ namespace MongoDBUI
 {
     public class Program
     {
-        private static MongoDBDataAccess? db;
+        private static MongoDBDataAccess db;
         private static readonly string tableName = "Contacts";
 
         private static DataInitializer data = new DataInitializer();
-        private static List<ContactModel> contacts = data.GetContactData();
+        private static List<ContactModel> contactsData = data.GetContactData();
 
         // contacts initializes the DB
         // contacts does not have to be updated to match the DB
@@ -23,41 +23,91 @@ namespace MongoDBUI
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
             db = new MongoDBDataAccess("MongoContactsDB", GetConnectionString());
 
-            foreach (ContactModel contact in contacts)
+            Guid? guid = new();
+
+
+            foreach (ContactModel contact in contactsData)
             {
                 CreateContact(contact);
             }
             Console.WriteLine("New contacts stored in DB.  Press enter key to continue");
-
             Console.ReadLine();
+
 
             Console.WriteLine("Reading back all contacts...");
             GetAllContacts();
             Console.WriteLine("Press enter key to continue");
-
             Console.ReadLine();
 
-            //GetContactById("29cf5f3f-3919-427a-99c2-989fa8ee0c4b"); //Charity
+            Console.WriteLine($"Getting contact for Hcabmuab Bocaj...");
+            guid = GetIdFromName("Hcabmuab", "Bocaj");
+            if (guid != null)
+            {
+                GetContactById(guid);
+            }
+            Console.WriteLine("Press enter key to continue");
+            Console.ReadLine();
 
-            //UpdateContactsFirstName("Michael", "b7878cf2-fea3-46d0-a168-865a3a1f53b4"); // Tim
 
-            //RemovePhoneNumberFromUser("555-1212", "b7878cf2-fea3-46d0-a168-865a3a1f53b4");
+            Console.WriteLine($"Changing first name for Kahsydat Nitsirk...");
+            guid = GetIdFromName("Kahsydat", "Nitsirk");
+            if (guid != null)
+            {
+                UpdateContactsFirstName("Zeloznog", guid);
+                GetContactById(guid);
+            }
+            Console.WriteLine("Press enter key to continue");
+            Console.ReadLine();
 
-            //RemoveUser("b7878cf2-fea3-46d0-a168-865a3a1f53b4"); // Tim
+            Console.WriteLine($"Removing phone number 514-300-9999 from Kahsydat Acire...");
+            guid = GetIdFromName("Kahsydat", "Acire");
+            if (guid != null)
+            {
+                RemovePhoneNumberFromUser("514-300-9999", guid);
+                GetContactById(guid);
+            }
+            Console.WriteLine("Press enter key to continue");
+            Console.ReadLine();
+
+            Console.WriteLine($"Removing user Kahsydat Leahcim...");
+            guid = GetIdFromName("Kahsydat", "Leahcim");
+            if (guid != null)
+            {
+                RemoveUser(guid);
+            }
+            Console.WriteLine("Reading back all contacts...");
+            GetAllContacts();
+            Console.WriteLine("Press enter key to continue");
+            Console.ReadLine();
 
             Console.WriteLine("Done processing MongoDB");
             Console.ReadLine();
         }
 
-        public static void RemoveUser(string id)
+        public static Guid? GetIdFromName(string firstName, string lastName)
         {
-            Guid guid = new Guid(id);
+            Guid? guid;
+            ContactModel model = new();
+            try
+            {
+                model = db.LoadRecordByName<ContactModel>(tableName, firstName, lastName);
+                guid = model.Id;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception: {e}.  Did not find {firstName} {lastName}");
+                guid = null;
+            }
+            return guid;
+        }
+
+        public static void RemoveUser(Guid? guid)
+        {
             db.DeleteRecord<ContactModel>(tableName, guid);
         }
 
-        public static void RemovePhoneNumberFromUser(string phoneNumber, string id)
+        public static void RemovePhoneNumberFromUser(string phoneNumber, Guid? guid)
         {
-            Guid guid = new Guid(id);
             var contact = db.LoadRecordById<ContactModel>(tableName, guid);
 
             // Keep list of all PhoneNumbers that do not match phoneNumber passed in
@@ -66,28 +116,41 @@ namespace MongoDBUI
             db.UpsertRecord(tableName, contact.Id, contact);
         }
 
-        private static void UpdateContactsFirstName(string firstName, string id)
+        private static void UpdateContactsFirstName(string firstName, Guid? guid)
         {
-            Guid guid = new Guid(id);
             var contact = db.LoadRecordById<ContactModel>(tableName, guid);
 
             contact.FirstName = firstName;
             db.UpsertRecord(tableName, contact.Id, contact);
         }
 
-        private static void GetContactById(string id)
+        private static void GetContactById(Guid? guid)
         {
-            Guid guid = new Guid(id);
+            List<ContactModel> contacts = new();
             var contact = db.LoadRecordById<ContactModel>(tableName, guid);
-            Console.WriteLine($"{contact.Id}: {contact.FirstName} {contact.LastName}");
+            contacts.Add(contact);
+            DisplayFullContacts(contacts);
         }
 
         private static void GetAllContacts()
         {
-            var contacts = db.LoadRecords<ContactModel>(tableName);
+            List<ContactModel> contacts = db.LoadRecords<ContactModel>(tableName);
+            DisplayFullContacts(contacts);
+        }
+
+        private static void DisplayFullContacts(List<ContactModel> contacts)
+        {
             foreach (var contact in contacts)
             {
                 Console.WriteLine($"{contact.Id}: {contact.FirstName} {contact.LastName}");
+                foreach (EmailAddressModel model in contact.EmailAddresses)
+                {
+                    Console.WriteLine($"{model.EmailAddress}");
+                }
+                foreach (PhoneNumberModel model in contact.PhoneNumbers)
+                {
+                    Console.WriteLine($"{model.PhoneNumber}");
+                }
             }
         }
 
