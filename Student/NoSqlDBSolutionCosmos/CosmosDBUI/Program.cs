@@ -1,4 +1,6 @@
-﻿using DataAccessLibrary;
+﻿using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using DataAccessLibrary;
 using DataAccessLibrary.Models;
 using Microsoft.Extensions.Configuration;
 
@@ -172,5 +174,23 @@ namespace CosmosDBUI
 
             return output;
         }
+
+
+        private static (string endpointUrl, string primaryKey, string databaseName, string containerName) GetCosmosInfo()
+        {
+            var vaultUrl = "https://<YourKeyVaultName>.vault.azure.net/";  // Replace with your actual Key Vault URL
+            var client = new SecretClient(new Uri(vaultUrl), new DefaultAzureCredential());
+
+            // Fetch secrets from Key Vault
+            string endpointUrl = client.GetSecret("CosmosDB--EndpointUrl").Value.Value;
+            string primaryKey = client.GetSecret("CosmosDB--PrimaryKey").Value.Value;
+
+            // Optionally keep non-sensitive values in appsettings.json or hard-code for now
+            string databaseName = "MyCosmosDatabase";       // Replace with your actual DB name
+            string containerName = "MyContainer";           // Replace with your actual container name
+
+            return (endpointUrl, primaryKey, databaseName, containerName);
+        }
+
     }
 }
