@@ -1,79 +1,81 @@
-﻿using DataAccessLibrary.Models;
+﻿using DataAccessLibrary;
+using DataAccessLibrary.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace CosmosDBUI
 {
-    public class Program
+    class Program
     {
+        private static CosmosDBDataAccess db;
         static void Main()
         {
-            //BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
-            //db = new MongoDBDataAccess("MongoContactsDB", GetConnectionString());
+            var c = GetCosmosInfo();
 
-            Guid? guid = new();
-
-
-            foreach (ContactModel contact in contactsData)
-            {
-                CreateContact(contact);
-            }
-            Console.WriteLine("New contacts stored in DB.  Press enter key to continue");
-            Console.ReadLine();
+            db = new CosmosDBDataAccess(c.endpointUrl, c.primaryKey, c.databaseName, c.containerName);
 
 
-            Console.WriteLine("Reading back all contacts...");
-            GetAllContacts();
-            Console.WriteLine("Press enter key to continue");
-            Console.ReadLine();
 
-            Console.WriteLine($"Getting contact for Hcabmuab Bocaj...");
-            guid = GetIdFromName("Hcabmuab", "Bocaj");
-            if (guid != null)
-            {
-                GetContactById(guid);
-            }
-            Console.WriteLine("Press enter key to continue");
-            Console.ReadLine();
+            //foreach (ContactModel contact in contactsData)
+            //{
+            //    CreateContact(contact);
+            //}
+            //Console.WriteLine("New contacts stored in DB.  Press enter key to continue");
+            //Console.ReadLine();
 
 
-            Console.WriteLine($"Changing first name for Kahsydat Nitsirk...");
-            guid = GetIdFromName("Kahsydat", "Nitsirk");
-            if (guid != null)
-            {
-                UpdateContactsFirstName("Zeloznog", guid);
-                GetContactById(guid);
-            }
-            Console.WriteLine("Press enter key to continue");
-            Console.ReadLine();
+            //Console.WriteLine("Reading back all contacts...");
+            //GetAllContacts();
+            //Console.WriteLine("Press enter key to continue");
+            //Console.ReadLine();
 
-            Console.WriteLine($"Removing phone number 514-300-9999 from Kahsydat Acire...");
-            guid = GetIdFromName("Kahsydat", "Acire");
-            if (guid != null)
-            {
-                RemovePhoneNumberFromUser("514-300-9999", guid);
-                GetContactById(guid);
-            }
-            Console.WriteLine("Press enter key to continue");
-            Console.ReadLine();
+            //Console.WriteLine($"Getting contact for Hcabmuab Bocaj...");
+            //guid = GetIdFromName("Hcabmuab", "Bocaj");
+            //if (guid != null)
+            //{
+            //    GetContactById(guid);
+            //}
+            //Console.WriteLine("Press enter key to continue");
+            //Console.ReadLine();
 
-            Console.WriteLine($"Removing user Kahsydat Leahcim...");
-            guid = GetIdFromName("Kahsydat", "Leahcim");
-            if (guid != null)
-            {
-                RemoveUser(guid);
-            }
-            Console.WriteLine("Reading back all contacts...");
-            GetAllContacts();
-            Console.WriteLine("Press enter key to continue");
-            Console.ReadLine();
+
+            //Console.WriteLine($"Changing first name for Kahsydat Nitsirk...");
+            //guid = GetIdFromName("Kahsydat", "Nitsirk");
+            //if (guid != null)
+            //{
+            //    UpdateContactsFirstName("Zeloznog", guid);
+            //    GetContactById(guid);
+            //}
+            //Console.WriteLine("Press enter key to continue");
+            //Console.ReadLine();
+
+            //Console.WriteLine($"Removing phone number 514-300-9999 from Kahsydat Acire...");
+            //guid = GetIdFromName("Kahsydat", "Acire");
+            //if (guid != null)
+            //{
+            //    RemovePhoneNumberFromUser("514-300-9999", guid);
+            //    GetContactById(guid);
+            //}
+            //Console.WriteLine("Press enter key to continue");
+            //Console.ReadLine();
+
+            //Console.WriteLine($"Removing user Kahsydat Leahcim...");
+            //guid = GetIdFromName("Kahsydat", "Leahcim");
+            //if (guid != null)
+            //{
+            //    RemoveUser(guid);
+            //}
+            //Console.WriteLine("Reading back all contacts...");
+            //GetAllContacts();
+            //Console.WriteLine("Press enter key to continue");
+            //Console.ReadLine();
 
             Console.WriteLine("Done processing CosmosDB");
             Console.ReadLine();
         }
 
-        public static Guid? GetIdFromName(string firstName, string lastName)
+        public static int GetIdFromName(string firstName, string lastName)
         {
-            Guid? guid;
+            int i = 0;
             //ContactModel model = new();
             //try
             //{
@@ -85,7 +87,7 @@ namespace CosmosDBUI
             //    Console.WriteLine($"Exception: {e}.  Did not find {firstName} {lastName}");
             //    guid = null;
             //}
-            return guid;
+            return i;
         }
 
         public static void RemoveUser(Guid? guid)
@@ -153,9 +155,9 @@ namespace CosmosDBUI
             //}
         }
 
-        private static string? GetConnectionString(string connectionStringName = "Default")
+        private static (string endpointUrl, string primaryKey, string databaseName, string containerName) GetCosmosInfo()
         {
-            string? output;
+            (string endpointUrl, string primaryKey, string databaseName, string containerName) output;
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -163,7 +165,10 @@ namespace CosmosDBUI
 
             var config = builder.Build();
 
-            output = config.GetConnectionString(connectionStringName);
+            output.endpointUrl = config.GetValue<string>("CosmosDB:EndpointUrl");
+            output.primaryKey = config.GetValue<string>("CosmosDB:PrimaryKey");
+            output.databaseName = config.GetValue<string>("CosmosDB:databaseName");
+            output.containerName = config.GetValue<string>("CosmosDB:ContainerName");
 
             return output;
         }

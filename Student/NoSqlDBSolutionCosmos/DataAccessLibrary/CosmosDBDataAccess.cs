@@ -25,7 +25,7 @@ namespace DataAccessLibrary
 
             _cosmosClient = new CosmosClient(_endpointUrl, _primaryKey);
             _database = _cosmosClient.GetDatabase(_databaseName);
-            _container = _database.GetContainer(containerName);
+            _container = _database.GetContainer(_containerName);
         }
     }
 }
