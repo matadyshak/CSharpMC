@@ -27,5 +27,54 @@ namespace DataAccessLibrary
             _database = _cosmosClient.GetDatabase(_databaseName);
             _container = _database.GetContainer(_containerName);
         }
+
+        public async Task<List<T>> LoadRecordsAsync<T>()
+        {
+            string sql = "select * from c";
+            QueryDefinition queryDefinition = new QueryDefinition(sql);
+            FeedIterator<T> feedIterator = _container.GetItemQueryIterator<T>(queryDefinition);
+
+            List<T> output = new List<T>();
+
+            while (feedIterator.HasMoreResults)
+            {
+                FeedResponse<T> currentResultSet = await feedIterator.ReadNextAsync();
+
+                foreach (var item in currentResultSet)
+                {
+                    output.Add(item);
+                }
+            }
+
+            return output;
+        }
+
+        public async Task<T> LoadRecordById<T>(string id)
+        {
+            // Parameterized query
+            string sql = "select * from c where c.id = @Id";
+            QueryDefinition queryDefinition = new QueryDefinition(sql).WithParameter("@Id", id);
+            FeedIterator<T> feedIterator = _container.GetItemQueryIterator<T>(queryDefinition);
+
+            while (feedIterator.HasMoreResults)
+            {
+                FeedResponse<T> currentResultSet = await feedIterator.ReadNextAsync();
+
+                foreach (var item in currentResultSet)
+                {
+                    return item; // Return the first matching record
+                }
+
+                throw new Exception($"No record found with id: {id}");
+            }
+        }
+        public T LoadRecordByName<T>(string firstName, string lastName)
+        {
+        }
+        public async Task UpsertRecordAsync<T>(T record)
+        {
+            // Could take out await
+            await _container.UpsertItemAsync(record);
+        }
     }
 }
