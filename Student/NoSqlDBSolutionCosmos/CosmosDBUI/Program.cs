@@ -1,8 +1,7 @@
-﻿using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
-using DataAccessLibrary;
+﻿using DataAccessLibrary;
 using DataAccessLibrary.Models;
 using Microsoft.Extensions.Configuration;
+//using Microsoft.Extensions.Dependencyinjection
 
 namespace CosmosDBUI
 {
@@ -161,36 +160,44 @@ namespace CosmosDBUI
         {
             (string endpointUrl, string primaryKey, string databaseName, string containerName) output;
 
-            var builder = new ConfigurationBuilder()
+            var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
+                .AddJsonFile("appsettings.json", optional: true)
+                .AddUserSecrets(typeof(Program).Assembly)
+                .Build();
 
-            var config = builder.Build();
-
-            output.endpointUrl = config.GetValue<string>("CosmosDB:EndpointUrl");
-            output.primaryKey = config.GetValue<string>("CosmosDB:PrimaryKey");
-            output.databaseName = config.GetValue<string>("CosmosDB:databaseName");
+            output.endpointUrl = config["CosmosDB:EndpointUrl"];
+            output.primaryKey = config["CosmosDB:PrimaryKey"];
+            output.databaseName = config.GetValue<string>("CosmosDB:DatabaseName");
             output.containerName = config.GetValue<string>("CosmosDB:ContainerName");
+
+            if (string.IsNullOrWhiteSpace(output.endpointUrl) ||
+                string.IsNullOrWhiteSpace(output.primaryKey)  ||
+                string.IsNullOrWhiteSpace(output.databaseName) ||
+                string.IsNullOrWhiteSpace(output.containerName))
+            {
+                Console.WriteLine("Missing CosmosDB configuration.");
+            }
 
             return output;
         }
 
 
-        private static (string endpointUrl, string primaryKey, string databaseName, string containerName) GetCosmosInfo()
-        {
-            var vaultUrl = "https://<YourKeyVaultName>.vault.azure.net/";  // Replace with your actual Key Vault URL
-            var client = new SecretClient(new Uri(vaultUrl), new DefaultAzureCredential());
+        //private static (string endpointUrl, string primaryKey, string databaseName, string containerName) GetCosmosInfo()
+        //{
+        //    var vaultUrl = "https://<YourKeyVaultName>.vault.azure.net/";  // Replace with your actual Key Vault URL
+        //    var client = new SecretClient(new Uri(vaultUrl), new DefaultAzureCredential());
 
-            // Fetch secrets from Key Vault
-            string endpointUrl = client.GetSecret("CosmosDB--EndpointUrl").Value.Value;
-            string primaryKey = client.GetSecret("CosmosDB--PrimaryKey").Value.Value;
+        //    // Fetch secrets from Key Vault
+        //    string endpointUrl = client.GetSecret("CosmosDB--EndpointUrl").Value.Value;
+        //    string primaryKey = client.GetSecret("CosmosDB--PrimaryKey").Value.Value;
 
-            // Optionally keep non-sensitive values in appsettings.json or hard-code for now
-            string databaseName = "MyCosmosDatabase";       // Replace with your actual DB name
-            string containerName = "MyContainer";           // Replace with your actual container name
+        //    // Optionally keep non-sensitive values in appsettings.json or hard-code for now
+        //    string databaseName = "MyCosmosDatabase";       // Replace with your actual DB name
+        //    string containerName = "MyContainer";           // Replace with your actual container name
 
-            return (endpointUrl, primaryKey, databaseName, containerName);
-        }
+        //    return (endpointUrl, primaryKey, databaseName, containerName);
+        //}
 
     }
 }
