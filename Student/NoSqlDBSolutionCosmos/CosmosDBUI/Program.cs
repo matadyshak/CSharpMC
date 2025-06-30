@@ -5,127 +5,104 @@ using Microsoft.Extensions.Configuration;
 
 namespace CosmosDBUI
 {
-    class Program
+    public class Program
     {
         private static CosmosDBDataAccess db;
+        private static DataInitializer data = new DataInitializer();
+        private static List<ContactModel> contactsData = data.GetContactData();
         static async Task Main(string[] args)
         {
             var c = GetCosmosInfo();
-
             db = new CosmosDBDataAccess(c.endpointUrl, c.primaryKey, c.databaseName, c.containerName);
+            string docId;
 
-            ContactModel user = new ContactModel
-            {
-                FirstName = "Tim",
-                LastName = "Corey"
-            };
-
-            user.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "tim@iamtimcorey.com" });
-            user.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "me@timothycorey.com" });
-            user.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-1212" });
-            user.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-1234" });
-
-            ContactModel user2 = new ContactModel
-            {
-                FirstName = "Charity",
-                LastName = "Corey"
-            };
-
-            user2.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "nope@aol.com" });
-            user2.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "me@timothycorey.com" });
-            user2.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-1212" });
-            user2.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-9876" });
-
-            // await CreateContact(user);
-            // await CreateContact(user2);
-
-            // await GetAllContacts();
-
-            //await GetContactById("ee40b270-8b66-4f48-bcd2-13243032cf55");
-
+            ////////////////////////////////////////////////////////////////////////////////////////////////////
+            // await CreateContactAsync(user);
+            // await CreateContactAsync(user2);
+            // await GetAllContactsAsync();
+            // await GetContactByIdAsync("ee40b270-8b66-4f48-bcd2-13243032cf55");
             // await UpdateContactsFirstNameAsync("Timothy", "ee40b270-8b66-4f48-bcd2-13243032cf55");
-            // await GetContactById("ee40b270-8b66-4f48-bcd2-13243032cf55");
+            // await GetContactByIdAsync("ee40b270-8b66-4f48-bcd2-13243032cf55");
+            // await RemovePhoneNumberFromUserAsync("555-1212", "ee40b270-8b66-4f48-bcd2-13243032cf55");
+            // await RemoveUserAsync("ee40b270-8b66-4f48-bcd2-13243032cf55");
+            ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            //await RemovePhoneNumberFromUserAsync("555-1212", "ee40b270-8b66-4f48-bcd2-13243032cf55");
+            foreach (ContactModel contact in contactsData)
+            {
+                await CreateContactAsync(contact);
+            }
+            Console.WriteLine("New contacts stored in DB.  Press enter key to continue");
+            Console.ReadLine();
 
-            // await RemoveUser("ee40b270-8b66-4f48-bcd2-13243032cf55");
+            Console.WriteLine("Reading back all contacts...");
+            await GetAllContactsAsync();
+            Console.WriteLine("Press enter key to continue");
+            Console.ReadLine();
 
-            //foreach (ContactModel contact in contactsData)
-            //{
-            //    CreateContact(contact);
-            //}
-            //Console.WriteLine("New contacts stored in DB.  Press enter key to continue");
-            //Console.ReadLine();
-
-
-            //Console.WriteLine("Reading back all contacts...");
-            //GetAllContacts();
-            //Console.WriteLine("Press enter key to continue");
-            //Console.ReadLine();
-
-            //Console.WriteLine($"Getting contact for Hcabmuab Bocaj...");
-            //guid = GetIdFromName("Hcabmuab", "Bocaj");
-            //if (guid != null)
-            //{
-            //    GetContactById(guid);
-            //}
-            //Console.WriteLine("Press enter key to continue");
-            //Console.ReadLine();
+            Console.WriteLine($"Getting contact for Hcabmuab Bocaj...");
+            docId = await GetIdFromNameAsync("Hcabmuab", "Bocaj");
+            if (docId != null)
+            {
+                await GetContactByIdAsync(docId);
+            }
+            Console.WriteLine("Press enter key to continue");
+            Console.ReadLine();
 
 
-            //Console.WriteLine($"Changing first name for Kahsydat Nitsirk...");
-            //guid = GetIdFromName("Kahsydat", "Nitsirk");
-            //if (guid != null)
-            //{
-            //    UpdateContactsFirstName("Zeloznog", guid);
-            //    GetContactById(guid);
-            //}
-            //Console.WriteLine("Press enter key to continue");
-            //Console.ReadLine();
+            Console.WriteLine($"Changing first name for Kahsydat Nitsirk...");
+            docId = await GetIdFromNameAsync("Kahsydat", "Nitsirk");
+            if (docId != null)
+            {
+                await UpdateContactsFirstNameAsync("Zeloznog", docId);
+                await GetContactByIdAsync(docId);
+            }
+            Console.WriteLine("Press enter key to continue");
+            Console.ReadLine();
 
-            //Console.WriteLine($"Removing phone number 514-300-9999 from Kahsydat Acire...");
-            //guid = GetIdFromName("Kahsydat", "Acire");
-            //if (guid != null)
-            //{
-            //    RemovePhoneNumberFromUser("514-300-9999", guid);
-            //    GetContactById(guid);
-            //}
-            //Console.WriteLine("Press enter key to continue");
-            //Console.ReadLine();
+            Console.WriteLine($"Removing phone number 514-300-9999 from Kahsydat Acire...");
+            docId = await GetIdFromNameAsync("Kahsydat", "Acire");
+            if (docId != null)
+            {
+                await RemovePhoneNumberFromUserAsync("514-300-9999", docId);
+                await GetContactByIdAsync(docId);
+            }
+            Console.WriteLine("Press enter key to continue");
+            Console.ReadLine();
 
-            //Console.WriteLine($"Removing user Kahsydat Leahcim...");
-            //guid = GetIdFromName("Kahsydat", "Leahcim");
-            //if (guid != null)
-            //{
-            //    RemoveUser(guid);
-            //}
-            //Console.WriteLine("Reading back all contacts...");
-            //GetAllContacts();
-            //Console.WriteLine("Press enter key to continue");
-            //Console.ReadLine();
+            Console.WriteLine($"Removing user Kahsydat Leahcim...");
+            docId = await GetIdFromNameAsync("Kahsydat", "Leahcim");
+            if (docId != null)
+            {
+                await RemoveUserAsync(docId);
+            }
+            Console.WriteLine("Reading back all contacts...");
+            await GetAllContactsAsync();
+            Console.WriteLine("Press enter key to continue");
+            Console.ReadLine();
 
             Console.WriteLine("Done processing CosmosDB");
             Console.ReadLine();
         }
 
-        public static int GetIdFromName(string firstName, string lastName)
+        public static async Task<string> GetIdFromNameAsync(string firstName, string lastName)
         {
-            int i = 0;
-            //ContactModel model = new();
-            //try
-            //{
-            //    model = db.LoadRecordByName<ContactModel>(tableName, firstName, lastName);
-            //    guid = model.Id;
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine($"Exception: {e}.  Did not find {firstName} {lastName}");
-            //    guid = null;
-            //}
-            return i;
+            Guid? guid = Guid.Empty;
+            ContactModel model = new();
+            try
+            {
+                model = await db.LoadRecordByNameAsync<ContactModel>(firstName, lastName);
+                guid = model.Id;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception: {e}.  Did not find {firstName} {lastName}");
+                guid = null;
+            }
+
+            return guid?.ToString("B"); // returns with braces: "{e02fd0e4-00fd-090A-ca30-0d00a0038ba0}"
         }
 
-        public static async Task RemoveUser(string id)
+        public static async Task RemoveUserAsync(string id)
         {
             await db.DeleteRecordAsync<ContactModel>(id, "Corey");
         }
@@ -148,8 +125,10 @@ namespace CosmosDBUI
             await db.UpsertRecordAsync<ContactModel>(contact);
         }
 
-        private static async Task GetContactById(string id)
+        private static async Task GetContactByIdAsync(string id)
         {
+            List<ContactModel> contacts = new List<ContactModel>();
+
             //When you capture the output of an asynchronous method without using await you get the whole return value
             //which is a task not just the return value
 
@@ -157,45 +136,35 @@ namespace CosmosDBUI
             //ContactModel contact = db.LoadRecordByIdAsync<ContactModel>(id);
 
             // But if you await,  then it finishes and returns a ContactModel
+            var contact = await db.LoadRecordByIdAsync<ContactModel>(id);
 
-            ContactModel contact = await db.LoadRecordByIdAsync<ContactModel>(id);
-            Console.WriteLine($"{contact.Id}: {contact.FirstName} {contact.LastName}");
-
-            //List<ContactModel> contacts = new();
-            //var contact = db.LoadRecordByIdAsync<ContactModel>();
-            //contacts.Add(contact);
-            //DisplayFullContacts(contacts);
+            contacts.Add(contact);
+            DisplayFullContacts(contacts);
         }
 
-        private static async Task GetAllContacts()
+        private static async Task GetAllContactsAsync()
         {
-            //List<ContactModel> contacts = db.LoadRecords<ContactModel>(tableName);
-            //DisplayFullContacts(contacts);
             var contacts = await db.LoadRecordsAsync<ContactModel>();
-
-            foreach (var contact in contacts)
-            {
-                Console.WriteLine($"{contact.Id}: {contact.FirstName} {contact.LastName}");
-            }
+            DisplayFullContacts(contacts);
         }
 
         private static void DisplayFullContacts(List<ContactModel> contacts)
         {
-            //foreach (var contact in contacts)
-            //{
-            //    Console.WriteLine($"{contact.Id}: {contact.FirstName} {contact.LastName}");
-            //    foreach (EmailAddressModel model in contact.EmailAddresses)
-            //    {
-            //        Console.WriteLine($"{model.EmailAddress}");
-            //    }
-            //    foreach (PhoneNumberModel model in contact.PhoneNumbers)
-            //    {
-            //        Console.WriteLine($"{model.PhoneNumber}");
-            //    }
-            //}
+            foreach (var contact in contacts)
+            {
+                Console.WriteLine($"{contact.Id}: {contact.FirstName} {contact.LastName}");
+                foreach (EmailAddressModel model in contact.EmailAddresses)
+                {
+                    Console.WriteLine($"{model.EmailAddress}");
+                }
+                foreach (PhoneNumberModel model in contact.PhoneNumbers)
+                {
+                    Console.WriteLine($"{model.PhoneNumber}");
+                }
+            }
         }
 
-        private static async Task CreateContact(ContactModel contact)
+        private static async Task CreateContactAsync(ContactModel contact)
         {
             if (db != null)
             {
@@ -233,7 +202,9 @@ namespace CosmosDBUI
             return output;
         }
 
-
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Using Azure Key Vault to fetch CosmosDB secrets
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
         //private static (string endpointUrl, string primaryKey, string databaseName, string containerName) GetCosmosInfo()
         //{
         //    var vaultUrl = "https://<YourKeyVaultName>.vault.azure.net/";  // Replace with your actual Key Vault URL
@@ -249,6 +220,6 @@ namespace CosmosDBUI
 
         //    return (endpointUrl, primaryKey, databaseName, containerName);
         //}
-
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }
