@@ -8,13 +8,47 @@ namespace CosmosDBUI
     class Program
     {
         private static CosmosDBDataAccess db;
-        static void Main()
+        static async Task Main(string[] args)
         {
             var c = GetCosmosInfo();
 
             db = new CosmosDBDataAccess(c.endpointUrl, c.primaryKey, c.databaseName, c.containerName);
 
+            ContactModel user = new ContactModel
+            {
+                FirstName = "Tim",
+                LastName = "Corey"
+            };
 
+            user.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "tim@iamtimcorey.com" });
+            user.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "me@timothycorey.com" });
+            user.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-1212" });
+            user.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-1234" });
+
+            ContactModel user2 = new ContactModel
+            {
+                FirstName = "Charity",
+                LastName = "Corey"
+            };
+
+            user2.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "nope@aol.com" });
+            user2.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "me@timothycorey.com" });
+            user2.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-1212" });
+            user2.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-9876" });
+
+            // await CreateContact(user);
+            // await CreateContact(user2);
+
+            // await GetAllContacts();
+
+            //await GetContactById("ee40b270-8b66-4f48-bcd2-13243032cf55");
+
+            // await UpdateContactsFirstNameAsync("Timothy", "ee40b270-8b66-4f48-bcd2-13243032cf55");
+            // await GetContactById("ee40b270-8b66-4f48-bcd2-13243032cf55");
+
+            //await RemovePhoneNumberFromUserAsync("555-1212", "ee40b270-8b66-4f48-bcd2-13243032cf55");
+
+            // await RemoveUser("ee40b270-8b66-4f48-bcd2-13243032cf55");
 
             //foreach (ContactModel contact in contactsData)
             //{
@@ -91,41 +125,58 @@ namespace CosmosDBUI
             return i;
         }
 
-        public static void RemoveUser(Guid? guid)
+        public static async Task RemoveUser(string id)
         {
-            //        db.DeleteRecord<ContactModel>(tableName, guid);
+            await db.DeleteRecordAsync<ContactModel>(id, "Corey");
         }
 
-        public static void RemovePhoneNumberFromUser(string phoneNumber, Guid? guid)
+        public static async Task RemovePhoneNumberFromUserAsync(string phoneNumber, string id)
         {
-            //var contact = db.LoadRecordById<ContactModel>(tableName, guid);
+            ContactModel contact = await db.LoadRecordByIdAsync<ContactModel>(id);
 
             //// Keep list of all PhoneNumbers that do not match phoneNumber passed in
-            //contact.PhoneNumbers = contact.PhoneNumbers.Where(x => x.PhoneNumber != phoneNumber).ToList();
+            contact.PhoneNumbers = contact.PhoneNumbers.Where(x => x.PhoneNumber != phoneNumber).ToList();
 
-            //db.UpsertRecord(tableName, contact.Id, contact);
+            await db.UpsertRecordAsync(contact);
         }
 
-        private static void UpdateContactsFirstName(string firstName, Guid? guid)
+        private static async Task UpdateContactsFirstNameAsync(string firstName, string id)
         {
-            //var contact = db.LoadRecordById<ContactModel>(tableName, guid);
+            ContactModel contact = await db.LoadRecordByIdAsync<ContactModel>(id);
 
-            //contact.FirstName = firstName;
-            //db.UpsertRecord(tableName, contact.Id, contact);
+            contact.FirstName = firstName;
+            await db.UpsertRecordAsync<ContactModel>(contact);
         }
 
-        private static void GetContactById(Guid? guid)
+        private static async Task GetContactById(string id)
         {
+            //When you capture the output of an asynchronous method without using await you get the whole return value
+            //which is a task not just the return value
+
+            // Cannot implicitly convert type 'System.Threading.Tasks.Task<DataAccessLibrary.Models.ContactModel>' to 'DataAccessLibrary.Models.ContactModel'
+            //ContactModel contact = db.LoadRecordByIdAsync<ContactModel>(id);
+
+            // But if you await,  then it finishes and returns a ContactModel
+
+            ContactModel contact = await db.LoadRecordByIdAsync<ContactModel>(id);
+            Console.WriteLine($"{contact.Id}: {contact.FirstName} {contact.LastName}");
+
             //List<ContactModel> contacts = new();
-            //var contact = db.LoadRecordById<ContactModel>(tableName, guid);
+            //var contact = db.LoadRecordByIdAsync<ContactModel>();
             //contacts.Add(contact);
             //DisplayFullContacts(contacts);
         }
 
-        private static void GetAllContacts()
+        private static async Task GetAllContacts()
         {
             //List<ContactModel> contacts = db.LoadRecords<ContactModel>(tableName);
             //DisplayFullContacts(contacts);
+            var contacts = await db.LoadRecordsAsync<ContactModel>();
+
+            foreach (var contact in contacts)
+            {
+                Console.WriteLine($"{contact.Id}: {contact.FirstName} {contact.LastName}");
+            }
         }
 
         private static void DisplayFullContacts(List<ContactModel> contacts)
@@ -144,16 +195,16 @@ namespace CosmosDBUI
             //}
         }
 
-        private static void CreateContact(ContactModel contact)
+        private static async Task CreateContact(ContactModel contact)
         {
-            //if (db != null)
-            //{
-            //    db.UpsertRecord(tableName, contact.Id, contact);
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Error: db is NULL in CreateContact()");
-            //}
+            if (db != null)
+            {
+                await db.UpsertRecordAsync(contact);
+            }
+            else
+            {
+                Console.WriteLine("Error: db is NULL in CreateContact()");
+            }
         }
 
         private static (string endpointUrl, string primaryKey, string databaseName, string containerName) GetCosmosInfo()

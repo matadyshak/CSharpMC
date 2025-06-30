@@ -9,7 +9,7 @@ namespace MongoDBUI
 {
     public class Program
     {
-        private static MongoDBDataAccess db;
+        private static MongoDBDataAccess? db;
         private static readonly string tableName = "Contacts";
 
         private static DataInitializer data = new DataInitializer();

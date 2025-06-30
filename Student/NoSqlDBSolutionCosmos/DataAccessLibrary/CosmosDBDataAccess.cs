@@ -49,7 +49,7 @@ namespace DataAccessLibrary
             return output;
         }
 
-        public async Task<T> LoadRecordById<T>(string id)
+        public async Task<T> LoadRecordByIdAsync<T>(string id)
         {
             // Parameterized query
             string sql = "select * from c where c.id = @Id";
@@ -64,17 +64,23 @@ namespace DataAccessLibrary
                 {
                     return item; // Return the first matching record
                 }
-
-                throw new Exception($"No record found with id: {id}");
             }
+
+            throw new Exception($"No record found with id: {id}");
         }
-        public T LoadRecordByName<T>(string firstName, string lastName)
-        {
-        }
+
+        //public T LoadRecordByNameAsync <T>(string firstName, string lastName)
+        //{
+        //}
         public async Task UpsertRecordAsync<T>(T record)
         {
             // Could take out await
             await _container.UpsertItemAsync(record);
+        }
+
+        public async Task DeleteRecordAsync<T>(string id, string partitionKey)
+        {
+            await _container.DeleteItemAsync<T>(id, new PartitionKey(partitionKey));
         }
     }
 }
