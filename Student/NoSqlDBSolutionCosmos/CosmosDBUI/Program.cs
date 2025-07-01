@@ -1,14 +1,13 @@
 ﻿using DataAccessLibrary;
 using DataAccessLibrary.Models;
 using Microsoft.Extensions.Configuration;
-//using Microsoft.Extensions.Dependencyinjection
 
 namespace CosmosDBUI
 {
     public class Program
     {
         private static CosmosDBDataAccess db;
-        private static DataInitializer data = new DataInitializer();
+        private static MongoDataInitializer data = new MongoDataInitializer();
         private static List<ContactModel> contactsData = data.GetContactData();
         static async Task Main(string[] args)
         {
@@ -86,20 +85,20 @@ namespace CosmosDBUI
 
         public static async Task<string> GetIdFromNameAsync(string firstName, string lastName)
         {
-            Guid? guid = Guid.Empty;
+            string id;
             ContactModel model = new();
             try
             {
                 model = await db.LoadRecordByNameAsync<ContactModel>(firstName, lastName);
-                guid = model.Id;
+                id = model.Id;
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Exception: {e}.  Did not find {firstName} {lastName}");
-                guid = null;
+                id = null;
             }
 
-            return guid?.ToString("B"); // returns with braces: "{e02fd0e4-00fd-090A-ca30-0d00a0038ba0}"
+            return id;
         }
 
         public static async Task RemoveUserAsync(string id)

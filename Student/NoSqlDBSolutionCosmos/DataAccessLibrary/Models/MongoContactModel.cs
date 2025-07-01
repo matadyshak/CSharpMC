@@ -1,11 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace DataAccessLibrary.Models
 {
-    public class ContactModel
+    public class MongoContactModel
     {
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
+        [BsonId]
+        [BsonElement("_id")]
+        [BsonGuidRepresentation(GuidRepresentation.Standard)]
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public List<EmailAddressModel> EmailAddresses { get; set; } = new List<EmailAddressModel>();

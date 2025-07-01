@@ -2,14 +2,14 @@
 {
     public class MongoDataInitializer
     {
-        public List<ContactModel> GetContactData()
+        public List<MongoContactModel> GetContactData()
         {
             return ContactData;
         }
 
-        public List<ContactModel> ContactData = new List<ContactModel>
+        public List<MongoContactModel> ContactData = new List<MongoContactModel>
         {
-            new ContactModel
+            new MongoContactModel
             {
                 // Id = Guid.NewGuid(),
                 FirstName = "Kahsydat",
@@ -26,7 +26,7 @@
                 }
             },
 
-            new ContactModel
+            new MongoContactModel
             {
                 // Id = Guid.NewGuid(),
                 FirstName = "Kahsydat",
@@ -42,7 +42,7 @@
                     new PhoneNumberModel { PhoneNumber = "214-100-9991" }
                 }
             },
-            new ContactModel
+            new MongoContactModel
             {
                 // Id = Guid.NewGuid(),
                 FirstName = "Kahsydat",
@@ -59,7 +59,7 @@
                 }
             },
 
-            new ContactModel
+            new MongoContactModel
             {
                 // Id = Guid.NewGuid(),
                 FirstName = "Kahsydat",
@@ -76,7 +76,7 @@
                 }
             },
 
-            new ContactModel
+            new MongoContactModel
             {
                 // Id = Guid.NewGuid(),
                 FirstName = "Kahsydat",
@@ -93,7 +93,7 @@
                 }
             },
 
-            new ContactModel
+            new MongoContactModel
             {
                 // Id = Guid.NewGuid(),
                 FirstName = "Kahsydat",
@@ -110,7 +110,7 @@
                 }
             },
 
-            new ContactModel
+            new MongoContactModel
             {
                 // Id = Guid.NewGuid(),
                 FirstName = "Kahsydat",
@@ -127,7 +127,7 @@
                 }
             },
 
-            new ContactModel
+            new MongoContactModel
             {
                 // Id = Guid.NewGuid(),
                 FirstName = "Zeloznog",
@@ -144,7 +144,7 @@
                 }
             },
 
-            new ContactModel
+            new MongoContactModel
             {
                 // Id = Guid.NewGuid(),
                 FirstName = "Hcabmuab",
@@ -161,7 +161,7 @@
                 }
             },
 
-            new ContactModel
+            new MongoContactModel
             {
                 // Id = Guid.NewGuid(),
                 FirstName = "Hcabmuab",

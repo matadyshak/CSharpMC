@@ -12,8 +12,8 @@ namespace MongoDBUI
         private static MongoDBDataAccess? db;
         private static readonly string tableName = "Contacts";
 
-        private static DataInitializer data = new DataInitializer();
-        private static List<ContactModel> contactsData = data.GetContactData();
+        private static MongoDataInitializer data = new MongoDataInitializer();
+        private static List<MongoContactModel> contactsData = data.GetContactData();
 
         // contacts initializes the DB
         // contacts does not have to be updated to match the DB
@@ -26,7 +26,7 @@ namespace MongoDBUI
             Guid? guid = new();
 
 
-            foreach (ContactModel contact in contactsData)
+            foreach (MongoContactModel contact in contactsData)
             {
                 CreateContact(contact);
             }
@@ -87,10 +87,10 @@ namespace MongoDBUI
         public static Guid? GetIdFromName(string firstName, string lastName)
         {
             Guid? guid;
-            ContactModel model = new();
+            MongoContactModel model = new();
             try
             {
-                model = db.LoadRecordByName<ContactModel>(tableName, firstName, lastName);
+                model = db.LoadRecordByName<MongoContactModel>(tableName, firstName, lastName);
                 guid = model.Id;
             }
             catch (Exception e)
@@ -103,12 +103,12 @@ namespace MongoDBUI
 
         public static void RemoveUser(Guid? guid)
         {
-            db.DeleteRecord<ContactModel>(tableName, guid);
+            db.DeleteRecord<MongoContactModel>(tableName, guid);
         }
 
         public static void RemovePhoneNumberFromUser(string phoneNumber, Guid? guid)
         {
-            var contact = db.LoadRecordById<ContactModel>(tableName, guid);
+            var contact = db.LoadRecordById<MongoContactModel>(tableName, guid);
 
             // Keep list of all PhoneNumbers that do not match phoneNumber passed in
             contact.PhoneNumbers = contact.PhoneNumbers.Where(x => x.PhoneNumber != phoneNumber).ToList();
@@ -118,7 +118,7 @@ namespace MongoDBUI
 
         private static void UpdateContactsFirstName(string firstName, Guid? guid)
         {
-            var contact = db.LoadRecordById<ContactModel>(tableName, guid);
+            var contact = db.LoadRecordById<MongoContactModel>(tableName, guid);
 
             contact.FirstName = firstName;
             db.UpsertRecord(tableName, contact.Id, contact);
@@ -126,19 +126,19 @@ namespace MongoDBUI
 
         private static void GetContactById(Guid? guid)
         {
-            List<ContactModel> contacts = new();
-            var contact = db.LoadRecordById<ContactModel>(tableName, guid);
+            List<MongoContactModel> contacts = new();
+            var contact = db.LoadRecordById<MongoContactModel>(tableName, guid);
             contacts.Add(contact);
             DisplayFullContacts(contacts);
         }
 
         private static void GetAllContacts()
         {
-            List<ContactModel> contacts = db.LoadRecords<ContactModel>(tableName);
+            List<MongoContactModel> contacts = db.LoadRecords<MongoContactModel>(tableName);
             DisplayFullContacts(contacts);
         }
 
-        private static void DisplayFullContacts(List<ContactModel> contacts)
+        private static void DisplayFullContacts(List<MongoContactModel> contacts)
         {
             foreach (var contact in contacts)
             {
@@ -154,7 +154,7 @@ namespace MongoDBUI
             }
         }
 
-        private static void CreateContact(ContactModel contact)
+        private static void CreateContact(MongoContactModel contact)
         {
             if (db != null)
             {
