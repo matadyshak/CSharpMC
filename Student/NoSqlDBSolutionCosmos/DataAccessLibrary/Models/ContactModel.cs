@@ -11,10 +11,9 @@ namespace DataAccessLibrary.Models
         [BsonElement("_id")]
         [BsonGuidRepresentation(GuidRepresentation.Standard)]
         [JsonProperty(PropertyName = "id")]
-
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public List<EmailAddressModel> EmailAddresses { get; set; } = new List<EmailAddressModel>();
         public List<PhoneNumberModel> PhoneNumbers { get; set; } = new List<PhoneNumberModel>();
     }
