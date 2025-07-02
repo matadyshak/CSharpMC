@@ -1,0 +1,208 @@
+﻿using Microsoft.Azure.Cosmos;
+
+namespace DataAccessLibrary
+{
+    public class CosmosDBDataAccess
+    {
+        private readonly string _endpointUrl;
+        private readonly string _primaryKey;
+        private readonly string _databaseName;
+        private readonly string _containerName;
+        private CosmosClient _cosmosClient;
+        private Database _database;
+        private Container _container;
+
+        public CosmosDBDataAccess(
+            string endpointUrl,
+            string primaryKey,
+            string databaseName,
+            string containerName)
+        {
+            _endpointUrl=endpointUrl;
+            _primaryKey=primaryKey;
+            _databaseName=databaseName;
+            _containerName=containerName;
+
+            _cosmosClient = new CosmosClient(_endpointUrl, _primaryKey);
+            _database = _cosmosClient.GetDatabase(_databaseName);
+            _container = _database.GetContainer(_containerName);
+        }
+
+        public async Task<List<T>> LoadRecordsAsync<T>()
+        {
+            string sql = "select * from c";
+            QueryDefinition queryDefinition = new QueryDefinition(sql);
+            FeedIterator<T> feedIterator = _container.GetItemQueryIterator<T>(queryDefinition);
+
+            List<T> output = new List<T>();
+
+            while (feedIterator.HasMoreResults)
+            {
+                FeedResponse<T> currentResultSet = await feedIterator.ReadNextAsync();
+
+                foreach (var item in currentResultSet)
+                {
+                    output.Add(item);
+                }
+            }
+
+            return output;
+        }
+
+        public async Task<T> LoadRecordByIdAsync<T>(string id)
+        {
+            // Parameterized query
+            string sql = "select * from c where c.id = @Id";
+            QueryDefinition queryDefinition = new QueryDefinition(sql).WithParameter("@Id", id);
+            FeedIterator<T> feedIterator = _container.GetItemQueryIterator<T>(queryDefinition);
+
+            while (feedIterator.HasMoreResults)
+            {
+                FeedResponse<T> currentResultSet = await feedIterator.ReadNextAsync();
+
+                foreach (var item in currentResultSet)
+                {
+                    return item; // Return the first matching record
+                }
+            }
+
+            throw new Exception($"No record found with id: {id}");
+        }
+
+        public async Task<T> LoadRecordByNameAsync<T>(string firstName, string lastName)
+        {
+            // Parameterized query
+            string sql = "select * from c where c.firstName = @FirstName and c.lastName = @LastName";
+            QueryDefinition queryDefinition = new QueryDefinition(sql)
+                .WithParameter("@FirstName", firstName)
+                .WithParameter("@LastName", lastName);
+            FeedIterator<T> feedIterator = _container.GetItemQueryIterator<T>(queryDefinition);
+
+            while (feedIterator.HasMoreResults)
+            {
+                FeedResponse<T> currentResultSet = await feedIterator.ReadNextAsync();
+
+                foreach (var item in currentResultSet)
+                {
+                    return item; // Return the first matching record
+                }
+            }
+
+            throw new Exception($"No record found with name: {firstName} {lastName}");
+        }
+
+        public async Task UpsertRecordAsync<T>(T record, string partitionKey)
+        {
+            // Could take out await
+            await _container.UpsertItemAsync(record, new PartitionKey(partitionKey));
+        }
+
+        public async Task DeleteRecordAsync<T>(string id, string partitionKey)
+        {
+            await _container.DeleteItemAsync<T>(id, new PartitionKey(partitionKey));
+        }
+    }
+}
+
+/* 
+ 
+public class CosmosDBDataAccess
+{
+    private readonly CosmosClient _client;
+    private readonly Container _container;
+
+    public CosmosDBDataAccess(string endpointUrl, string primaryKey, string dbName, string containerName)
+    {
+        _client = new CosmosClient(endpointUrl, primaryKey);
+        _container = _client.GetContainer(dbName, containerName);
+    }
+
+    public async Task UpsertRecordAsync<T>(T item) where T : IPartitionedDocument
+    {
+        await _container.UpsertItemAsync(item, new PartitionKey(item.PartitionKey));
+    }
+
+    public async Task<T> LoadRecordByIdAsync<T>(string id, string partitionKey)
+    {
+        ItemResponse<T> response = await _container.ReadItemAsync<T>(id, new PartitionKey(partitionKey));
+        return response.Resource;
+    }
+
+    public async Task<List<T>> LoadRecordsAsync<T>()
+    {
+        var query = _container.GetItemLinqQueryable<T>()
+                              .ToFeedIterator();
+
+        List<T> results = new();
+        while (query.HasMoreResults)
+        {
+            var response = await query.ReadNextAsync();
+            results.AddRange(response);
+        }
+
+        return results;
+    }
+
+    public async Task DeleteRecordAsync<T>(string id, string partitionKey)
+    {
+        await _container.DeleteItemAsync<T>(id, new PartitionKey(partitionKey));
+    }
+
+    public async Task<T> LoadRecordByNameAsync<T>(string firstName, string lastName) where T : IPartitionedDocument
+    {
+        var query = new QueryDefinition(
+            "SELECT * FROM c WHERE c.FirstName = @firstName AND c.LastName = @lastName")
+            .WithParameter("@firstName", firstName)
+            .WithParameter("@lastName", lastName);
+
+        var feed = _container.GetItemQueryIterator<T>(query, requestOptions: new QueryRequestOptions
+        {
+            PartitionKey = new PartitionKey(lastName)
+        });
+
+        while (feed.HasMoreResults)
+        {
+            var response = await feed.ReadNextAsync();
+            if (response.Resource.Any())
+                return response.Resource.First();
+        }
+
+        throw new Exception($"Document not found for {firstName} {lastName}");
+    }
+}
+ 
+
+
+
+public interface IPartitionedDocument
+{
+    string Id { get; }
+    string PartitionKey { get; }
+}
+
+
+
+
+public class ContactModel : IPartitionedDocument
+{
+    [JsonProperty(PropertyName = "id")]
+    public string Id { get; set; }
+
+    public string LastName { get; set; }
+
+    public string FirstName { get; set; }
+
+    public List<EmailAddressModel> EmailAddresses { get; set; } = new();
+
+    public List<PhoneNumberModel> PhoneNumbers { get; set; } = new();
+
+    [JsonIgnore]
+    public string PartitionKey => LastName;
+}
+
+
+
+
+
+
+ */
