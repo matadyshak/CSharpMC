@@ -42,7 +42,7 @@ namespace CosmosDBUI
             docId = await GetIdFromNameAsync("Hcabmuab", "Bocaj");
             if (docId != null)
             {
-                await GetContactByIdAsync(docId);
+                await GetContactByIdAsync(docId, "Bocaj");
             }
             Console.WriteLine("Press enter key to continue");
             Console.ReadLine();
@@ -52,8 +52,8 @@ namespace CosmosDBUI
             docId = await GetIdFromNameAsync("Kahsydat", "Nitsirk");
             if (docId != null)
             {
-                await UpdateContactsFirstNameAsync("Zeloznog", docId);
-                await GetContactByIdAsync(docId);
+                await UpdateContactsFirstNameAsync("Zeloznog", docId, "Nitserk");
+                await GetContactByIdAsync(docId, "Nitsirk");
             }
             Console.WriteLine("Press enter key to continue");
             Console.ReadLine();
@@ -62,8 +62,8 @@ namespace CosmosDBUI
             docId = await GetIdFromNameAsync("Kahsydat", "Acire");
             if (docId != null)
             {
-                await RemovePhoneNumberFromUserAsync("514-300-9999", docId);
-                await GetContactByIdAsync(docId);
+                await RemovePhoneNumberFromUserAsync("514-300-9999", docId, "Acire");
+                await GetContactByIdAsync(docId, "Acire");
             }
             Console.WriteLine("Press enter key to continue");
             Console.ReadLine();
@@ -72,7 +72,7 @@ namespace CosmosDBUI
             docId = await GetIdFromNameAsync("Kahsydat", "Leahcim");
             if (docId != null)
             {
-                await RemoveUserAsync(docId);
+                await RemoveUserAsync(docId, "Leahcim");
             }
             Console.WriteLine("Reading back all contacts...");
             await GetAllContactsAsync();
@@ -85,7 +85,7 @@ namespace CosmosDBUI
 
         public static async Task<string> GetIdFromNameAsync(string firstName, string lastName)
         {
-            string id;
+            string? id;
             ContactModel model = new();
             try
             {
@@ -101,32 +101,32 @@ namespace CosmosDBUI
             return id;
         }
 
-        public static async Task RemoveUserAsync(string id)
+        public static async Task RemoveUserAsync(string id, string partitionKey)
         {
-            var contact = await db.LoadRecordByIdAsync<ContactModel>(id);
+            var contact = await db.LoadRecordByIdAsync<ContactModel>(id, partitionKey);
 
             await db.DeleteRecordAsync<ContactModel>(id, contact.LastName);
         }
 
-        public static async Task RemovePhoneNumberFromUserAsync(string phoneNumber, string id)
+        public static async Task RemovePhoneNumberFromUserAsync(string phoneNumber, string id, string partitionKey)
         {
-            ContactModel contact = await db.LoadRecordByIdAsync<ContactModel>(id);
+            ContactModel contact = await db.LoadRecordByIdAsync<ContactModel>(id, partitionKey);
 
             //// Keep list of all PhoneNumbers that do not match phoneNumber passed in
             contact.PhoneNumbers = contact.PhoneNumbers.Where(x => x.PhoneNumber != phoneNumber).ToList();
 
-            await db.UpsertRecordAsync(contact);
+            await db.UpsertRecordAsync<ContactModel>(contact); //fixed missing <ContactModel>
         }
 
-        private static async Task UpdateContactsFirstNameAsync(string firstName, string id)
+        private static async Task UpdateContactsFirstNameAsync(string firstName, string id, string partitionKey)
         {
-            ContactModel contact = await db.LoadRecordByIdAsync<ContactModel>(id);
+            ContactModel contact = await db.LoadRecordByIdAsync<ContactModel>(id, partitionKey);
 
             contact.FirstName = firstName;
             await db.UpsertRecordAsync<ContactModel>(contact);
         }
 
-        private static async Task GetContactByIdAsync(string id)
+        private static async Task GetContactByIdAsync(string id, string partitionKey)
         {
             List<ContactModel> contacts = new List<ContactModel>();
 
@@ -137,7 +137,7 @@ namespace CosmosDBUI
             //ContactModel contact = db.LoadRecordByIdAsync<ContactModel>(id);
 
             // But if you await,  then it finishes and returns a ContactModel
-            var contact = await db.LoadRecordByIdAsync<ContactModel>(id);
+            var contact = await db.LoadRecordByIdAsync<ContactModel>(id, partitionKey);
 
             contacts.Add(contact);
             DisplayFullContacts(contacts);
@@ -169,7 +169,7 @@ namespace CosmosDBUI
         {
             if (db != null)
             {
-                await db.UpsertRecordAsync(contact, contact.LastName);
+                await db.UpsertRecordAsync<ContactModel>(contact); //fixed missing <ContactModel>
             }
             else
             {
