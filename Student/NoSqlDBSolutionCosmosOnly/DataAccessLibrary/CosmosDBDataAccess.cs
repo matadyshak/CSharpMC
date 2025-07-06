@@ -30,30 +30,34 @@ namespace DataAccessLibrary
             _container = _database.GetContainer(_containerName);
         }
 
+        //public async Task<List<T>> LoadRecordsAsync<T>()
+        //{
+        //string sql = "select * from c";
+        //QueryDefinition queryDefinition = new QueryDefinition(sql);
+        //FeedIterator<T> feedIterator = _container.GetItemQueryIterator<T>(queryDefinition);
+
+        //List<T> output = new List<T>();
+
+        //while (feedIterator.HasMoreResults)
+        //{
+        //    FeedResponse<T> currentResultSet = await feedIterator.ReadNextAsync();
+
+        //    foreach (var item in currentResultSet)
+        //    {
+        //        output.Add(item);
+        //    }
+        //}
+
+        //return output;
+        //}
+
         public async Task<List<T>> LoadRecordsAsync<T>()
         {
-            //string sql = "select * from c";
-            //QueryDefinition queryDefinition = new QueryDefinition(sql);
-            //FeedIterator<T> feedIterator = _container.GetItemQueryIterator<T>(queryDefinition);
-
-            //List<T> output = new List<T>();
-
-            //while (feedIterator.HasMoreResults)
-            //{
-            //    FeedResponse<T> currentResultSet = await feedIterator.ReadNextAsync();
-
-            //    foreach (var item in currentResultSet)
-            //    {
-            //        output.Add(item);
-            //    }
-            //}
-
-            //return output;
-
             var query = _container.GetItemLinqQueryable<T>()
                         .ToFeedIterator();
 
             List<T> results = new List<T>();
+
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();
@@ -113,10 +117,11 @@ namespace DataAccessLibrary
 
         public async Task<T> LoadRecordByNameAsync<T>(string firstName, string lastName) where T : IPartitionedDocument
         {
+            // CosmosDB is case-sensitive, so ensure the property names match exactly
             var query = new QueryDefinition(
-                "SELECT * FROM c WHERE c.FirstName = @firstName AND c.LastName = @lastName")
-                .WithParameter("@FirstName", firstName)   //@firstName => @FirstName
-                .WithParameter("@LastName", lastName);    //@lastName => @LastName
+                "SELECT * FROM C WHERE C.FirstName = @firstName AND C.LastName = @lastName")
+                .WithParameter("@firstName", firstName)
+                .WithParameter("@lastName", lastName);
 
             var feed = _container.GetItemQueryIterator<T>(query, requestOptions: new QueryRequestOptions
             {
@@ -136,20 +141,10 @@ namespace DataAccessLibrary
         {
             await _container.UpsertItemAsync(item, new PartitionKey(item.PartitionKey));
         }
-        //public async Task UpsertRecordAsync<T>(T record, string partitionKey)
-        //{
-        //    // Could take out await
-        //    await _container.UpsertItemAsync(record, new PartitionKey(partitionKey));
-        //}
 
         public async Task DeleteRecordAsync<T>(string id, string partitionKey)
         {
             await _container.DeleteItemAsync<T>(id, new PartitionKey(partitionKey));
-
-            //public async Task DeleteRecordAsync<T>(string id, string partitionKey)
-            //{
-            //    await _container.DeleteItemAsync<T>(id, new PartitionKey(partitionKey));
-            //}
         }
     }
 }

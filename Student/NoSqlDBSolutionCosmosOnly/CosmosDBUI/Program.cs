@@ -52,7 +52,7 @@ namespace CosmosDBUI
             docId = await GetIdFromNameAsync("Kahsydat", "Nitsirk");
             if (docId != null)
             {
-                await UpdateContactsFirstNameAsync("Zeloznog", docId, "Nitserk");
+                await UpdateContactsFirstNameAsync("Zeloznog", docId, "Nitsirk");
                 await GetContactByIdAsync(docId, "Nitsirk");
             }
             Console.WriteLine("Press enter key to continue");
@@ -76,9 +76,6 @@ namespace CosmosDBUI
             }
             Console.WriteLine("Reading back all contacts...");
             await GetAllContactsAsync();
-            Console.WriteLine("Press enter key to continue");
-            Console.ReadLine();
-
             Console.WriteLine("Done processing CosmosDB");
             Console.ReadLine();
         }
@@ -202,25 +199,25 @@ namespace CosmosDBUI
 
             return output;
         }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// Using Azure Key Vault to fetch CosmosDB secrets
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        //private static (string endpointUrl, string primaryKey, string databaseName, string containerName) GetCosmosInfo()
-        //{
-        //    var vaultUrl = "https://<YourKeyVaultName>.vault.azure.net/";  // Replace with your actual Key Vault URL
-        //    var client = new SecretClient(new Uri(vaultUrl), new DefaultAzureCredential());
-
-        //    // Fetch secrets from Key Vault
-        //    string endpointUrl = client.GetSecret("CosmosDB--EndpointUrl").Value.Value;
-        //    string primaryKey = client.GetSecret("CosmosDB--PrimaryKey").Value.Value;
-
-        //    // Optionally keep non-sensitive values in appsettings.json or hard-code for now
-        //    string databaseName = "MyCosmosDatabase";       // Replace with your actual DB name
-        //    string containerName = "MyContainer";           // Replace with your actual container name
-
-        //    return (endpointUrl, primaryKey, databaseName, containerName);
-        //}
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Using Azure Key Vault to fetch CosmosDB secrets
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//private static (string endpointUrl, string primaryKey, string databaseName, string containerName) GetCosmosInfo()
+//{
+//    var vaultUrl = "https://<YourKeyVaultName>.vault.azure.net/";  // Replace with your actual Key Vault URL
+//    var client = new SecretClient(new Uri(vaultUrl), new DefaultAzureCredential());
+
+//    // Fetch secrets from Key Vault
+//    string endpointUrl = client.GetSecret("CosmosDB--EndpointUrl").Value.Value;
+//    string primaryKey = client.GetSecret("CosmosDB--PrimaryKey").Value.Value;
+
+//    // Optionally keep non-sensitive values in appsettings.json or hard-code for now
+//    string databaseName = "MyCosmosDatabase";       // Replace with your actual DB name
+//    string containerName = "MyContainer";           // Replace with your actual container name
+
+//    return (endpointUrl, primaryKey, databaseName, containerName);
+//}
+////////////////////////////////////////////////////////////////////////////////////////////////////
