@@ -21,7 +21,7 @@ namespace ApiDBUI.Pages
         private async Task GetAllContacts()
         {
             var _client = _httpClientFactory.CreateClient();
-            var response = await _client.GetAsync("https://localhost:44331/api/Contacts");
+            var response = await _client.GetAsync("https://localhost:44374/api/Contacts");
 
             List<ContactModel> contacts;
 
