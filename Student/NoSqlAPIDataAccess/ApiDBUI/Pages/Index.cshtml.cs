@@ -15,7 +15,27 @@ namespace ApiDBUI.Pages
         }
         public async Task OnGet()
         {
+            await CreateContact();
             await GetAllContacts();
+        }
+
+        private async Task CreateContact()
+        {
+            ContactModel contact = new ContactModel
+            {
+                FirstName = "Tim",
+                LastName = "Corey"
+            };
+
+            contact.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "tim@iamtimcorey.com" });
+            contact.EmailAddresses.Add(new EmailAddressModel { EmailAddress = "me@timothycorey.com" });
+            contact.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-1212" });
+            contact.PhoneNumbers.Add(new PhoneNumberModel { PhoneNumber = "555-1234" });
+
+            var _client = _httpClientFactory.CreateClient();
+            var reponse = await _client.PostAsync(
+                "https://localhost:44374/api/Contacts",
+                new StringContent(JsonSerializer.Serialize(contact), System.Text.Encoding.UTF8, "application/json"));
         }
 
         private async Task GetAllContacts()

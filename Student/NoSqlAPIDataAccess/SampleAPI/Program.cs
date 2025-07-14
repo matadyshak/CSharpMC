@@ -8,6 +8,15 @@ namespace SampleAPI
 
             // Add services to the container.
             builder.Services.AddControllers();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowApiDBUI", policy =>
+                {
+                    policy.WithOrigins("https://localhost:44373")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
 
             var app = builder.Build();
 
@@ -24,6 +33,8 @@ namespace SampleAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("AllowApiDBUI");
 
             app.UseAuthorization();
 

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
+    <ProjectReference Include="..\MongoDBUI\MongoDBUI.csproj" />
   </ItemGroup>
 
 </Project>

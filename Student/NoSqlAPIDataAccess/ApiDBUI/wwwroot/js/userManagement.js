@@ -1,4 +1,4 @@
-﻿const apiUrl = '/api/users';
+﻿const apiUrl = 'https://localhost:44374/api/contacts';
 
 async function loadUsers() {
     const response = await fetch(apiUrl);
@@ -12,13 +12,17 @@ async function loadUsers() {
             <td>${user.id}</td>
             <td>${user.firstName}</td>
             <td>${user.lastName}</td>
-            <td>${user.emailAddresses.join(', ')}</td>
-            <td>${user.phoneNumbers.join(', ')}</td>
+            <td>${user.emailAddresses.map(e => e.emailAddress).join(', ')}</td>
+            <td>${user.phoneNumbers.map(e => e.phoneNumber).join(', ')}</td>
             <td>
                 <button onclick='editUser(${JSON.stringify(user)})'>Edit</button>
                 <button onclick='deleteUser("${user.id}")'>Delete</button>
             </td>
         `;
+
+//        console.log("EmailAddresses:", user.emailAddresses);
+//        console.log("PhoneNumbers:", user.phoneNumbers);    
+
         tbody.appendChild(row);
     });
 }
