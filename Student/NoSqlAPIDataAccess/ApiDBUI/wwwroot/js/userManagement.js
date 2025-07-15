@@ -20,9 +20,6 @@ async function loadUsers() {
             </td>
         `;
 
-//        console.log("EmailAddresses:", user.emailAddresses);
-//        console.log("PhoneNumbers:", user.phoneNumbers);    
-
         tbody.appendChild(row);
     });
 }
@@ -31,13 +28,12 @@ async function deleteUser(id) {
     await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
     loadUsers();
 }
-
 function editUser(user) {
     document.getElementById('userId').value = user.id;
     document.getElementById('firstName').value = user.firstName;
     document.getElementById('lastName').value = user.lastName;
-    document.getElementById('emailAddresses').value = user.emailAddresses.join(', ');
-    document.getElementById('phoneNumbers').value = user.phoneNumbers.join(', ');
+    document.getElementById('emailAddresses').value = user.emailAddresses.map(e => e.emailAddress).join(', ');
+    document.getElementById('phoneNumbers').value = user.phoneNumbers.map(p => p.phoneNumber).join(', ');
 }
 
 function resetForm() {
@@ -49,32 +45,34 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('userForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const id = document.getElementById('userId').value;
+        const id = document.getElementById('userId').value || crypto.randomUUID();
         const user = {
+            id,
             firstName: document.getElementById('firstName').value,
             lastName: document.getElementById('lastName').value,
-            emailAddresses: document.getElementById('emailAddresses').value.split(',').map(e => e.trim()),
-            phoneNumbers: document.getElementById('phoneNumbers').value.split(',').map(p => p.trim())
+            emailAddresses: document.getElementById('emailAddresses').value.split(',').map(email => ({ emailAddress: email.trim() })),
+            phoneNumbers: document.getElementById('phoneNumbers').value.split(',').map(phone => ({ phoneNumber: phone.trim() }))
         };
 
-        if (id) {
-            user.id = id;
-            await fetch(`${apiUrl}/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(user)
-            });
-        } else {
-            await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(user)
-            });
-        }
+        user.id = id;
+        await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user)
+        });
+
+/*
+        await fetch(`${apiUrl}/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user)
+        });
+*/
 
         resetForm();
         loadUsers();
     });
 
     loadUsers();
+    console.log("userManagement.js v1.1 loaded");
 });

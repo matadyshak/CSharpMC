@@ -18,16 +18,29 @@ namespace SampleAPI.Controllers
             db = new MongoDBDataAccess("MongoContactsDB", _config.GetConnectionString("Default"));
         }
 
-        [HttpGet]
-        public List<ContactModel> GetAll()
+        [HttpPost]
+        public void CreateOrUpdateRecord(ContactModel contact)
         {
-            return db.LoadRecords<ContactModel>(tableName);
+            db.UpsertRecord<ContactModel>(tableName, contact.Id, contact);
         }
 
-        [HttpPost]
-        public void InsertRecord(ContactModel contact)
+        [HttpGet]
+        public List<ContactModel> ReadAllRecords()
         {
-            db.UpsertRecord(tableName, contact.Id, contact);
+            return db.ReadRecords<ContactModel>(tableName);
         }
+
+        [HttpPut]
+        public void UpdateRecord(ContactModel contact)
+        {
+            db.UpsertRecord<ContactModel>(tableName, contact.Id, contact);
+        }
+
+        [HttpDelete("{id}")]
+        public void DeleteRecord(Guid id)
+        {
+            db.DeleteRecord<ContactModel>(tableName, id);
+        }
+
     }
 }

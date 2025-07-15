@@ -1,5 +1,6 @@
 using ApiDBUI.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Text;
 using System.Text.Json;
 
 namespace ApiDBUI.Pages
@@ -15,8 +16,9 @@ namespace ApiDBUI.Pages
         }
         public async Task OnGet()
         {
-            await CreateContact();
-            await GetAllContacts();
+            // Not needed now that there is a web-based user interface !!!
+            // await CreateContact();
+            // await GetAllContacts();
         }
 
         private async Task CreateContact()
@@ -35,7 +37,7 @@ namespace ApiDBUI.Pages
             var _client = _httpClientFactory.CreateClient();
             var reponse = await _client.PostAsync(
                 "https://localhost:44374/api/Contacts",
-                new StringContent(JsonSerializer.Serialize(contact), System.Text.Encoding.UTF8, "application/json"));
+                new StringContent(JsonSerializer.Serialize(contact), Encoding.UTF8, "application/json"));
         }
 
         private async Task GetAllContacts()

@@ -87,7 +87,7 @@ namespace MongoDBUI
             ContactModel model = new();
             try
             {
-                model = db.LoadRecordByName<ContactModel>(tableName, firstName, lastName);
+                model = db.ReadRecordByName<ContactModel>(tableName, firstName, lastName);
                 guid = model.Id;
             }
             catch (Exception e)
@@ -97,7 +97,6 @@ namespace MongoDBUI
             }
             return guid;
         }
-
         public static void RemoveUser(Guid? guid)
         {
             db.DeleteRecord<ContactModel>(tableName, guid);
@@ -105,7 +104,7 @@ namespace MongoDBUI
 
         public static void RemovePhoneNumberFromUser(string phoneNumber, Guid? guid)
         {
-            var contact = db.LoadRecordById<ContactModel>(tableName, guid);
+            var contact = db.ReadRecordById<ContactModel>(tableName, guid);
 
             // Keep list of all PhoneNumbers that do not match phoneNumber passed in
             contact.PhoneNumbers = contact.PhoneNumbers.Where(x => x.PhoneNumber != phoneNumber).ToList();
@@ -115,7 +114,7 @@ namespace MongoDBUI
 
         private static void UpdateContactsFirstName(string firstName, Guid? guid)
         {
-            var contact = db.LoadRecordById<ContactModel>(tableName, guid);
+            var contact = db.ReadRecordById<ContactModel>(tableName, guid);
 
             contact.FirstName = firstName;
             db.UpsertRecord(tableName, contact.Id, contact);
@@ -124,14 +123,14 @@ namespace MongoDBUI
         private static void GetContactById(Guid? guid)
         {
             List<ContactModel> contacts = new();
-            var contact = db.LoadRecordById<ContactModel>(tableName, guid);
+            var contact = db.ReadRecordById<ContactModel>(tableName, guid);
             contacts.Add(contact);
             DisplayFullContacts(contacts);
         }
 
         private static void GetAllContacts()
         {
-            List<ContactModel> contacts = db.LoadRecords<ContactModel>(tableName);
+            List<ContactModel> contacts = db.ReadRecords<ContactModel>(tableName);
             DisplayFullContacts(contacts);
         }
 

@@ -14,28 +14,28 @@ namespace DataAccessLibrary
         }
 
         // Insert record if it does not already exist, else do nothing
-        public void InsertRecord<T>(string table, T record)
+        public void CreateRecord<T>(string table, T record)
         {
             var collection = db.GetCollection<T>(table);
 
             collection.InsertOne(record);
         }
 
-        public List<T> LoadRecords<T>(string table)
+        public List<T> ReadRecords<T>(string table)
         {
             var collection = db.GetCollection<T>(table);
 
             return collection.Find(new BsonDocument()).ToList();
         }
 
-        public T LoadRecordById<T>(string table, Guid? id)
+        public T ReadRecordById<T>(string table, Guid? id)
         {
             var collection = db.GetCollection<T>(table);
 
             var filter = Builders<T>.Filter.Eq("Id", id);
             return collection.Find(filter).First();
         }
-        public T LoadRecordByName<T>(string table, string firstName, string lastName)
+        public T ReadRecordByName<T>(string table, string firstName, string lastName)
         {
             var collection = db.GetCollection<T>(table);
 
