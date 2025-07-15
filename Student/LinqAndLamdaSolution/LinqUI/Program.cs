@@ -79,11 +79,11 @@ namespace LinqUI
             var results = (from c in contacts
                            join a in addresses
                            on c.Id equals a.ContactId
-                           select c);
+                           select new { c.FirstName, c.LastName, a.City, a.State });  // Anonymous type
 
             foreach (var item in results)
             {
-                Console.WriteLine($"{item.FirstName} {item.LastName}");
+                Console.WriteLine($"{item.FirstName} {item.LastName} from {item.City}, {item.State}");
             }
         }
     }
