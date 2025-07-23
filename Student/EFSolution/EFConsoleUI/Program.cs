@@ -15,7 +15,7 @@ namespace EFConsoleUI
             //ReadById(1);
             //CreateCharity();
             //UpdateFirstName(1, "Timothy");
-            RemoveUser(1);
+            //RemoveUser(1);
             ReadAll();
 
             Console.WriteLine("Done processing");
@@ -27,7 +27,7 @@ namespace EFConsoleUI
             {
                 var user = db.Contacts
                     .Include(p => p.PhoneNumbers)
-                    .Where(c => c.Id == id).First();
+                    .Where(c => c.Id == id).First();  // If a C# function is called here EF will download all records
 
                 db.Contacts.Remove(user);
                 db.SaveChanges();

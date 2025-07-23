@@ -5,7 +5,7 @@ namespace DataAccessLibrary.Models
     public class Person
     {
         [Required]
-        int Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(50)]
