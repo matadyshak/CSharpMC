@@ -16,15 +16,15 @@ namespace DataAccessLibrary
                 db.SaveChanges();
             }
         }
-        private void RemovePhoneNumber(int id, string phoneNumber)
+        private void RemoveAddress<T>(int id, T address)
         {
             using (var db = new PersonContext())
             {
-                var user = db.Contacts
-                    .Include(p => p.PhoneNumbers)
+                var user = db.People
+                    .Include(p => p.Addresses)
                     .Where(c => c.Id == id).First();
 
-                user.PhoneNumbers.RemoveAll(p => p.PhoneNumber == phoneNumber);
+                user.Addresses.RemoveAll(a => a.Address == address);
                 db.SaveChanges();
             }
         }
@@ -32,7 +32,7 @@ namespace DataAccessLibrary
         {
             using (var db = new PersonContext())
             {
-                var user = db.Contacts.Where(c => c.Id == id).First();
+                var user = db.People.Where(c => c.Id == id).First();
 
                 user.FirstName = firstName;
                 db.SaveChanges();
@@ -43,14 +43,14 @@ namespace DataAccessLibrary
         {
             using (var db = new PersonContext())
             {
-                var records = db.Contacts
-                    .Include(e => e.EmailAddresses)
-                    .Include(p => p.PhoneNumbers)
+                var records = db.People
+                    .Include(e => e.Employers)
+                    .Include(a => a.Addresses)
                     .ToList();
 
-                foreach (var c in records)
+                foreach (var p in records)
                 {
-                    Console.WriteLine($"{c.FirstName} {c.LastName}");
+                    Console.WriteLine($"{p.FirstName} {p.LastName}");
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace DataAccessLibrary
         {
             using (var db = new PersonContext())
             {
-                var user = db.Contacts.Where(c => c.Id == id).First();
+                var user = db.People.Where(p => p.Id == id).First();
 
                 Console.WriteLine($"{user.FirstName} {user.LastName}");
             }
