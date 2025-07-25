@@ -24,7 +24,7 @@ namespace EFDataAccess
             Console.ReadLine();
         }
 
-        private static void CreatePhil()
+        private static void CreatePhil(EFCrud e)
         {
             var p = new Person
             {
@@ -58,7 +58,7 @@ namespace EFDataAccess
                 CompanyName = "Pulp Reproduction"
             });
 
-
+            e.Create<Person>(p);
             using (var db = new PersonContext())
             {
                 db.Contacts.Add(c);

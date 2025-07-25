@@ -4,23 +4,23 @@ namespace DataAccessLibrary
 {
     public class EFCrud
     {
-        private void RemoveUser(int id)
+        public void RemoveUser(int id)
         {
             using (var db = new PersonContext())
             {
-                var user = db.People
+                var user = db.PeopleTable
                     .Include(a => a.Addresses)
                     .Where(p => p.Id == id).First();  // If a C# function is called here EF will download all records
 
-                db.People.Remove(user);
+                db.PeopleTable.Remove(user);
                 db.SaveChanges();
             }
         }
-        private void RemoveAddress<T>(int id, T address)
+        public void RemoveAddress<T>(int id, T address)
         {
             using (var db = new PersonContext())
             {
-                var user = db.People
+                var user = db.PeopleTable
                     .Include(p => p.Addresses)
                     .Where(c => c.Id == id).First();
 
@@ -28,22 +28,22 @@ namespace DataAccessLibrary
                 db.SaveChanges();
             }
         }
-        private void UpdateFirstName(int id, string firstName)
+        public void UpdateFirstName(int id, string firstName)
         {
             using (var db = new PersonContext())
             {
-                var user = db.People.Where(c => c.Id == id).First();
+                var user = db.PeopleTable.Where(c => c.Id == id).First();
 
                 user.FirstName = firstName;
                 db.SaveChanges();
             }
         }
 
-        private void ReadAll()
+        public void ReadAll()
         {
             using (var db = new PersonContext())
             {
-                var records = db.People
+                var records = db.PeopleTable
                     .Include(e => e.Employers)
                     .Include(a => a.Addresses)
                     .ToList();
@@ -55,15 +55,23 @@ namespace DataAccessLibrary
             }
         }
 
-        private void ReadById(int id)
+        public void ReadById(int id)
         {
             using (var db = new PersonContext())
             {
-                var user = db.People.Where(p => p.Id == id).First();
+                var user = db.PeopleTable.Where(p => p.Id == id).First();
 
                 Console.WriteLine($"{user.FirstName} {user.LastName}");
             }
         }
 
+        public void Create<T>(T entity) where T : class
+        {
+            using (var db = new PersonContext())
+            {
+                db.Set<T>().Add(entity);
+                db.SaveChanges();
+            }
+        }
     }
 }

@@ -7,7 +7,9 @@ namespace DataAccessLibrary.Models
         [Required]
         public int Id { get; set; }
         [Required]
-        public int PersonId { get; set; }
+        public int PersonId { get; set; }  // Foreign key to Person
+        [Required]
+        public Person Person { get; set; } // Navigation property
         public string Street { get; set; }
         public string City { get; set; }
         public string State { get; set; }
