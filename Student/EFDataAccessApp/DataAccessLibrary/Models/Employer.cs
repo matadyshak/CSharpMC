@@ -6,10 +6,15 @@ namespace DataAccessLibrary.Models
     {
         [Required]
         public int Id { get; set; }
+
         [Required]
         public int PersonId { get; set; } // Foreign key to Person
+
         [Required]
         public Person Person { get; set; } // Navigation property
+
+        [Required]
+        [MaxLength(100)]
         public string CompanyName { get; set; }
     }
 }

@@ -6,13 +6,27 @@ namespace DataAccessLibrary.Models
     {
         [Required]
         public int Id { get; set; }
+
         [Required]
         public int PersonId { get; set; }  // Foreign key to Person
+
         [Required]
         public Person Person { get; set; } // Navigation property
+
+        [Required]
+        [MaxLength(100)]
         public string Street { get; set; }
+
+        [Required]
+        [MaxLength(100)]
         public string City { get; set; }
+
+        [Required]
+        [MaxLength(2)]
         public string State { get; set; }
+
+        [Required]
+        [MaxLength(10)]
         public string ZipCode { get; set; }
     }
 }
