@@ -5,78 +5,13 @@ namespace DataAccessLibrary
 {
     public class EFCrud
     {
-        public void CreatePhil()
+        public void CreateRecords<T>(List<T> persons) where T : class
         {
-            var p = new Person
+            foreach (T person in persons as List<T>)
             {
-                FirstName = "Phil",
-                LastName = "Tady"
-            };
-
-            p.Addresses.Add(new Address
-            {
-                Street = "2154 Fratney St",
-                City = "Milwaukee",
-                State = "WI",
-                ZipCode = "53201"
-            });
-
-            p.Addresses.Add(new Address
-            {
-                Street = "5402 Weil Place",
-                City = "Milwaukee",
-                State = "WI",
-                ZipCode = "53209"
-            });
-
-            p.Employers.Add(new Employer
-            {
-                CompanyName = "SquareD"
-            });
-
-            p.Employers.Add(new Employer
-            {
-                CompanyName = "Pulp Reproduction"
-            });
-
-            CreateRecord<Person>(p);
-        }
-
-        public void CreateMickey()
-        {
-            var p = new Person
-            {
-                FirstName = "Mickey",
-                LastName = "Toddy"
-            };
-
-            p.Addresses.Add(new Address
-            {
-                Street = "2051 W Kneel St",
-                City = "Milwaukee",
-                State = "WI",
-                ZipCode = "53234"
-            });
-
-            p.Addresses.Add(new Address
-            {
-                Street = "100 W Wisconsin Ave",
-                City = "Milwaukee",
-                State = "WI",
-                ZipCode = "53432"
-            });
-
-            p.Employers.Add(new Employer
-            {
-                CompanyName = "St Michael Hospital"
-            });
-
-            p.Employers.Add(new Employer
-            {
-                CompanyName = "Bobby's Place"
-            });
-
-            CreateRecord<Person>(p);
+                // Calls the generic method CreateRecord<T>(T entity) with Person type  
+                CreateRecord<T>(person);
+            }
         }
 
         // where T : class - Insures only reference types can be used for T
@@ -95,7 +30,6 @@ namespace DataAccessLibrary
                 }
             }
         }
-
         public void ReadAllRecords()
         {
             using (var pc = new PersonContext())
@@ -127,12 +61,14 @@ namespace DataAccessLibrary
                 }
             }
         }
-
-        public void ReadRecordById(int id)
+        public void ReadRecordById(int? id)
         {
             using (var pc = new PersonContext())
             {
-                var user = pc.PersonTable.Where(p => p.Id == id).First();
+                var user = pc.PersonTable.Where(p => p.Id == id)
+                    .Include(e => e.Employers)
+                    .Include(a => a.Addresses)
+                    .First();
 
                 if (user == null)
                 {
@@ -153,7 +89,6 @@ namespace DataAccessLibrary
                 }
             }
         }
-
         public int? ReadIdByName(string firstName, string lastName)
         {
             using (var pc = new PersonContext())
@@ -169,8 +104,9 @@ namespace DataAccessLibrary
                 return user.Id;
             }
         }
-        public void UpdateFirstName(int id, string firstName)
+        public void UpdateFirstName(int? id, string firstName)
         {
+            // This will update the first name of a person with the specified id
             using (var pc = new PersonContext())
             {
                 try
@@ -192,9 +128,9 @@ namespace DataAccessLibrary
                 }
             }
         }
-
-        public void UpdateLastName(int id, string lastName)
+        public void UpdateLastName(int? id, string lastName)
         {
+            // This will update the last name of a person with the specified id
             using (var pc = new PersonContext())
             {
                 try
@@ -216,7 +152,65 @@ namespace DataAccessLibrary
                 }
             }
         }
-        public void DeleteAddress(int personId, Address targetAddress)
+        public void UpdateAddress(int? id, Address address)
+        {
+            // This will add a new address to the list of addresses for a person with the specified id  
+            using (var pc = new PersonContext())
+            {
+                try
+                {
+                    var user = pc.PersonTable.Where(p => p.Id == id).First();
+
+                    if (user == null)
+                    {
+                        Console.WriteLine("User not found.");
+                        return;
+                    }
+
+                    // Add Address to the list if not already in the list
+                    if (user.Addresses.Contains(address) == false)
+                    {
+                        user.Addresses.Add(address);
+                    }
+                    pc.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    Console.WriteLine($"Error updating list of addresses: {ex.Message}");
+                }
+            }
+        }
+        public void UpdateEmployer(int? id, Employer employer)
+        {
+            // This will add a new employer to the list of employers for a person with the specified id  
+            using (var pc = new PersonContext())
+            {
+                try
+                {
+                    var user = pc.PersonTable.Where(p => p.Id == id)
+                        .Include(e => e.Employers)
+                        .FirstOrDefault();
+
+                    if (user == null)
+                    {
+                        Console.WriteLine("User not found.");
+                        return;
+                    }
+
+                    // Add employer to the list if not already in the list
+                    if (user.Employers.Contains(employer) == false)
+                    {
+                        user.Employers.Add(employer);
+                    }
+                    pc.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    Console.WriteLine($"Error updating list of employers: {ex.Message}");
+                }
+            }
+        }
+        public void DeleteAddress(int? personId, Address targetAddress)
         {
             using (var pc = new PersonContext())
             {
@@ -248,7 +242,7 @@ namespace DataAccessLibrary
                 }
             }
         }
-        public void DeleteEmployer(int personId, Employer targetEmployer)
+        public void DeleteEmployer(int? personId, Employer targetEmployer)
         {
             using (var pc = new PersonContext())
             {
@@ -275,7 +269,7 @@ namespace DataAccessLibrary
                 }
             }
         }
-        public void DeleteUser(int id)
+        public void DeleteUser(int? id)
         {
             using (var pc = new PersonContext())
             {
