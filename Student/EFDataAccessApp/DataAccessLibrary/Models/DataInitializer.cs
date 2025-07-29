@@ -66,7 +66,7 @@
                 },
                 Employers = new List<Employer>
                 {
-                    new Employer { CompanyName = "St Nicolas Catholic Church" },
+                    new Employer { CompanyName = "St Nicholas Catholic Church" },
                     new Employer { CompanyName = "St Michael Hospital" }
                 }
             },

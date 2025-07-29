@@ -28,6 +28,10 @@ namespace DataAccessLibrary
                 {
                     Console.WriteLine($"Error creating record: {ex.Message}");
                 }
+                catch (InvalidOperationException ex2)
+                {
+                    Console.WriteLine($"Error creating record: {ex2.Message}");
+                }
             }
         }
         public void ReadAllRecords()
@@ -126,6 +130,10 @@ namespace DataAccessLibrary
                 {
                     Console.WriteLine($"Error updating first name: {ex.Message}");
                 }
+                catch (InvalidOperationException ex2)
+                {
+                    Console.WriteLine($"Error updating first name: {ex2.Message}");
+                }
             }
         }
         public void UpdateLastName(int? id, string lastName)
@@ -149,6 +157,10 @@ namespace DataAccessLibrary
                 catch (DbUpdateException ex)
                 {
                     Console.WriteLine($"Error updating last name: {ex.Message}");
+                }
+                catch (InvalidOperationException ex2)
+                {
+                    Console.WriteLine($"Error updating last name: {ex2.Message}");
                 }
             }
         }
@@ -177,6 +189,10 @@ namespace DataAccessLibrary
                 catch (DbUpdateException ex)
                 {
                     Console.WriteLine($"Error updating list of addresses: {ex.Message}");
+                }
+                catch (InvalidOperationException ex2)
+                {
+                    Console.WriteLine($"Error updating list of addresses: {ex2.Message}");
                 }
             }
         }
@@ -208,6 +224,10 @@ namespace DataAccessLibrary
                 {
                     Console.WriteLine($"Error updating list of employers: {ex.Message}");
                 }
+                catch (InvalidOperationException ex2)
+                {
+                    Console.WriteLine($"Error updating list of employers: {ex2.Message}");
+                }
             }
         }
         public void DeleteAddress(int? personId, Address targetAddress)
@@ -234,11 +254,14 @@ namespace DataAccessLibrary
                         a.ZipCode == targetAddress.ZipCode);
 
                     pc.SaveChanges();
-                    Console.WriteLine("Matching address removed.");
                 }
                 catch (DbUpdateException ex)
                 {
                     Console.WriteLine($"Error removing address: {ex.Message}");
+                }
+                catch (InvalidOperationException ex2)
+                {
+                    Console.WriteLine($"Error removing address: {ex2.Message}");
                 }
             }
         }
@@ -261,11 +284,14 @@ namespace DataAccessLibrary
                     // Removes all employers that match the target employer
                     user.Employers.RemoveAll(e => e.CompanyName == targetEmployer.CompanyName);
                     pc.SaveChanges();
-                    Console.WriteLine("Matching employer removed.");
                 }
                 catch (DbUpdateException ex)
                 {
                     Console.WriteLine($"Error removing employer: {ex.Message}");
+                }
+                catch (InvalidOperationException ex2)
+                {
+                    Console.WriteLine($"Error removing employer: {ex2.Message}");
                 }
             }
         }
@@ -280,12 +306,22 @@ namespace DataAccessLibrary
                         .Include(e => e.Employers)
                         .Where(p => p.Id == id).First();  // If a C# function is called here EF will download all records
 
+                    if (user == null)
+                    {
+                        Console.WriteLine("User not found.");
+                        return;
+                    }
+
                     pc.PersonTable.Remove(user);
                     pc.SaveChanges();
                 }
                 catch (DbUpdateException ex)
                 {
-                    Console.WriteLine($"Error removing record: {ex.Message}");
+                    Console.WriteLine($"Error removing user: {ex.Message}");
+                }
+                catch (InvalidOperationException ex2)
+                {
+                    Console.WriteLine($"Error removing user: {ex2.Message}");
                 }
             }
         }
