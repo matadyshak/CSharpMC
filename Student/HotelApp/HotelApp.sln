@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelRazorPages", "HotelRazorPages\HotelRazorPages.csproj", "{7822AF54-B52A-4BF1-98CC-B729FF2D0A80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelFrontDeskWpf", "HotelFrontDeskWpf\HotelFrontDeskWpf.csproj", "{D9F20D82-8E8C-46FB-9204-8E3B350BF38D}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SQLHotelDB", "SQLHotelDB\SQLHotelDB.sqlproj", "{3DC08C87-5B48-4036-8E22-F0A748F6074F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7822AF54-B52A-4BF1-98CC-B729FF2D0A80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7822AF54-B52A-4BF1-98CC-B729FF2D0A80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7822AF54-B52A-4BF1-98CC-B729FF2D0A80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7822AF54-B52A-4BF1-98CC-B729FF2D0A80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9F20D82-8E8C-46FB-9204-8E3B350BF38D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9F20D82-8E8C-46FB-9204-8E3B350BF38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9F20D82-8E8C-46FB-9204-8E3B350BF38D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9F20D82-8E8C-46FB-9204-8E3B350BF38D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DC08C87-5B48-4036-8E22-F0A748F6074F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DC08C87-5B48-4036-8E22-F0A748F6074F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DC08C87-5B48-4036-8E22-F0A748F6074F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{3DC08C87-5B48-4036-8E22-F0A748F6074F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DC08C87-5B48-4036-8E22-F0A748F6074F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DC08C87-5B48-4036-8E22-F0A748F6074F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CF560DF0-2E75-4142-B5F2-536A7CEE92E3}
+	EndGlobalSection
+EndGlobal
