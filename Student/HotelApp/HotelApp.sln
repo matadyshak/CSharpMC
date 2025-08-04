@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelRazorPages", "HotelRaz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelFrontDeskWpf", "HotelFrontDeskWpf\HotelFrontDeskWpf.csproj", "{D9F20D82-8E8C-46FB-9204-8E3B350BF38D}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SQLHotelDB", "SQLHotelDB\SQLHotelDB.sqlproj", "{3DC08C87-5B48-4036-8E22-F0A748F6074F}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "HotelAppDB", "HotelAppDB\HotelAppDB.sqlproj", "{3DC08C87-5B48-4036-8E22-F0A748F6074F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{514B3360-9FB5-438E-AA46-F7642291DADD}"
 EndProject

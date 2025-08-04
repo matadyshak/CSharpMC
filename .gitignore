@@ -48,10 +48,11 @@ coverage/
 
 # Ignore SQL Server Data Tools (SSDT) files
 *.dbmdl
+*.mdl
+*.jfm
 
 # Ignore JustMock temporary files
 *.jm
-*.jfm
 
 # Excel files
 *.xlsx
