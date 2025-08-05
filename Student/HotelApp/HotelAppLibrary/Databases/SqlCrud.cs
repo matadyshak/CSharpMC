@@ -1,4 +1,4 @@
-﻿namespace HotelAppLibrary
+﻿namespace HotelAppLibrary.Databases
 {
     public class SqlCrud
     {
