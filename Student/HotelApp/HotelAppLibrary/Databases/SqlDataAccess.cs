@@ -10,7 +10,7 @@ using System.Data;
 
 namespace HotelAppLibrary.Databases
 {
-    public class SqlDataAccess
+    public class SqlDataAccess : ISqlDataAccess
     {
         // using at Top-level  => Brings namespaces into scope so you can use their classes
         // using inside-method => Ensures proper disposal of objects implementing IDisposable
@@ -26,12 +26,12 @@ namespace HotelAppLibrary.Databases
         public List<T> LoadData<T, U>(string sqlStatement,
                                       U parameters,
                                       string connectionStringName,
-                                      dynamic options = null)
+                                      bool isStoredProcedure = false)
         {
             string connectionString = _config.GetConnectionString(connectionStringName);
             CommandType commandType = CommandType.Text;
 
-            if (options.IsStoredProcedure != null && options.IsStoredProcedure == true)
+            if (isStoredProcedure == true)
             {
                 commandType = CommandType.StoredProcedure;
             }
@@ -44,7 +44,6 @@ namespace HotelAppLibrary.Databases
                 // This is a way to skip over parameters that you don't want to set but take the default value
 
                 // Dapper will automatically map the SQL parameters to the properties of the parameters object
-
                 List<T> rows = connection.Query<T>(sqlStatement, parameters, commandType: commandType).ToList();
                 return rows;
             }
@@ -53,23 +52,18 @@ namespace HotelAppLibrary.Databases
         public void SaveData<T>(string sqlStatement,
                                 T parameters,
                                 string connectionStringName,
-                                dynamic options = null)
+                                bool isStoredProcedure = false)
         {
             string connectionString = _config.GetConnectionString(connectionStringName);
             CommandType commandType = CommandType.Text;
 
-            if (options.IsStoredProcedure != null && options.IsStoredProcedure == true)
+            if (isStoredProcedure == true)
             {
                 commandType = CommandType.StoredProcedure;
             }
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                // named parameter syntax is used here
-                // The first 'commandType:' sets which parameter is being set
-                // The second 'commandType' is the value
-                // This is a way to skip over parameters that you don't want to set but take the default value
-
                 // Dapper will automatically map the properties of the parameters object to the SQL parameters
                 connection.Execute(sqlStatement, parameters, commandType: commandType);
             }
