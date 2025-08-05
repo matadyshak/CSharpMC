@@ -1,6 +1,6 @@
 ﻿namespace HotelAppLibrary.Models
 {
-    public class RoomTypes
+    public class RoomTypeModel
     {
         public int Id { get; set; }
         public string Title { get; set; }

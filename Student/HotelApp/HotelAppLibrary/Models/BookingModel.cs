@@ -1,6 +1,6 @@
 ﻿namespace HotelAppLibrary.Models
 {
-    public class Bookings
+    public class BookingModel
     {
         public int Id { get; set; }
         public int RoomId { get; set; }
@@ -11,7 +11,7 @@
         public bool CheckedIn { get; set; }
 
         // Navigation properties
-        public Guests Guest { get; set; } = new Guests();
-        public Rooms Room { get; set; } = new Rooms();
+        public GuestModel Guest { get; set; } = new GuestModel();
+        public RoomModel Room { get; set; } = new RoomModel();
     }
 }

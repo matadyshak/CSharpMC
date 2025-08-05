@@ -1,6 +1,6 @@
 ﻿namespace HotelAppLibrary.Models
 {
-    public class Guests
+    public class GuestModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
