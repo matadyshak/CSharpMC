@@ -22,28 +22,3 @@ namespace HotelAppLibrary.Data
         }
     }
 }
-
-//public List<T> LoadData<T, U>(string sqlStatement,
-//                              U parameters,
-//                              string connectionStringName,
-//                              bool isStoredProcedure = false)
-
-
-
-
-
-//            var rows = sql.ReadAvailableRooms();
-
-//            foreach (var row in rows)
-//            {
-//                Console.WriteLine($"{row.Id}: {row.RoomTypeId} {row.RoomNumber}");
-//            }
-//        }
-
-//        public List<RoomModel> ReadAvailableRooms()
-//        {
-//            string sql = "select Id, RoomTypeId, RoomNumber from dbo.Rooms;";
-//            return db.LoadData<RoomModel, RoomModel>(sql, null, "Default");
-//        }
-//    }
-//}
