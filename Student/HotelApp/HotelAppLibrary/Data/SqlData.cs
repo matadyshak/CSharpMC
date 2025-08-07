@@ -20,5 +20,13 @@ namespace HotelAppLibrary.Data
                                                             ConnectionStringName,
                                                             true);
         }
+
+        public void BookRoomType(int roomTypeId, DateTime startDate, DateTime endDate)
+        {
+            _db.SaveData("dbo.spRoomTypes_BookRoomType",
+                         new { RoomTypeId = roomTypeId, StartDate = startDate, EndDate = endDate },
+                         ConnectionStringName,
+                         true);
+        }
     }
 }
