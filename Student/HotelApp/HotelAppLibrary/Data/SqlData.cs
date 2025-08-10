@@ -15,16 +15,26 @@ namespace HotelAppLibrary.Data
         public List<RoomTypeModel> GetAvailableRoomTypes(DateTime startDate, DateTime endDate)
         {
             return _db.LoadData<RoomTypeModel, dynamic>("dbo.spRoomTypes_GetAvailableTypes",
-                                                            // same name in sp and this method: camel case
-                                                            new { startDate, endDate },
-                                                            ConnectionStringName,
-                                                            true);
+                                                        // same name in sp and this method: camel case
+                                                        new { startDate, endDate },
+                                                        ConnectionStringName,
+                                                        true);
         }
+        public void InsertGuestInfo(string firstName, string lastName)
+        {
+            string sqlStatement = "insert into dbo.Guests(FirstName, LastName) values(firstName, lastName)";
 
-        public void BookRoomType(int roomTypeId, DateTime startDate, DateTime endDate)
+            // How to prevent duplication?
+
+            _db.SaveData(sqlStatement,
+                         new { firstName, lastName },
+                         ConnectionStringName,
+                         false);
+        }
+        -public void BookRoomType(int roomTypeId, DateTime startDate, DateTime endDate, string firstName, string lastName)
         {
             _db.SaveData("dbo.spRoomTypes_BookRoomType",
-                         new { RoomTypeId = roomTypeId, StartDate = startDate, EndDate = endDate },
+                         new { roomTypeId, startDate, endDate, firstName, lastName },
                          ConnectionStringName,
                          true);
         }
