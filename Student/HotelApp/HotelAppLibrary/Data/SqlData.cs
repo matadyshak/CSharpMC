@@ -14,27 +14,51 @@ namespace HotelAppLibrary.Data
         }
         public List<RoomTypeModel> GetAvailableRoomTypes(DateTime startDate, DateTime endDate)
         {
-            return _db.LoadData<RoomTypeModel, dynamic>("dbo.spRoomTypes_GetAvailableTypes",
+            return _db.LoadData<RoomTypeModel, dynamic>("dbo.uspRoomTypes_GetAvailableTypes",
                                                         // same name in sp and this method: camel case
                                                         new { startDate, endDate },
                                                         ConnectionStringName,
                                                         true);
         }
-        public void InsertGuestInfo(string firstName, string lastName)
-        {
-            string sqlStatement = "insert into dbo.Guests(FirstName, LastName) values(firstName, lastName)";
+        //public void InsertGuestInfo(string firstName, string lastName)
+        //{
+        //    string sqlStatement = "insert into dbo.Guests(FirstName, LastName) values(firstName, lastName)";
 
-            // How to prevent duplication?
+        //    // How to prevent duplication?
 
-            _db.SaveData(sqlStatement,
-                         new { firstName, lastName },
-                         ConnectionStringName,
-                         false);
-        }
-        -public void BookRoomType(int roomTypeId, DateTime startDate, DateTime endDate, string firstName, string lastName)
+        //    _db.SaveData(sqlStatement,
+        //                 new { firstName, lastName },
+        //                 ConnectionStringName,
+        //                 false);
+        //}
+
+        //Assume there are no two people with the same name
+        //If returning customer get the ID from the DB
+
+        //-public void BookGuest(string firstName,
+        //                       string lastName,
+        //                       DateTime startDate,
+        //                       DateTime endDate,
+        //                       int roomType)
+        //{
+        //    _db.SaveData("dbo.uspRoomTypes_BookRoomType",
+        //                 new { firstName, lastName, startDate, endDate, roomType },
+        //                 ConnectionStringName,
+        //                 true);
+        //}
+        -public void BookGuest(string firstName,
+                               string lastName,
+                               DateTime startDate,
+                               DateTime endDate,
+                               int roomType)
         {
+            GuestModel guest = _db.LoadData<GuestModel, dynamic>("spGuests_Insert",
+                                                                 new { firstName, lastName },
+                                                                 ConnectionStringName,
+                                                                 true).First();
+
             _db.SaveData("dbo.spRoomTypes_BookRoomType",
-                         new { roomTypeId, startDate, endDate, firstName, lastName },
+                         new { firstName, lastName, startDate, endDate, roomType },
                          ConnectionStringName,
                          true);
         }
