@@ -6,7 +6,7 @@ namespace HotelAppLibrary.Data
     public class SqlData
     {
         private readonly ISqlDataAccess _db;
-        private const string ConnectionStringName = "SqlDb";
+        private const string connectionStringName = "SqlDb";
 
         public SqlData(ISqlDataAccess db)
         {
@@ -17,49 +17,43 @@ namespace HotelAppLibrary.Data
             return _db.LoadData<RoomTypeModel, dynamic>("dbo.uspRoomTypes_GetAvailableTypes",
                                                         // same name in sp and this method: camel case
                                                         new { startDate, endDate },
-                                                        ConnectionStringName,
+                                                        connectionStringName,
                                                         true);
         }
-        //public void InsertGuestInfo(string firstName, string lastName)
-        //{
-        //    string sqlStatement = "insert into dbo.Guests(FirstName, LastName) values(firstName, lastName)";
 
-        //    // How to prevent duplication?
-
-        //    _db.SaveData(sqlStatement,
-        //                 new { firstName, lastName },
-        //                 ConnectionStringName,
-        //                 false);
-        //}
-
-        //Assume there are no two people with the same name
-        //If returning customer get the ID from the DB
-
-        //-public void BookGuest(string firstName,
-        //                       string lastName,
-        //                       DateTime startDate,
-        //                       DateTime endDate,
-        //                       int roomType)
-        //{
-        //    _db.SaveData("dbo.uspRoomTypes_BookRoomType",
-        //                 new { firstName, lastName, startDate, endDate, roomType },
-        //                 ConnectionStringName,
-        //                 true);
-        //}
-        -public void BookGuest(string firstName,
+        public void BookGuest(string firstName,
                                string lastName,
                                DateTime startDate,
                                DateTime endDate,
-                               int roomType)
+                               int roomTypeId)
         {
             GuestModel guest = _db.LoadData<GuestModel, dynamic>("spGuests_Insert",
                                                                  new { firstName, lastName },
-                                                                 ConnectionStringName,
+                                                                 connectionStringName,
                                                                  true).First();
 
-            _db.SaveData("dbo.spRoomTypes_BookRoomType",
-                         new { firstName, lastName, startDate, endDate, roomType },
-                         ConnectionStringName,
+            RoomTypeModel roomType = _db.LoadData<RoomTypeModel, dynamic>("SELECT * FROM dbo.RoomTypes WHERE Id = @Id",
+                                                                          new { Id = roomTypeId },
+                                                                          connectionStringName,
+                                                                          false).First();
+
+            TimeSpan timeStaying = endDate.Date.Subtract(startDate.Date);
+
+            List<RoomModel> availableRooms = _db.LoadData<RoomModel, dynamic>("spRooms_GetAvailableRooms",
+                                                                              new { startDate, endDate, roomTypeId },
+                                                                              connectionStringName,
+                                                                              true);
+
+            _db.SaveData("dbo.spBookings_Insert",
+                         new
+                         {
+                             roomId = availableRooms.First().Id,
+                             guestId = guest.Id,
+                             startDate = startDate,
+                             endDate = endDate,
+                             totalCost = roomType.Price * timeStaying.Days
+                         },
+                         connectionStringName,
                          true);
         }
     }
