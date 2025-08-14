@@ -56,5 +56,13 @@ namespace HotelAppLibrary.Data
                          connectionStringName,
                          true);
         }
+
+        public List<BookingModel> SearchBookings(string lastName, DateTime todayDate)
+        {
+            return _db.LoadData<BookingModel, dynamic>("spBookings_Search",
+                                                     new { lastName, todayDate },
+                                                     connectionStringName,
+                                                     true);
+        }
     }
 }
