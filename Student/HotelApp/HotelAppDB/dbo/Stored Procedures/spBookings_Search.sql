@@ -7,6 +7,8 @@ BEGIN
 
 	DECLARE @guestId int;
 
+
+
 	SELECT *
 	from dbo.Bookings b
 	WHERE b.LastName = @lastName AND b.StartDate <= @dateToday AND b.EndDate >= @dateToday;
