@@ -14,7 +14,7 @@ namespace HotelAppLibrary.Data
         }
         public List<RoomTypeModel> GetAvailableRoomTypes(DateTime startDate, DateTime endDate)
         {
-            return _db.LoadData<RoomTypeModel, dynamic>("dbo.uspRoomTypes_GetAvailableTypes",
+            return _db.LoadData<RoomTypeModel, dynamic>("dbo.spRoomTypes_GetAvailableTypes",
                                                         // same name in sp and this method: camel case
                                                         new { startDate, endDate },
                                                         connectionStringName,
@@ -57,7 +57,7 @@ namespace HotelAppLibrary.Data
                          true);
         }
 
-        public List<BookingModel> SearchBookings(string lastName, DateTime todayDate)
+        public List<BookingModel> SearchBookings(string lastName, DateOnly todayDate)
         {
             return _db.LoadData<BookingModel, dynamic>("spBookings_Search",
                                                      new { lastName, todayDate },
