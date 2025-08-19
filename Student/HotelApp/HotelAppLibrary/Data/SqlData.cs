@@ -64,5 +64,26 @@ namespace HotelAppLibrary.Data
                                               connectionStringName,
                                               true);
         }
+        public void CheckInGuest(int bookingId)
+        {
+            _db.SaveData("dbo.spBookings_CheckIn",
+                                    new
+                                    {
+                                        BookingId = bookingId
+                                    },
+                                    connectionStringName,
+                                    true);
+
+            var result = _db.LoadData<CheckInResultModel, dynamic>("dbo.spBookings_Search",
+                 new
+                 {
+                     BookingId = bookingId
+                 },
+                 connectionStringName,
+                 true);
+        }
     }
 }
+
+
+//var result = _db.LoadData<CheckInResult>("dbo.spBooking_CheckIn", new { BookingId = bookingId }, connectionStringName);
