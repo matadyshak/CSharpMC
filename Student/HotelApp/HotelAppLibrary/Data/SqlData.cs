@@ -74,13 +74,19 @@ namespace HotelAppLibrary.Data
                                     connectionStringName,
                                     true);
 
-            return _db.LoadData<CheckInResultModel, dynamic>("dbo.spBookings_GetStatus",
-                                                                        new
-                                                                        {
-                                                                            BookingId = bookingId
-                                                                        },
-                                                                        connectionStringName,
-                                                                        true).ToList().First();
+            CheckInResultModel result = _db.LoadData<CheckInResultModel, dynamic>(
+                "dbo.spBookings_GetStatus",
+                new
+                {
+                    BookingId = bookingId
+                },
+                connectionStringName,
+                true).FirstOrDefault(); //Returns first value or null if no value
+
+            string passFailMessage = result?.PassFailMessage;
+            string statusMessage = result?.StatusMessage;
+
+            return result;
         }
     }
 }
