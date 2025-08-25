@@ -1,3 +1,6 @@
+using HotelAppLibrary.Data;
+using HotelAppLibrary.Databases;
+
 namespace HotelRazorPages
 {
     public class Program
@@ -8,6 +11,8 @@ namespace HotelRazorPages
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddTransient<IDatabaseData, SqlData>();
+            builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 
             var app = builder.Build();
 
