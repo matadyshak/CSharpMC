@@ -5,7 +5,14 @@
 }
 
 <form method="post">
-    @foreach (var item in Model.Items)
+    <div style="margin-bottom: 20px;">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="StartDate" value="@Model.StartDate?.ToString("MM-dd-yyyy")" />
+
+        <label for="endDate" style="margin-left: 20px;">End Date:</label>
+        <input type="date" id="endDate" name="EndDate" value="@Model.EndDate?.ToString("MM-dd-yyyy")" />
+    </div>
+    @foreach (var item in Model.RoomTypes)
     {
         <div style="margin-bottom: 10px;">
             <span>@item.Title</span>
@@ -13,3 +20,40 @@
         </div>
     }
 </form>
+
+@*
+@page
+@model HotelApp.Web.Pages.RoomSearchModel
+@{
+    ViewData["Title"] = "Room Search";
+}
+
+ <form method="post">
+    <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 20px;">
+        <div>
+            <label for="startDate">Start Date:</label><br />
+            <input type="date" id="startDate" name="StartDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" />
+        </div>
+
+        <div>
+            <label for="endDate">End Date:</label><br />
+            <input type="date" id="endDate" name="EndDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" />
+        </div>
+
+        <div style="margin-top: 22px;">
+            <button type="submit" name="action" value="search">Search</button>
+        </div>
+    </div>
+
+    @if (Model.Items?.Any() == true)
+    {
+        foreach (var item in Model.Items)
+        {
+            <div style="margin-bottom: 10px;">
+                <span>@item.Title</span>
+                <button type="submit" name="selectedText" value="@item.Title">Select</button>
+            </div>
+        }
+    }
+</form>
+ *@

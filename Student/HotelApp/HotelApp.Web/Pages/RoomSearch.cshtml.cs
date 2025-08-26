@@ -1,3 +1,4 @@
+using HotelAppLibrary.Data;
 using HotelAppLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -6,21 +7,74 @@ namespace HotelApp.Web.Pages
 {
     public class RoomSearchModel : PageModel
     {
-        [BindProperty]
-        public List<RoomTypeModel> Items { get; set; }
-        public void OnGet()
+        private readonly IDatabaseData _db;
+
+        public RoomSearchModel(IDatabaseData db)
         {
-            Items = new List<RoomTypeModel>
-            {
-                new RoomTypeModel { Title = "King Size Bed", Description = "A room with a king-size bed and a window", Price = 100 },
-                new RoomTypeModel { Title = "Two Queen Size Beds", Description = "A room with two queen-size beds and a window", Price = 115 },
-                new RoomTypeModel { Title = "Executive Suite", Description = "Two rooms, each with a king-size bed and a window", Price = 205 }
-            };
+            _db = db;
         }
 
-        public IActionResult OnPostSelect(string roomTitle)
+        // Represents the list of available room types
+        [BindProperty]
+        public List<RoomTypeModel> RoomTypes { get; set; } = new();
+
+        [BindProperty]
+        public DateTime? StartDate { get; set; }
+
+        [BindProperty]
+        public DateTime? EndDate { get; set; }
+
+        public string SelectedText { get; set; }
+
+        public void OnGet()
         {
-            return RedirectToPage("/RoomSearch", new { roomTitle = roomTitle });
+            // Populate the list of room types from the database
+
+        }
+
+        public void OnPost()
+        {
+            if (StartDate.HasValue && EndDate.HasValue)
+            {
+                RoomTypes = _db.GetAvailableRoomTypes(StartDate.Value, EndDate.Value);
+            }
+            else
+            {
+            }
         }
     }
 }
+
+//[BindProperty]
+//public DateTime? StartDate { get; set; }
+
+//[BindProperty]
+//public DateTime? EndDate { get; set; }
+
+//public List<RoomModel> Items { get; set; }
+
+//public void OnPost()
+//{
+//    if (Request.Form["action"] == "search")
+//    {
+//        if (StartDate.HasValue && EndDate.HasValue)
+//        {
+//            Items = _db.GetAvailableRooms(StartDate.Value, EndDate.Value);
+//        }
+//        else
+//        {
+//            Items = new List<RoomModel>(); // Or show a validation message
+//        }
+//    }
+//    else if (Request.Form["selectedText"].Count > 0)
+//    {
+//        var selectedRoomType = Request.Form["selectedText"];
+//        // Handle room selection logic here
+//    }
+//}
+
+
+
+
+
+
