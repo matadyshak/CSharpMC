@@ -13,7 +13,7 @@ if not exists (select 1 from dbo.RoomTypes)
 begin
     insert into dbo.RoomTypes (Title, Description, Price)
     values ('King Size Bed', 'A room with a king-size bed and a window', 100),
-    ('Two Queen Size Beds', 'A room with two queen-size beds and a window ', 115),
+    ('Two Queen Size Beds', 'A room with two queen-size beds and a window', 115),
     ('Executive Suite', 'Two rooms, each with a king-size bed and a window', 205);
 end
 

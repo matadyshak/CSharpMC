@@ -1,0 +1,15 @@
+﻿@page
+@model HotelApp.Web.Pages.RoomSearchModel
+@{
+    ViewData["Title"] = "Room Search";
+}
+
+<form method="post">
+    @foreach (var item in Model.Items)
+    {
+        <div style="margin-bottom: 10px;">
+            <span>@item.Title</span>
+            <button type="submit" name="selectedText" value="@item.Title">Select</button>
+        </div>
+    }
+</form>
