@@ -34,47 +34,22 @@ namespace HotelApp.Web.Pages
 
         public void OnPost()
         {
-            if (StartDate.HasValue && EndDate.HasValue)
+            if (Request.Form["action"] == "search")
             {
-                RoomTypes = _db.GetAvailableRoomTypes(StartDate.Value, EndDate.Value);
+                if (StartDate.HasValue && EndDate.HasValue)
+                {
+                    RoomTypes = _db.GetAvailableRoomTypes(StartDate.Value, EndDate.Value);
+                }
+                else
+                {
+                    RoomTypes = new List<RoomTypeModel>(); // Or show a validation message
+                }
             }
-            else
+            else if (Request.Form["selectedText"].Count > 0)
             {
+                var selectedRoomType = Request.Form["selectedText"];
+                // Handle room selection logic here
             }
         }
     }
 }
-
-//[BindProperty]
-//public DateTime? StartDate { get; set; }
-
-//[BindProperty]
-//public DateTime? EndDate { get; set; }
-
-//public List<RoomModel> Items { get; set; }
-
-//public void OnPost()
-//{
-//    if (Request.Form["action"] == "search")
-//    {
-//        if (StartDate.HasValue && EndDate.HasValue)
-//        {
-//            Items = _db.GetAvailableRooms(StartDate.Value, EndDate.Value);
-//        }
-//        else
-//        {
-//            Items = new List<RoomModel>(); // Or show a validation message
-//        }
-//    }
-//    else if (Request.Form["selectedText"].Count > 0)
-//    {
-//        var selectedRoomType = Request.Form["selectedText"];
-//        // Handle room selection logic here
-//    }
-//}
-
-
-
-
-
-
