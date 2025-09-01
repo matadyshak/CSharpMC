@@ -14,11 +14,42 @@ namespace HotelAppLibrary.Data
         }
         public List<RoomTypeModel> GetAvailableRoomTypes(DateTime startDate, DateTime endDate)
         {
-            return _db.LoadData<RoomTypeModel, dynamic>("dbo.spRoomTypes_GetAvailableTypes",
-                                                        // same name in sp and this method: camel case
-                                                        new { startDate, endDate },
-                                                        connectionStringName,
-                                                        true);
+            //var raw = _db.LoadData<dynamic, dynamic>("dbo.spRoomTypes_GetAvailableTypes",
+            //                                         new { startDate, endDate },
+            //                                         connectionStringName,
+            //                                         true);
+
+            //foreach (var item in raw)
+            //{
+            //    foreach (var kvp in (IDictionary<string, object>)item)
+            //    {
+            //        Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+            //    }
+            //}
+            //List<RoomTypeModel> roomTypes = new();
+            //return roomTypes;
+
+
+            List<RoomTypeModel> roomTypes = _db.LoadData<RoomTypeModel, dynamic>("dbo.spRoomTypes_GetAvailableTypes",
+                                                    new { startDate, endDate },
+                                                    connectionStringName,
+                                                    true);
+            // All IDs are zero
+            // Group by RoomTypeId and select the first entry from each group
+            // Results in all items all with Id = 0
+            var groups = roomTypes
+                .GroupBy(rt => rt.Id);
+
+            // Results in the first item in groups
+            var selection = groups
+                .Select(g => g.First());
+
+            // Results in one RoomTypeModel
+            var distinctRoomTypes = selection
+                .ToList();
+
+            return distinctRoomTypes;
+
         }
 
         public void BookGuest(string firstName,
