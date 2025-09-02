@@ -6,7 +6,8 @@ BEGIN
     SET NOCOUNT ON;
 
 SELECT DISTINCT
-    rt.Id AS Id,
+    r.Id AS RoomId,
+    rt.Id AS RoomTypeId,
     rt.Title,
     rt.Description,
     rt.Price

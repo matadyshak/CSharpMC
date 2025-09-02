@@ -14,37 +14,19 @@ namespace HotelAppLibrary.Data
         }
         public List<RoomTypeModel> GetAvailableRoomTypes(DateTime startDate, DateTime endDate)
         {
-            //var raw = _db.LoadData<dynamic, dynamic>("dbo.spRoomTypes_GetAvailableTypes",
-            //                                         new { startDate, endDate },
-            //                                         connectionStringName,
-            //                                         true);
-
-            //foreach (var item in raw)
-            //{
-            //    foreach (var kvp in (IDictionary<string, object>)item)
-            //    {
-            //        Console.WriteLine($"{kvp.Key}: {kvp.Value}");
-            //    }
-            //}
-            //List<RoomTypeModel> roomTypes = new();
-            //return roomTypes;
-
-
             List<RoomTypeModel> roomTypes = _db.LoadData<RoomTypeModel, dynamic>("dbo.spRoomTypes_GetAvailableTypes",
                                                     new { startDate, endDate },
                                                     connectionStringName,
                                                     true);
-            // All IDs are zero
-            // Group by RoomTypeId and select the first entry from each group
-            // Results in all items all with Id = 0
+            // Group by primary key of the RoomTypes table (RoomTypeId)
             var groups = roomTypes
-                .GroupBy(rt => rt.Id);
+                .GroupBy(rt => rt.RoomTypeId);
 
-            // Results in the first item in groups
+            // Select the first entry from each group
             var selection = groups
                 .Select(g => g.First());
 
-            // Results in one RoomTypeModel
+            // Convert to a list
             var distinctRoomTypes = selection
                 .ToList();
 
@@ -78,7 +60,7 @@ namespace HotelAppLibrary.Data
             _db.SaveData("dbo.spBookings_Insert",
                          new
                          {
-                             roomId = availableRooms.First().Id,
+                             roomId = availableRooms.First().RoomId,
                              guestId = guest.Id,
                              startDate = startDate,
                              endDate = endDate,

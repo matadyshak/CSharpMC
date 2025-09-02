@@ -45,11 +45,11 @@ namespace HotelApp.Web.Pages
                     RoomTypes = new List<RoomTypeModel>(); // Or show a validation message
                 }
             }
-            else if (Request.Form["selectedText"].Count > 0)
-            {
-                var selectedRoomType = Request.Form["selectedText"];
-                // Handle room selection logic here
-            }
+            //else if (Request.Form["selectedText"].Count > 0)
+            //{
+            //    var selectedRoomType = Request.Form["selectedText"];
+            //    // Handle room selection logic here
+            //}
         }
     }
 }
