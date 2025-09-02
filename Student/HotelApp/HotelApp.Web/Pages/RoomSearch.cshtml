@@ -1,0 +1,23 @@
+﻿@page
+@model HotelApp.Web.Pages.RoomSearchModel
+@{
+    ViewData["Title"] = "Room Search";
+}
+
+<h1>Room Search</h1>
+
+<!-- See Github Bootstrap for how to use form -->
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="@Model.StartDate" />
+        <input type="date" asp-for="@Model.StartDate" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.EndDate" />
+        <input type="date" asp-for="@Model.EndDate" />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<h2>Results</h2>
