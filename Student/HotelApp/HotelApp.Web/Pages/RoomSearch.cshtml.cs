@@ -27,6 +27,21 @@ namespace HotelApp.Web.Pages
         {
             _db = db;
         }
+
+        // Why SearchEnabled Exists in This Pattern
+        // 1. Razor Pages Use PRG(Post-Redirect-Get)
+        // When the form is submitted, OnPost() doesn’t directly render the results.
+        // Instead, it redirects to OnGet() with query parameters(StartDate, EndDate,
+        // and SearchEnabled = true). This avoids duplicate form submissions and enables
+        // clean URLs.
+
+        // OnPost() → Redirects to OnGet() with query params
+        // OnGet() → Executes the actual search logic
+
+        // Without SearchEnabled, OnGet() would run every time the page loads —
+        // even before the user submits the form.That’s why the flag is needed:
+        // it tells OnGet() “this is a search, not just a page load.”
+
         public void OnGet()
         {
             if (SearchEnabled == true)
