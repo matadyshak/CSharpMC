@@ -1,0 +1,25 @@
+﻿@page
+@model HotelApp.Web.Pages.BookRoomModel
+@{
+    ViewData["Title"] = "Book Room";
+}
+<h1>Book Room</h1>
+
+<form method="post">
+    <div class="form-group">
+        <input type="text" asp-for="FirstName" placeholder="Type your first name" />
+        <input type="text" asp-for="LastName" placeholder="Type your last name" />
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<h2>This is the greeting:</h2>
+<h3>bye</h3>
+
+
+            //Postman setting: GET https://localhost:5001/api/person?firstname=Fred&lastname=Mertz
+            // Only Fred and Mertz are case sensitive
+            // Variable names in URL must match parameter names firstname, lastname except for case or null gets passed in
+            // URL parameters can be in any order
+            // GET works in browser of Postman
+            
