@@ -14,11 +14,23 @@ namespace HotelAppLibrary.Data
         }
         public List<RoomTypeModel> GetAvailableRoomTypes(DateTime startDate, DateTime endDate)
         {
-            return _db.LoadData<RoomTypeModel, dynamic>("dbo.spRoomTypes_GetAvailableTypes",
-                                                        // same name in sp and this method: camel case
-                                                        new { startDate, endDate },
-                                                        connectionStringName,
-                                                        true);
+            List<RoomTypeModel> roomTypes = _db.LoadData<RoomTypeModel, dynamic>("dbo.spRoomTypes_GetAvailableTypes",
+                                                    new { startDate, endDate },
+                                                    connectionStringName,
+                                                    true);
+            // Group by primary key of the RoomTypes table (RoomTypeId)
+            var groups = roomTypes
+                .GroupBy(rt => rt.Id);
+
+            // Select the first entry from each group
+            var selection = groups
+                .Select(g => g.First());
+
+            // Convert to a list
+            var distinctRoomTypes = selection
+                .ToList();
+
+            return distinctRoomTypes;
         }
 
         public void BookGuest(string firstName,
