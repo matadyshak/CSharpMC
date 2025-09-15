@@ -69,6 +69,15 @@ namespace HotelAppLibrary.Data
                          true);
         }
 
+        public RoomTypeModel GetRoomTypeById(int roomTypeId)
+        {
+            RoomTypeModel roomType = _db.LoadData<RoomTypeModel, dynamic>("SELECT * FROM dbo.RoomTypes WHERE Id = @Id",
+                                         new { Id = roomTypeId },
+                                         connectionStringName,
+                                         false).First();
+            return roomType;
+        }
+
         public List<BookingFullModel> SearchBookings(string lastName)
         {
             return _db.LoadData<BookingFullModel, dynamic>("dbo.spBookings_Search",

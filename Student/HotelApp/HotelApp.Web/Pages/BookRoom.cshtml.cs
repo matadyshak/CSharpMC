@@ -24,32 +24,33 @@ namespace HotelApp.Web.Pages
         public DateTime EndDate { get; set; } // Get from URL
 
         [BindProperty(SupportsGet = true)]
-        public bool SearchEnabled { get; set; } = false;
-
-        [BindProperty(SupportsGet = true)]
-        public string FirstName { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public string LastName { get; set; }
+        public int RoomTypeId { get; set; }
 
         public RoomTypeModel RoomType { get; set; } = new RoomTypeModel();
+
+        // These only bound during post (form submission)
+        [BindProperty]
+        public string FirstName { get; set; }
+
+        [BindProperty]
+        public string LastName { get; set; }
 
         public int ReservationNumber { get; set; } = 0;
         public void OnGet()
         {
-            if (SearchEnabled == true)
-            {
-                _db.BookGuest(FirstName,
-                              LastName,
-                              StartDate,
-                              EndDate,
-                              RoomType.Id);
-            }
         }
 
         public IActionResult OnPost()
         {
-            return RedirectToPage(new { SearchEnabled = true, StartDate, EndDate, RoomType.Id });
+            RoomType = _db.GetRoomTypeById(RoomTypeId);
+
+            _db.BookGuest(FirstName,
+                            LastName,
+                            StartDate,
+                            EndDate,
+                            RoomTypeId);
+
+            return Page();
         }
     }
 }
