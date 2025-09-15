@@ -44,6 +44,9 @@ namespace HotelApp.Web.Pages
 
         public void OnGet()
         {
+
+            // OnGet() gets the parameter values StartDate, EndDate, SearchEnabled from URL parameters
+            // The page variables get set to those same values
             if (SearchEnabled == true)
             {
                 AvailableRoomTypes = _db.GetAvailableRoomTypes(StartDate, EndDate);

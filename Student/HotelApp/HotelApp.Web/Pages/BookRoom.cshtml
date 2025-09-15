@@ -13,13 +13,32 @@
     </div>
 </form>
 
-<h2>This is the greeting:</h2>
-<h3>bye</h3>
+<br/>
+  <h2>Results</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr> 
+                    <td>
+                        <strong>@Model.RoomType.Title</strong><br />
+                        @Model.RoomType.Description
+                    </td>
+                    <td>@Model.StartDate)</td>
+                    <td>@Model.EndDate)</td>
+                    <td>@string.Format("{0:C}", Model.RoomType.Price)</td>
+                </tr>
+        </tbody>
+    </table>
 
 
-            //Postman setting: GET https://localhost:5001/api/person?firstname=Fred&lastname=Mertz
-            // Only Fred and Mertz are case sensitive
-            // Variable names in URL must match parameter names firstname, lastname except for case or null gets passed in
-            // URL parameters can be in any order
-            // GET works in browser of Postman
+// Only Fred and Mertz are case sensitive
+// Variable names in URL must match parameter names firstname, lastname except for case or null gets passed in
+// URL parameters can be in any order
+// GET works in browser of Postman
             
