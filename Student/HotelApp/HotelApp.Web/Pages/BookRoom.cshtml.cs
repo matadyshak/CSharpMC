@@ -30,19 +30,29 @@ namespace HotelApp.Web.Pages
 
         // These only bound during post (form submission)
         [BindProperty]
+        [Required(ErrorMessage = "First name is required")]
         public string FirstName { get; set; }
 
         [BindProperty]
+        [Required(ErrorMessage = "Last name is required")]
         public string LastName { get; set; }
 
         public int ReservationNumber { get; set; } = 0;
         public void OnGet()
         {
+            RoomType = _db.GetRoomTypeById(RoomTypeId);
         }
 
         public IActionResult OnPost()
         {
             RoomType = _db.GetRoomTypeById(RoomTypeId);
+
+            // Validate form data before booking
+            if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName))
+            {
+                ModelState.AddModelError(string.Empty, "First name and last name are required.");
+                return Page();
+            }
 
             _db.BookGuest(FirstName,
                             LastName,
@@ -50,7 +60,7 @@ namespace HotelApp.Web.Pages
                             EndDate,
                             RoomTypeId);
 
-            return Page();
+            return Page(); // Or redirect to a confirmation page
         }
     }
 }

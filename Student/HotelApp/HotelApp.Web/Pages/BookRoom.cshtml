@@ -8,13 +8,17 @@
 <form method="post">
     <div class="form-group">
         <input type="text" asp-for="FirstName" placeholder="Type your first name" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
         <input type="text" asp-for="LastName" placeholder="Type your last name" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
 
 <br/>
   <h2>Results</h2>
+  @if (Model.RoomType != null)
+  {
     <table class="table">
         <thead>
             <tr>
@@ -26,6 +30,7 @@
         </thead>
         <tbody>
             <tr> 
+                <!--RoomType null until submit  --> 
                 <td>@Model.RoomType.Title</td>
                 <td>@Model.StartDate.ToString("MMM dd, yyyy")</td>
                 <td>@Model.EndDate.ToString("MMM dd, yyyy")</td>
@@ -33,9 +38,4 @@
             </tr>
         </tbody>
     </table>
-
-<!--            
-<strong>@Model.RoomType.Title</strong>
-<br />
-@Model.RoomType.Description
--->
+  }
