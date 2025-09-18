@@ -1,10 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 using HotelAppLibrary.Data;
 using HotelAppLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
 
-namespace HotelApp.Web.Pages
+namespace HotelApp.Web
 {
     public class RoomSearchModel : PageModel
     {
@@ -21,26 +25,12 @@ namespace HotelApp.Web.Pages
         [BindProperty(SupportsGet = true)]
         public bool SearchEnabled { get; set; } = false;
 
-        public List<RoomTypeModel> AvailableRoomTypes { get; set; } = new();
+        public List<RoomTypeModel> AvailableRoomTypes { get; set; }
 
         public RoomSearchModel(IDatabaseData db)
         {
             _db = db;
         }
-
-        // Why SearchEnabled Exists in This Pattern
-        // 1. Razor Pages Use PRG(Post-Redirect-Get)
-        // When the form is submitted, OnPost() doesn’t directly render the results.
-        // Instead, it redirects to OnGet() with query parameters(StartDate, EndDate,
-        // and SearchEnabled = true). This avoids duplicate form submissions and enables
-        // clean URLs.
-
-        // OnPost() → Redirects to OnGet() with query params
-        // OnGet() → Executes the actual search logic
-
-        // Without SearchEnabled, OnGet() would run every time the page loads —
-        // even before the user submits the form.That’s why the flag is needed:
-        // it tells OnGet() “this is a search, not just a page load.”
 
         public void OnGet()
         {
@@ -52,10 +42,10 @@ namespace HotelApp.Web.Pages
 
         public IActionResult OnPost()
         {
-            return RedirectToPage(new
-            {
-                SearchEnabled = true,
-                StartDate = StartDate.ToString("yyyy-MM-dd"),
+            return RedirectToPage(new 
+            { 
+                SearchEnabled = true, 
+                StartDate = StartDate.ToString("yyyy-MM-dd"), 
                 EndDate = EndDate.ToString("yyyy-MM-dd")
             });
         }

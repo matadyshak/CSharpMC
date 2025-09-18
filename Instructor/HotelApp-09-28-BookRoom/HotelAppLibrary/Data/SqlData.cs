@@ -1,5 +1,9 @@
 ﻿using HotelAppLibrary.Databases;
 using HotelAppLibrary.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace HotelAppLibrary.Data
 {
@@ -12,34 +16,34 @@ namespace HotelAppLibrary.Data
         {
             _db = db;
         }
+
         public List<RoomTypeModel> GetAvailableRoomTypes(DateTime startDate, DateTime endDate)
         {
             return _db.LoadData<RoomTypeModel, dynamic>("dbo.spRoomTypes_GetAvailableTypes",
-                                                        // same name in sp and this method: camel case
-                                                        new { startDate, endDate },
-                                                        connectionStringName,
-                                                        true);
+                                                 new { startDate, endDate },
+                                                 connectionStringName,
+                                                 true);
         }
 
         public void BookGuest(string firstName,
-                               string lastName,
-                               DateTime startDate,
-                               DateTime endDate,
-                               int roomTypeId)
+                              string lastName,
+                              DateTime startDate,
+                              DateTime endDate,
+                              int roomTypeId)
         {
-            GuestModel guest = _db.LoadData<GuestModel, dynamic>("spGuests_Insert",
+            GuestModel guest = _db.LoadData<GuestModel, dynamic>("dbo.spGuests_Insert",
                                                                  new { firstName, lastName },
                                                                  connectionStringName,
                                                                  true).First();
 
-            RoomTypeModel roomType = _db.LoadData<RoomTypeModel, dynamic>("SELECT * FROM dbo.RoomTypes WHERE Id = @Id",
+            RoomTypeModel roomType = _db.LoadData<RoomTypeModel, dynamic>("select * from dbo.RoomTypes where Id = @Id",
                                                                           new { Id = roomTypeId },
                                                                           connectionStringName,
                                                                           false).First();
 
             TimeSpan timeStaying = endDate.Date.Subtract(startDate.Date);
 
-            List<RoomModel> availableRooms = _db.LoadData<RoomModel, dynamic>("spRooms_GetAvailableRooms",
+            List<RoomModel> availableRooms = _db.LoadData<RoomModel, dynamic>("dbo.spRooms_GetAvailableRooms",
                                                                               new { startDate, endDate, roomTypeId },
                                                                               connectionStringName,
                                                                               true);
@@ -51,7 +55,7 @@ namespace HotelAppLibrary.Data
                              guestId = guest.Id,
                              startDate = startDate,
                              endDate = endDate,
-                             totalCost = roomType.Price * timeStaying.Days
+                             totalCost = timeStaying.Days * roomType.Price
                          },
                          connectionStringName,
                          true);
@@ -60,33 +64,14 @@ namespace HotelAppLibrary.Data
         public List<BookingFullModel> SearchBookings(string lastName)
         {
             return _db.LoadData<BookingFullModel, dynamic>("dbo.spBookings_Search",
-                                              new { lastName, startDate = DateTime.Now.Date },
-                                              connectionStringName,
-                                              true);
+                                                    new { lastName, startDate = DateTime.Now.Date },
+                                                    connectionStringName,
+                                                    true);
         }
-        public CheckInResultModel CheckInGuest(int bookingId)
+
+        public void CheckInGuest(int bookingId)
         {
-            _db.SaveData("dbo.spBookings_CheckIn",
-                                    new
-                                    {
-                                        BookingId = bookingId
-                                    },
-                                    connectionStringName,
-                                    true);
-
-            CheckInResultModel result = _db.LoadData<CheckInResultModel, dynamic>(
-                "dbo.spBookings_GetStatus",
-                new
-                {
-                    BookingId = bookingId
-                },
-                connectionStringName,
-                true).FirstOrDefault(); //Returns first value or null if no value
-
-            string passFailMessage = result?.PassFailMessage;
-            string statusMessage = result?.StatusMessage;
-
-            return result;
+            _db.SaveData("dbo.spBookings_CheckIn", new { Id = bookingId }, connectionStringName, true);
         }
 
         public RoomTypeModel GetRoomTypeById(int id)
