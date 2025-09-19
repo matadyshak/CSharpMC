@@ -11,6 +11,7 @@ namespace HotelApp.Web.Pages
 
         [BindProperty(SupportsGet = true)]
         public int RoomTypeId { get; set; }
+        public RoomTypeModel RoomTypeModel { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public DateTime StartDate { get; set; }
@@ -20,18 +21,24 @@ namespace HotelApp.Web.Pages
 
         [BindProperty]
         public string FirstName { get; set; }
+
         [BindProperty]
         public string LastName { get; set; }
-        public RoomTypeModel RoomType { get; set; }
+
         public BookRoomModel(IDatabaseData db)
         {
             _db = db;
         }
         public void OnGet()
         {
-            if (RoomTypeId > 0)
+            RoomTypeModel = _db.GetRoomTypeById(RoomTypeId);
+            if (RoomTypeModel == null)
             {
-                RoomType = _db.GetRoomTypeById(RoomTypeId);
+                RoomTypeModel = new RoomTypeModel
+                {
+                    Title = "Unknown room",
+                    Description = "Room details are not available."
+                };
             }
         }
 
