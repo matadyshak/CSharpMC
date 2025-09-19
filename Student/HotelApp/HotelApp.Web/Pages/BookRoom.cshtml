@@ -1,27 +1,41 @@
 ﻿@page
 @model HotelApp.Web.Pages.BookRoomModel
 @{
-    ViewData["Title"] = "Book a Room";
+    ViewData["Title"] = "Book Room";
 }
-
-<h1>Book A Room</h1>
-
-<h2>@Model.RoomTypeModel.Title</h2>
-
-<p>
-    @Model.RoomTypeModel.Description
-</p>
+<h1>Book Room</h1>
 
 <form method="post">
     <div class="form-group">
-        <label asp-for="@Model.FirstName" class="control-label"></label>
-        <input asp-for="@Model.FirstName" class="form-control" />
-        <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+        <input type="text" asp-for="FirstName" placeholder="Type your first name" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+        <input type="text" asp-for="LastName" placeholder="Type your last name" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
-    <div class="form-group">
-        <label asp-for="@Model.LastName" class="control-label"></label>
-        <input asp-for="@Model.LastName" class="form-control" />
-        <span asp-validation-for="@Model.LastName" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Book</button>
 </form>
+
+<br />
+<h2>Results</h2>
+@if (Model.RoomTypeModel != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Room Type</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <!--RoomType null until submit  -->
+                <td>@Model.RoomTypeModel.Title</td>
+                <td>@Model.StartDate.ToString("MMM dd, yyyy")</td>
+                <td>@Model.EndDate.ToString("MMM dd, yyyy")</td>
+                <td>@string.Format("{0:C}", Model.RoomTypeModel.Price)</td>
+            </tr>
+        </tbody>
+    </table>
+}
