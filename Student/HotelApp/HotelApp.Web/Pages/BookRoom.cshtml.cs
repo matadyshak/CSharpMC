@@ -68,7 +68,7 @@ namespace HotelApp.Web.Pages
                             EndDate,
                             RoomTypeId);
 
-            return Page(); // Or redirect to a confirmation page
+            return RedirectToPage("/Index");
         }
     }
 }
