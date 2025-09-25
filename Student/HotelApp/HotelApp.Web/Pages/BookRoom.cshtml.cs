@@ -66,7 +66,7 @@ namespace HotelApp.Web.Pages
                             LastName,
                             StartDate,
                             EndDate,
-                            RoomTypeId);
+                            RoomTypeId); //Set by URL parameter
 
             return RedirectToPage("/Index");
         }
