@@ -41,6 +41,14 @@ namespace HotelApp.Web.Pages
         public void OnGet()
         {
             RoomTypeModel = _db.GetRoomTypeById(RoomTypeId);
+            if (RoomTypeModel == null)
+            {
+                RoomTypeModel = new RoomTypeModel
+                {
+                    Title = "Unknown room",
+                    Description = "Room details are not available."
+                };
+            }
         }
 
         public IActionResult OnPost()
