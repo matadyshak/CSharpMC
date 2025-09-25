@@ -26,7 +26,7 @@ namespace HotelApp.Web.Pages
         [BindProperty(SupportsGet = true)]
         public int RoomTypeId { get; set; }
 
-        public RoomTypeModel RoomType { get; set; } = new RoomTypeModel();
+        public RoomTypeModel RoomTypeModel { get; set; } = new RoomTypeModel();
 
         // These only bound during post (form submission)
         [BindProperty]
@@ -40,12 +40,12 @@ namespace HotelApp.Web.Pages
         public int ReservationNumber { get; set; } = 0;
         public void OnGet()
         {
-            RoomType = _db.GetRoomTypeById(RoomTypeId);
+            RoomTypeModel = _db.GetRoomTypeById(RoomTypeId);
         }
 
         public IActionResult OnPost()
         {
-            RoomType = _db.GetRoomTypeById(RoomTypeId);
+            RoomTypeModel = _db.GetRoomTypeById(RoomTypeId);
 
             // Validate form data before booking
             if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName))
