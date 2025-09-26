@@ -5,10 +5,8 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT
-        r.Id AS RoomId,
-        r.RoomNumber,
-        rt.Id AS RoomTypeId,
+    SELECT DISTINCT
+        rt.Id AS Id,
         rt.Title,
         rt.Description,
         rt.Price
@@ -17,9 +15,7 @@ BEGIN
     WHERE r.Id NOT IN (
         SELECT b.RoomId 
         FROM dbo.Bookings b
-        WHERE (
-            (@startDate < b.EndDate AND @endDate > b.StartDate)
-        )
+        WHERE @startDate < b.EndDate AND @endDate > b.StartDate
     )
-    ORDER by rt.Price, r.RoomNumber;
+    ORDER by rt.Price;
  END;

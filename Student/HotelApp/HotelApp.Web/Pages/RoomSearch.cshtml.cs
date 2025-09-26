@@ -10,6 +10,11 @@ namespace HotelApp.Web.Pages
     {
         private readonly IDatabaseData _db;
 
+        public RoomSearchModel(IDatabaseData db)
+        {
+            _db = db;
+        }
+
         [DataType(DataType.Date)]
         [BindProperty(SupportsGet = true)]
         public DateTime StartDate { get; set; } = DateTime.Now;
@@ -22,11 +27,6 @@ namespace HotelApp.Web.Pages
         public bool SearchEnabled { get; set; } = false;
 
         public List<RoomTypeModel> AvailableRoomTypes { get; set; } = new();
-
-        public RoomSearchModel(IDatabaseData db)
-        {
-            _db = db;
-        }
 
         // Why SearchEnabled Exists in This Pattern
         // 1. Razor Pages Use PRG(Post-Redirect-Get)
@@ -44,6 +44,9 @@ namespace HotelApp.Web.Pages
 
         public void OnGet()
         {
+
+            // OnGet() gets the parameter values StartDate, EndDate, SearchEnabled from URL parameters
+            // The page variables get set to those same values
             if (SearchEnabled == true)
             {
                 AvailableRoomTypes = _db.GetAvailableRoomTypes(StartDate, EndDate);

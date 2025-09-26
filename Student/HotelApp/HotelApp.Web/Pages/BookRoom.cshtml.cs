@@ -10,19 +10,25 @@ namespace HotelApp.Web.Pages
     {
         private readonly IDatabaseData _db;
 
-        [DataType(DataType.Date)]
-        [BindProperty(SupportsGet = true)]
-        public DateTime StartDate { get; set; }
+        public BookRoomModel(IDatabaseData db)
+        {
+            _db = db;
+        }
 
         [DataType(DataType.Date)]
         [BindProperty(SupportsGet = true)]
-        public DateTime EndDate { get; set; }
+        public DateTime StartDate { get; set; } = DateTime.Now;
+
+        [DataType(DataType.Date)]
+        [BindProperty(SupportsGet = true)]
+        public DateTime EndDate { get; set; } = DateTime.Now.AddDays(1);
 
         [BindProperty(SupportsGet = true)]
         public int RoomTypeId { get; set; }
 
-        public RoomTypeModel RoomTypeModel { get; set; }
+        public RoomTypeModel RoomTypeModel { get; set; } = new RoomTypeModel();
 
+        // These only bound during post (form submission)
         [BindProperty]
         [Required(ErrorMessage = "First name is required")]
         public string FirstName { get; set; }
@@ -31,10 +37,6 @@ namespace HotelApp.Web.Pages
         [Required(ErrorMessage = "Last name is required")]
         public string LastName { get; set; }
 
-        public BookRoomModel(IDatabaseData db)
-        {
-            _db = db;
-        }
         public void OnGet()
         {
             RoomTypeModel = _db.GetRoomTypeById(RoomTypeId);

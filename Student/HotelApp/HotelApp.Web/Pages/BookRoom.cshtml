@@ -15,27 +15,26 @@
     </div>
 </form>
 
-<br />
-<h2>Results</h2>
-@if (Model.RoomTypeModel != null)
-{
+  <h2>Results</h2>
+  @if (Model.RoomTypeModel != null)
+  {
     <table class="table">
         <thead>
             <tr>
                 <th>Room Type</th>
-                <th>Start Date</th>
+                <th>Start Date</th> 
                 <th>End Date</th>
                 <th>Price</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <!--RoomType null until submit  -->
+            <tr> 
+                <!--RoomType null until submit  --> 
                 <td>@Model.RoomTypeModel.Title</td>
-                <td>@Model.StartDate.ToString("MMM dd, yyyy")</td>
-                <td>@Model.EndDate.ToString("MMM dd, yyyy")</td>
+                <td>@Model.StartDate.ToString("yyyy-MM-dd")</td>
+                <td>@Model.EndDate.ToString("yyyy-MM-dd")</td>
                 <td>@string.Format("{0:C}", Model.RoomTypeModel.Price)</td>
             </tr>
         </tbody>
     </table>
-}
+  }
