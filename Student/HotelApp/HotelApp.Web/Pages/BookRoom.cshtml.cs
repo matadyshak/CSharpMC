@@ -31,10 +31,12 @@ namespace HotelApp.Web.Pages
         // These only bound during post (form submission)
         [BindProperty]
         [Required(ErrorMessage = "First name is required")]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [BindProperty]
         [Required(ErrorMessage = "Last name is required")]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         public void OnGet()

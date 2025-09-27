@@ -6,18 +6,26 @@
 
 <h1>Room Search</h1>
 
-<!-- See Github Bootstrap for how to use form -->
+<!-- See Github Bootstrap for how to use form 
 
-<form method="post">
-    <div class="form-group">
-        <label asp-for="@Model.StartDate"></label>
-        <input type="date" asp-for="@Model.StartDate" />
+1. mb-3 adds vertical spacing between form groups.
+
+2. form-control ensures inputs are styled consistently.
+
+3. p-3 adds padding around the form.
+
+4. mt-2 adds spacing above the button.  -->
+
+<form method="post" class="p-3">
+    <div class="form-group mb-3">
+        <label asp-for="@Model.StartDate" class="form-label"></label>
+        <input type="date" asp-for="@Model.StartDate" class="form-control" />
     </div>
-    <div class="form-group">
-        <label asp-for="@Model.EndDate"></label>
-        <input type="date" asp-for="@Model.EndDate" />
+    <div class="form-group mb-3">
+        <label asp-for="@Model.EndDate" class="form-label"></label>
+        <input type="date" asp-for="@Model.EndDate" class="form-control" />
     </div>
-    <button type="submit" class="btn btn-primary">Search</button>
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
 </form>
 
 @if(Model.AvailableRoomTypes?.Count > 0)
@@ -44,6 +52,11 @@
                     <td><a asp-page="/BookRoom" asp-route-roomtypeid="@room.Id"
                            asp-route-startdate="@Model.StartDate.ToString("yyyy-MM-dd")"
                            asp-route-enddate="@Model.EndDate.ToString("yyyy-MM-dd")">Book Now</a>
+                        <!--
+                           // Used in instructor's code:
+                           asp-route-startdate="@Model.StartDate.ToShortDateString()"
+                           asp-route-enddate="@Model.EndDate.ToShortDateString()">Book Now</a>
+                        -->
                     </td>
                 </tr>
             }

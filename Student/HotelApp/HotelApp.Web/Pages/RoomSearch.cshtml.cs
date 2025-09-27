@@ -17,10 +17,12 @@ namespace HotelApp.Web.Pages
 
         [DataType(DataType.Date)]
         [BindProperty(SupportsGet = true)]
+        [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; } = DateTime.Now;
 
         [DataType(DataType.Date)]
         [BindProperty(SupportsGet = true)]
+        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; } = DateTime.Now.AddDays(1);
 
         [BindProperty(SupportsGet = true)]
