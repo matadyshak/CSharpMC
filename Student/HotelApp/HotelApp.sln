@@ -4,7 +4,7 @@ VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelApp.Web", "HotelApp.Web\HotelApp.Web.csproj", "{7822AF54-B52A-4BF1-98CC-B729FF2D0A80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelFrontDeskWpf", "HotelFrontDeskWpf\HotelFrontDeskWpf.csproj", "{D9F20D82-8E8C-46FB-9204-8E3B350BF38D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelApp.Desktop", "HotelApp.Desktop\HotelApp.Desktop.csproj", "{D9F20D82-8E8C-46FB-9204-8E3B350BF38D}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "HotelAppDB", "HotelAppDB\HotelAppDB.sqlproj", "{3DC08C87-5B48-4036-8E22-F0A748F6074F}"
 EndProject
