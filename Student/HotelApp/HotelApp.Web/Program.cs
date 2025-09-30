@@ -1,7 +1,7 @@
 using HotelAppLibrary.Data;
 using HotelAppLibrary.Databases;
 
-namespace HotelRazorPages
+namespace HotelApp.Web
 {
     public class Program
     {
