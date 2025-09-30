@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using HotelAppLibrary.Data;
+using System.Windows;
 
 namespace HotelApp.Desktop
 {
@@ -7,7 +8,7 @@ namespace HotelApp.Desktop
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(IDatabaseData db)
         {
             InitializeComponent();
         }
