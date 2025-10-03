@@ -77,7 +77,7 @@ namespace HotelAppLibrary.Data
                                               true);
         }
 
-        public int CheckInGuest(int bookingId)
+        public CheckInResultModel CheckInGuest(int bookingId)
         {
             _db.SaveData<dynamic>("dbo.spBookings_CheckIn",
                                     new
@@ -87,16 +87,16 @@ namespace HotelAppLibrary.Data
                                     connectionStringName,
                                     true);
 
-            List<int> results = _db.LoadData<int, dynamic>(
+            CheckInResultModel result = _db.LoadData<CheckInResultModel, dynamic>(
                 "dbo.spBookings_GetStatus",
                 new
                 {
                     BookingId = bookingId
                 },
                 connectionStringName,
-                true);
+                true).FirstOrDefault();
 
-            return results.First();
+            return result;
         }
 
         public RoomTypeModel GetRoomTypeById(int id)
