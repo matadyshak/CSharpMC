@@ -56,7 +56,7 @@ namespace HotelAppLibrary.Data
                                                                               connectionStringName,
                                                                               true);
 
-            _db.SaveData("dbo.spBookings_Insert",
+            _db.SaveData<dynamic>("dbo.spBookings_Insert",
                          new
                          {
                              roomId = availableRooms.First().Id,
@@ -76,9 +76,10 @@ namespace HotelAppLibrary.Data
                                               connectionStringName,
                                               true);
         }
-        public CheckInResultModel CheckInGuest(int bookingId)
+
+        public int CheckInGuest(int bookingId)
         {
-            _db.SaveData("dbo.spBookings_CheckIn",
+            _db.SaveData<dynamic>("dbo.spBookings_CheckIn",
                                     new
                                     {
                                         BookingId = bookingId
@@ -86,19 +87,16 @@ namespace HotelAppLibrary.Data
                                     connectionStringName,
                                     true);
 
-            CheckInResultModel result = _db.LoadData<CheckInResultModel, dynamic>(
+            List<int> results = _db.LoadData<int, dynamic>(
                 "dbo.spBookings_GetStatus",
                 new
                 {
                     BookingId = bookingId
                 },
                 connectionStringName,
-                true).FirstOrDefault(); //Returns first value or null if no value
+                true);
 
-            string passFailMessage = result?.PassFailMessage;
-            string statusMessage = result?.StatusMessage;
-
-            return result;
+            return results.First();
         }
 
         public RoomTypeModel GetRoomTypeById(int id)

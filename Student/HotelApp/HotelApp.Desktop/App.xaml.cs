@@ -14,8 +14,6 @@ namespace HotelApp.Desktop
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
-
             var services = new ServiceCollection();
             // Transient - a new instance is provided every time
             services.AddTransient<MainWindow>();
@@ -34,7 +32,7 @@ namespace HotelApp.Desktop
             var serviceProvider = services.BuildServiceProvider();
             var mainWindow = serviceProvider.GetService<MainWindow>();
             mainWindow.Show();
+            base.OnStartup(e);
         }
     }
-
 }

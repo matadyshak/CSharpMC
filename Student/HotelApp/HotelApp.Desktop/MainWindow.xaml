@@ -6,7 +6,47 @@
         xmlns:local="clr-namespace:HotelApp.Desktop"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Label + TextBox -->
+            <RowDefinition Height="Auto"/>
+            <!-- Search Button -->
+            <RowDefinition Height="*"/>
+            <!-- DataGrid -->
+            <RowDefinition Height="Auto"/>
+            <!-- CheckIn Button -->
+        </Grid.RowDefinitions>
 
+        <!-- Last Name Label and TextBox -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 0 10">
+            <Label Content="Last Name:" VerticalAlignment="Center"/>
+            <TextBox x:Name="LastNameSearchBox" Width="200" Margin="10 0 0 0"/>
+        </StackPanel>
+
+        <!-- Search Button -->
+        <Button Grid.Row="1" Content="Search" Width="100" Click="SearchButton_Click" Margin="0 0 0 10"/>
+
+        <!-- DataGrid -->
+        <DataGrid x:Name="ReservationGrid"
+              Grid.Row="2"
+              AutoGenerateColumns="False"
+              ItemsSource="{Binding FilteredReservations}"
+              SelectionMode="Single"
+              Margin="0 0 0 10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
+                <DataGridTextColumn Header="Reservation ID" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=d}" />
+                <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=d}" />
+                <DataGridTextColumn Header="Room Title" Binding="{Binding Title}" />
+                <DataGridTextColumn Header="Room #" Binding="{Binding RoomNumber}" />
+                <DataGridTextColumn Header="Total Cost" Binding="{Binding TotalCost, StringFormat=C}" />
+                <DataGridCheckBoxColumn Header="Checked In" Binding="{Binding CheckedIn}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- CheckIn Button -->
+        <Button Grid.Row="3" Content="Check In" Width="100" Click="CheckInButton_Click"/>
     </Grid>
 </Window>

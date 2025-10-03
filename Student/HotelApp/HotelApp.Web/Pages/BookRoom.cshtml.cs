@@ -3,13 +3,15 @@ using HotelAppLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace HotelApp.Web.Pages
 {
     public class BookRoomModel : PageModel
     {
         private readonly IDatabaseData _db;
-
+        private string _firstName;
+        private string _lastName;
         public BookRoomModel(IDatabaseData db)
         {
             _db = db;
@@ -32,13 +34,29 @@ namespace HotelApp.Web.Pages
         [BindProperty]
         [Required(ErrorMessage = "First name is required")]
         [Display(Name = "First Name")]
-        public string FirstName { get; set; }
+        public string FirstName
+        {
+            get => _firstName;
+            set
+            {
+                TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
+                _firstName = ti.ToTitleCase(value?.ToLower() ?? string.Empty);
+            }
+        }
+
 
         [BindProperty]
         [Required(ErrorMessage = "Last name is required")]
         [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-
+        public string LastName
+        {
+            get => _lastName;
+            set
+            {
+                TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
+                _lastName = ti.ToTitleCase(value?.ToLower() ?? string.Empty);
+            }
+        }
         public void OnGet()
         {
             RoomTypeModel = _db.GetRoomTypeById(RoomTypeId);
